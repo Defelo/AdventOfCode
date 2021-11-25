@@ -1,8 +1,11 @@
-from IPython.display import display, Markdown
-import requests
 import os
+from pathlib import Path
 
-SESSION = "your session cookie"
+import requests
+from IPython.display import display, Markdown
+
+SESSION = Path(__file__).parent.joinpath(".session.txt").read_text()
+
 
 def load(year, day, strip=True):
     f = f"{day:02}.txt"
@@ -13,22 +16,25 @@ def load(year, day, strip=True):
         _create_file(f, puzzle)
     else:
         puzzle = open(f).read()
-    
+
     if strip:
         puzzle = puzzle.strip()
-    
+
     return puzzle
+
 
 def setup(year, day, strip=True):
     display(Markdown(f"# Day {day:02}"))
     return load(year, day, strip)
 
+
 def _create_file(path, content, debug=False):
     if debug:
         print(f"Creating file {path}")
-    with open(path, "w") as file:
-        file.write(content)
-        file.flush()
+    with open(path, "w") as f:
+        f.write(content)
+        f.flush()
+
 
 def _fetch_input(year, day, debug=False):
     if debug:
