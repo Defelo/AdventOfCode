@@ -4,7 +4,7 @@ from pathlib import Path
 import requests
 from IPython.display import display, Markdown
 
-SESSION = Path(__file__).parent.joinpath(".session.txt").read_text()
+SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
 def load(year, day, strip=True):
@@ -13,7 +13,7 @@ def load(year, day, strip=True):
         puzzle = _fetch_input(year, day)
         if puzzle is None:
             raise Exception("Puzzle input could not be fetched!")
-        _create_file(f, puzzle)
+        create_file(f, puzzle)
     else:
         puzzle = open(f).read()
 
@@ -28,7 +28,7 @@ def setup(year, day, strip=True):
     return load(year, day, strip)
 
 
-def _create_file(path, content, debug=False):
+def create_file(path, content, debug=False):
     if debug:
         print(f"Creating file {path}")
     with open(path, "w") as f:
