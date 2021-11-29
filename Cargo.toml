@@ -6,11 +6,16 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+regex = "*"
 
 # --- 2020 ---
 [[bin]]
 name = "2020_01"
 path = "2020/01.rs"
+
+[[bin]]
+name = "2020_02"
+path = "2020/02.rs"
 
 
 # --- 2021 ---
