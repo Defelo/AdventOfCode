@@ -1,32 +1,47 @@
+#![feature(test)]
+
+extern crate test;
+
+use std::fs;
+use test::Bencher;
+
 type Input = Vec<i32>;
 
 fn get_input() -> Input {
-    let puzzle = include_str!("01.txt");
-    return puzzle.lines().map(|x|x.parse().unwrap()).collect();
+    let puzzle = fs::read_to_string("2021/01.txt").unwrap();
+    return puzzle.lines().map(|x| x.parse().unwrap()).collect();
+}
+
+fn count(input: &Input, window: usize) -> i32 {
+    let mut out = 0;
+    for (a, b) in input.iter().zip(&input[window..]) {
+        if b > a { out += 1; }
+    }
+    out
 }
 
 fn part1(input: &Input) -> String {
-    let mut out = 0;
-    for (a, b) in input.iter().zip(&input[1..]) {
-        if b > a {
-            out += 1;
-        }
-    }
-    out.to_string()
+    count(input, 1).to_string()
 }
 
 fn part2(input: &Input) -> String {
-    let mut out = 0;
-    for (a, b) in input.iter().zip(&input[3..]) {
-        if b > a {
-            out += 1;
-        }
-    }
-    out.to_string()
+    count(input, 3).to_string()
 }
 
 fn main() {
     let input = get_input();
     println!("Part 1: {}", part1(&input));
     println!("Part 2: {}", part2(&input));
+}
+
+#[bench]
+fn bench_part1(b: &mut Bencher) {
+    let input = get_input();
+    b.iter(|| { part1(&input) })
+}
+
+#[bench]
+fn bench_part2(b: &mut Bencher) {
+    let input = get_input();
+    b.iter(|| { part2(&input) })
 }
