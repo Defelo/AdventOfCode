@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import requests
@@ -8,14 +7,14 @@ SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
 def load(year, day, strip=True):
-    f = f"{day:02}.txt"
-    if not os.path.exists(f):
+    f = Path(__file__).parent / f"{year}/{day:02}.txt"
+    if not f.exists():
         puzzle = _fetch_input(year, day)
         if puzzle is None:
             raise Exception("Puzzle input could not be fetched!")
-        create_file(f, puzzle)
+        f.write_text(puzzle)
     else:
-        puzzle = open(f).read()
+        puzzle = f.read_text()
 
     if strip:
         puzzle = puzzle.strip()
@@ -23,8 +22,9 @@ def load(year, day, strip=True):
     return puzzle
 
 
-def setup(year, day, strip=True):
-    display(Markdown(f"# Day {day:02}"))
+def setup(year, day, strip=True, show_title=True):
+    if show_title:
+        display(Markdown(f"# Day {day:02}"))
     return load(year, day, strip)
 
 
