@@ -2,6 +2,7 @@ import collections
 import functools
 import graphlib
 import itertools
+import operator
 import re
 
 NEIGH_DICT = {
@@ -16,6 +17,20 @@ NEIGH_DICT = {
 }
 
 NEIGH_DIRECT = [*{*NEIGH_DICT.values()}]
+NEIGH_DIAG = [tuple(NEIGH_DICT[a][i] + NEIGH_DICT[b][i] for i in range(2)) for a, b in zip("NESW", "ESWN")]
+
+
+def get_neighbors(ox=0, oy=0, w=None, h=None, diag=False):
+    return [
+        (x, y)
+        for dx, dy in NEIGH_DIRECT + (NEIGH_DIAG * diag)
+        if ((x := ox + dx) or 1) and (w is None or x in range(w))
+        and ((y := oy + dy) or 1) and (h is None or y in range(h))
+    ]
+
+
+def product(it):
+    return functools.reduce(operator.mul, it)
 
 
 def rotate_left(x, y):
@@ -121,5 +136,5 @@ def chinese_remainder(n, a):
     return s % prod
 
 
-__all__ = ["itertools", "collections", "functools", "re", "graphlib"]
+__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator"]
 __all__ += dir()
