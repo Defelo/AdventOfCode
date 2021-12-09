@@ -1,7 +1,15 @@
 from datetime import date
 
+import pyperclip
+
 import aoc
 from utils import *  # noqa
+
+
+def ans(answer):
+    print(answer)
+    pyperclip.copy(str(answer))
+
 
 year, day = (t := date.today()).year, t.day
 
@@ -15,3 +23,4 @@ for line in plines:
     match = re.match(r"^$", line)
 
 print(puzzle)
+ans()
