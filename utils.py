@@ -49,6 +49,13 @@ def rotate_matrix_right(matrix):
     return [*zip(*matrix[::-1])]
 
 
+def irange(start=0, step=1):
+    i = start
+    while True:
+        yield i
+        i += step
+
+
 class UnionFind:
     def __init__(self, n):
         self.parents = [*range(n)]
