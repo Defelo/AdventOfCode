@@ -29,6 +29,10 @@ def get_neighbors(ox=0, oy=0, w=None, h=None, diag=False):
     ]
 
 
+def minmax(lst, key=None):
+    return min(lst, key=key), max(lst, key=key)
+
+
 def product(it):
     return functools.reduce(operator.mul, it)
 
