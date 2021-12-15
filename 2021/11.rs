@@ -62,7 +62,7 @@ fn part2(input: &Input) -> String {
     (1..).filter(|_| flash(&mut grid) == size).next().unwrap().to_string()
 }
 
-fn main() {
+pub fn main() {
     let input = get_input();
     println!("Part 1: {}", part1(&input));
     println!("Part 2: {}", part2(&input));

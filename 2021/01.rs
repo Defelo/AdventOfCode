@@ -28,7 +28,7 @@ fn part2(input: &Input) -> String {
     count(input, 3).to_string()
 }
 
-fn main() {
+pub fn main() {
     let input = get_input();
     println!("Part 1: {}", part1(&input));
     println!("Part 2: {}", part2(&input));
