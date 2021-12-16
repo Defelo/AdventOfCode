@@ -4,6 +4,7 @@ import graphlib
 import itertools
 import operator
 import heapq
+import io
 import re
 
 NEIGH_DICT = {
@@ -148,5 +149,5 @@ def chinese_remainder(n, a):
     return s % prod
 
 
-__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq"]
+__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io"]
 __all__ += dir()
