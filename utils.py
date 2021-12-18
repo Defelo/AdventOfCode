@@ -1,11 +1,18 @@
+import ast
 import collections
 import functools
 import graphlib
-import itertools
-import operator
 import heapq
 import io
+import itertools
+import json
+import operator
 import re
+
+heappush = heapq.heappush
+heappop = heapq.heappop
+reduce = functools.reduce
+Counter = collections.Counter
 
 NEIGH_DICT = {
     "N": (0, -1),
@@ -149,5 +156,5 @@ def chinese_remainder(n, a):
     return s % prod
 
 
-__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io"]
+__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io", "json", "ast"]
 __all__ += dir()
