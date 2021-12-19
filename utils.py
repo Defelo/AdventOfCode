@@ -9,6 +9,8 @@ import json
 import operator
 import re
 
+import numpy as np
+
 heappush = heapq.heappush
 heappop = heapq.heappop
 reduce = functools.reduce
@@ -156,5 +158,5 @@ def chinese_remainder(n, a):
     return s % prod
 
 
-__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io", "json", "ast"]
+__all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io", "json", "ast", "np"]
 __all__ += dir()
