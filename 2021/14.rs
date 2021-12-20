@@ -2,16 +2,16 @@
 
 extern crate test;
 
-use std::collections::HashMap;
 use std::fs;
 use test::Bencher;
 
 use counter::Counter;
 use regex::Regex;
+use rustc_hash::FxHashMap;
 
 struct Input {
     template: String,
-    rules: HashMap<(char, char), char>,
+    rules: FxHashMap<(char, char), char>,
 }
 
 fn get_input() -> Input {
