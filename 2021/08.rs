@@ -2,9 +2,9 @@
 
 extern crate test;
 
-use std::collections::{HashMap, HashSet};
 use std::fs;
 use test::Bencher;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 struct Line {
     patterns: Vec<String>,
@@ -48,14 +48,14 @@ fn is_subset(mut a: u16, mut b: u16) -> bool {
 
 
 fn part2(input: &Input) -> String {
-    let digits = HashMap::from([((7, 2), 1), ((2, 5), 2), ((3, 5), 3), ((3, 4), 4), ((4, 5), 5), ((5, 3), 7), ((1, 7), 8)]);
+    let digits = FxHashMap::from_iter([((7, 2), 1), ((2, 5), 2), ((3, 5), 3), ((3, 4), 4), ((4, 5), 5), ((5, 3), 7), ((1, 7), 8)]);
 
     input.iter().map(|line| {
         let patterns: Vec<u16> = line.patterns.iter().map(parse_num).collect();
         let output: Vec<u16> = line.output.iter().map(parse_num).collect();
-        let mut mp: HashMap<u16, u8> = HashMap::new();
-        let mut rp: HashMap<u8, u16> = HashMap::new();
-        let mut u: HashSet<u16> = HashSet::from_iter(patterns.iter().cloned());
+        let mut mp: FxHashMap<u16, u8> = FxHashMap::default();
+        let mut rp: FxHashMap<u8, u16> = FxHashMap::default();
+        let mut u: FxHashSet<u16> = FxHashSet::from_iter(patterns.iter().cloned());
         for x in &patterns {
             let sc = patterns.iter().filter(|y| is_subset(*x, **y)).count();
             match digits.get(&(sc, x.count_ones())) {
