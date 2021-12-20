@@ -3,9 +3,10 @@
 
 extern crate test;
 
-use std::collections::{BinaryHeap, HashSet, VecDeque};
+use std::collections::{BinaryHeap, VecDeque};
 use std::fs;
 use test::Bencher;
+use rustc_hash::FxHashSet;
 
 type Input = Vec<Vec<u32>>;
 
@@ -48,7 +49,7 @@ fn part2(input: &Input) -> String {
             if get_neighbors(i as i32, j as i32, line.len() as i32, input.len() as i32)
                 .all(|(p, q)| c < &input[q as usize][p as usize].clone()) {
                 let mut queue = VecDeque::from([(i, j)]);
-                let mut visited = HashSet::new();
+                let mut visited = FxHashSet::default();
                 while !queue.is_empty() {
                     let (y, x) = queue.pop_front().unwrap();
 
