@@ -2,9 +2,9 @@
 
 extern crate test;
 
-use std::collections::HashSet;
 use std::fs;
 use test::Bencher;
+use rustc_hash::FxHashSet;
 
 struct Input {
     nums: Vec<i32>,
@@ -24,12 +24,12 @@ fn get_input() -> Input {
 
 struct State {
     boards: Vec<Vec<Vec<i32>>>,
-    marked: HashSet<i32>,
+    marked: FxHashSet<i32>,
 }
 
 impl State {
     fn from_input(input: &Input) -> State {
-        State {boards: input.boards.clone(), marked: HashSet::new()}
+        State {boards: input.boards.clone(), marked: FxHashSet::default()}
     }
 
     fn mark(&mut self, num: i32) {
