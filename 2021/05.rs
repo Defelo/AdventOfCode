@@ -2,10 +2,10 @@
 
 extern crate test;
 
-use std::collections::HashMap;
 use std::fs;
 use test::Bencher;
 use regex::Regex;
+use rustc_hash::FxHashMap;
 
 type Line = (i32, i32, i32, i32);
 type Input = Vec<Line>;
@@ -38,7 +38,7 @@ fn iter_line(line: &Line) -> Vec<(i32, i32)> {
 }
 
 fn part1(input: &Input) -> String {
-    let mut counter = HashMap::new();
+    let mut counter = FxHashMap::default();
     for line in input {
         if (line.0 != line.2) && (line.1 != line.3) { continue }
         for (x, y) in iter_line(line) {
@@ -50,7 +50,7 @@ fn part1(input: &Input) -> String {
 }
 
 fn part2(input: &Input) -> String {
-    let mut counter = HashMap::new();
+    let mut counter = FxHashMap::default();
     for line in input {
         for (x, y) in iter_line(line) {
             let cnt = *counter.entry((x, y)).or_insert(0) + 1;
