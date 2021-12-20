@@ -3,16 +3,16 @@
 extern crate test;
 
 use std::borrow::Borrow;
-use std::collections::HashSet;
 use std::fs;
 use test::Bencher;
 
 use regex::Regex;
+use rustc_hash::FxHashSet;
 
 enum Instruction { X(u32), Y(u32) }
 
 struct Input {
-    dots: HashSet<(u32, u32)>,
+    dots: FxHashSet<(u32, u32)>,
     instructions: Vec<Instruction>,
 }
 
@@ -36,7 +36,7 @@ fn get_input() -> Input {
     Input { dots, instructions }
 }
 
-fn fold(dots: &HashSet<(u32, u32)>, instruction: &Instruction) -> HashSet<(u32, u32)> {
+fn fold(dots: &FxHashSet<(u32, u32)>, instruction: &Instruction) -> FxHashSet<(u32, u32)> {
     dots.iter().cloned().map(|(x, y)| {
         match instruction {
             Instruction::X(n) => (x.min(2 * n - x), y),
