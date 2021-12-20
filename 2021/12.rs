@@ -2,16 +2,18 @@
 
 extern crate test;
 
-use std::collections::{HashMap, HashSet};
 use std::fs;
 use test::Bencher;
+use rustc_hash::{FxHashMap, FxHashSet};
 
-type Input = HashMap<i32, Vec<i32>>;
+type Input = FxHashMap<i32, Vec<i32>>;
 
 fn get_input() -> Input {
     let puzzle = fs::read_to_string("2021/12.txt").unwrap();
-    let mut out = HashMap::new();
-    let mut map = HashMap::from([("start", 0), ("end", 1)]);
+    let mut out = FxHashMap::default();
+    let mut map = FxHashMap::default();
+    map.insert("start", 0);
+    map.insert("end", 1);
     for line in puzzle.trim().lines() {
         let mut split = line.split("-").map(|x| {
             if !map.contains_key(x) { map.insert(x, (map.len() as i32) * if x < "a" { 1 } else { -1 }); }
@@ -33,7 +35,7 @@ fn get_input() -> Input {
     out
 }
 
-fn search(node: i32, graph: &Input, visited: &mut HashSet<i32>, small_twice: bool) -> u32 {
+fn search(node: i32, graph: &Input, visited: &mut FxHashSet<i32>, small_twice: bool) -> u32 {
     if node == 1 { return 1; }
     let mut twice = false;
     if node <= 0 && visited.contains(&node) {
@@ -54,11 +56,11 @@ fn search(node: i32, graph: &Input, visited: &mut HashSet<i32>, small_twice: boo
 }
 
 fn part1(input: &Input) -> String {
-    search(0, input, &mut HashSet::new(), true).to_string()
+    search(0, input, &mut FxHashSet::default(), true).to_string()
 }
 
 fn part2(input: &Input) -> String {
-    search(0, input, &mut HashSet::new(), false).to_string()
+    search(0, input, &mut FxHashSet::default(), false).to_string()
 }
 
 fn main() {
