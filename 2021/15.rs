@@ -3,9 +3,10 @@
 extern crate test;
 
 use std::cmp::Reverse;
-use std::collections::{BinaryHeap, HashSet};
+use std::collections::BinaryHeap;
 use std::fs;
 use test::Bencher;
+use rustc_hash::FxHashSet;
 
 type Input = Vec<Vec<u32>>;
 
@@ -21,7 +22,7 @@ fn dijkstra(grid: &Input, k: usize) -> u32 {
     let h = grid.len();
     let mut queue = BinaryHeap::new();
     queue.push(Reverse((0u32, 0usize, 0usize)));
-    let mut visited = HashSet::new();
+    let mut visited = FxHashSet::default();
     while !queue.is_empty() {
         let (d, x, y) = queue.pop().unwrap().0;
 
