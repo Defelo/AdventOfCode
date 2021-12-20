@@ -2,9 +2,9 @@
 
 extern crate test;
 
-use std::collections::HashSet;
 use std::fs;
 use test::Bencher;
+use rustc_hash::FxHashSet;
 
 type Input = Vec<Vec<u8>>;
 
@@ -25,7 +25,7 @@ fn flash(grid: &mut Input) -> usize {
         }
     }
 
-    let mut visited: HashSet<(usize, usize)> = HashSet::new();
+    let mut visited: FxHashSet<(usize, usize)> = FxHashSet::default();
     while !flashes.is_empty() {
         let (i, j) = flashes.pop().unwrap();
 
