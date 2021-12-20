@@ -87,11 +87,16 @@ fn solve(io: &mut Reader) -> Result {
     }
 }
 
-pub fn main() {
+fn main() {
+    let (part1, part2) = run();
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+
+pub fn run() -> (String, String) {
     let input = get_input();
     let result = solve(&mut Reader::new(input.clone()));
-    println!("Part 1: {}", result.version_sum);
-    println!("Part 2: {}", result.value);
+    (result.version_sum.to_string(), result.value.to_string())
 }
 
 #[bench]

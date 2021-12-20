@@ -135,11 +135,16 @@ fn solve(input: &Input) -> (usize, i32) {
     }).max().unwrap())
 }
 
-pub fn main() {
-    let input = get_input();
-    let (part1, part2) = solve(&input);
+fn main() {
+    let (part1, part2) = run();
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
+}
+
+pub fn run() -> (String, String) {
+    let input = get_input();
+    let (part1, part2) = solve(&input);
+    (part1.to_string(), part2.to_string())
 }
 
 #[bench]

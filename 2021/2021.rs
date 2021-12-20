@@ -2,8 +2,10 @@
 #![feature(drain_filter)]
 #![feature(binary_heap_into_iter_sorted)]
 
+#![feature(div_duration)]
 
 use std::path::Path;
+use std::time::{Duration, Instant};
 
 
 #[path = "01.rs"]
@@ -84,37 +86,52 @@ mod d25;
 
 fn main() {
     println!("##### Advent of Code 2021 #####");
+    let mut results = vec![];
     for (day, func) in &[
-        (01, d01::main as fn()),
-        (02, d02::main as fn()),
-        (03, d03::main as fn()),
-        (04, d04::main as fn()),
-        (05, d05::main as fn()),
-        (06, d06::main as fn()),
-        (07, d07::main as fn()),
-        (08, d08::main as fn()),
-        (09, d09::main as fn()),
-        (10, d10::main as fn()),
-        (11, d11::main as fn()),
-        (12, d12::main as fn()),
-        (13, d13::main as fn()),
-        (14, d14::main as fn()),
-        (15, d15::main as fn()),
-        (16, d16::main as fn()),
-        (17, d17::main as fn()),
-        (18, d18::main as fn()),
-        (19, d19::main as fn()),
-        (20, d20::main as fn()),
-        (21, d21::main as fn()),
-        (22, d22::main as fn()),
-        (23, d23::main as fn()),
-        (24, d24::main as fn()),
-        (25, d25::main as fn()),
+        (01, d01::run as fn() -> (String, String)),
+        (02, d02::run as fn() -> (String, String)),
+        (03, d03::run as fn() -> (String, String)),
+        (04, d04::run as fn() -> (String, String)),
+        (05, d05::run as fn() -> (String, String)),
+        (06, d06::run as fn() -> (String, String)),
+        (07, d07::run as fn() -> (String, String)),
+        (08, d08::run as fn() -> (String, String)),
+        (09, d09::run as fn() -> (String, String)),
+        (10, d10::run as fn() -> (String, String)),
+        (11, d11::run as fn() -> (String, String)),
+        (12, d12::run as fn() -> (String, String)),
+        (13, d13::run as fn() -> (String, String)),
+        (14, d14::run as fn() -> (String, String)),
+        (15, d15::run as fn() -> (String, String)),
+        (16, d16::run as fn() -> (String, String)),
+        (17, d17::run as fn() -> (String, String)),
+        (18, d18::run as fn() -> (String, String)),
+        (19, d19::run as fn() -> (String, String)),
+        (20, d20::run as fn() -> (String, String)),
+        (21, d21::run as fn() -> (String, String)),
+        (22, d22::run as fn() -> (String, String)),
+        (23, d23::run as fn() -> (String, String)),
+        (24, d24::run as fn() -> (String, String)),
+        (25, d25::run as fn() -> (String, String)),
         
     ] {
         if !Path::new(format!("2021/{:02}.txt", day).as_str()).exists() {continue;}
+        let s = Instant::now();
+        let (part1, part2) = func() as (String, String);
+        results.push((day, part1, part2, s.elapsed()));
+    }
+
+    let total_duration = results.iter().map(|(_, _, _, duration)| {
+        duration
+    }).sum::<Duration>();
+
+    for (day, part1, part2, duration) in results {
         println!();
         println!("=== Day {} ===", day);
-        func();
+        println!("Part 1: {}", part1);
+        println!("Part 2: {}", part2);
+        println!("  => {:.6} ms ({:.2}%)", duration.as_secs_f64() * 1000f64, duration.div_duration_f64(total_duration) * 100f64);
     }
+    println!();
+    println!("=> {:.6} ms", total_duration.as_secs_f64() * 1000f64);
 }

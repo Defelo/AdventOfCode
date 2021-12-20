@@ -60,10 +60,15 @@ fn part2(input: &Input) -> String {
     counter.iter().filter(|&(_, &cnt)| cnt > 1).count().to_string()
 }
 
-pub fn main() {
+fn main() {
+    let (part1, part2) = run();
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+
+pub fn run() -> (String, String) {
     let input = get_input();
-    println!("Part 1: {}", part1(&input));
-    println!("Part 2: {}", part2(&input));
+    (part1(&input), part2(&input))
 }
 
 #[bench]
