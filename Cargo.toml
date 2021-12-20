@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 regex = "*"
 counter = "*"
+rustc-hash = "*"
 
 # --- 2020 ---
 [[bin]]
