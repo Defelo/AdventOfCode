@@ -31,10 +31,10 @@ NEIGH_DIRECT = [*{*NEIGH_DICT.values()}]
 NEIGH_DIAG = [tuple(NEIGH_DICT[a][i] + NEIGH_DICT[b][i] for i in range(2)) for a, b in zip("NESW", "ESWN")]
 
 
-def get_neighbors(ox=0, oy=0, w=None, h=None, diag=False):
+def get_neighbors(ox=0, oy=0, w=None, h=None, diag=False, include_self=False):
     return [
         (x, y)
-        for dx, dy in NEIGH_DIRECT + (NEIGH_DIAG * diag)
+        for dx, dy in NEIGH_DIRECT + (NEIGH_DIAG * diag) + ([(0, 0)] * include_self)
         if ((x := ox + dx) or 1) and (w is None or x in range(w))
         and ((y := oy + dy) or 1) and (h is None or y in range(h))
     ]
