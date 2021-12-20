@@ -2,10 +2,10 @@
 
 extern crate test;
 
-use std::collections::{HashMap, HashSet};
 use std::fs;
 use test::Bencher;
 use regex::Regex;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 struct Input {
     x1: i32,
@@ -29,7 +29,7 @@ fn get_input() -> Input {
 
 fn solve(input: &Input) -> (i32, usize) {
     let mut maxt = 0;
-    let mut ok = HashMap::new();
+    let mut ok = FxHashMap::default();
     for ovy in input.y1..500 {
         let mut vy = ovy;
         let mut t = 0;
@@ -38,7 +38,7 @@ fn solve(input: &Input) -> (i32, usize) {
 
         while y >= input.y1 {
             if y <= input.y2 {
-                if !ok.contains_key(&t) {ok.insert(t, (0, HashSet::new()));}
+                if !ok.contains_key(&t) {ok.insert(t, (0, FxHashSet::default()));}
                 let (my, vys) = ok.get_mut(&t).unwrap();
                 *my = maxy.max(*my);
                 vys.insert(ovy);
@@ -57,7 +57,7 @@ fn solve(input: &Input) -> (i32, usize) {
     for mut vx in 1..=input.x2 {
         let mut t = 0;
         let mut x = 0;
-        let mut found = HashSet::new();
+        let mut found = FxHashSet::default();
         while x <= input.x2 && t <= maxt {
             if input.x1 <= x {
                 if let Some((a, b)) = ok.get(&t) {
