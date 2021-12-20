@@ -2,11 +2,11 @@
 
 extern crate test;
 
-use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::hash::Hash;
 use std::ops::{Add, Sub};
 use test::Bencher;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 #[derive(Copy, Clone, Hash, Eq, PartialEq)]
 struct Pos {
@@ -74,7 +74,7 @@ impl Sub for Pos {
     }
 }
 
-type Scanner = (Vec<Pos>, HashSet<i32>);
+type Scanner = (Vec<Pos>, FxHashSet<i32>);
 type Input = Vec<Scanner>;
 
 fn get_input() -> Input {
@@ -84,16 +84,16 @@ fn get_input() -> Input {
             let mut res = line.split(",").map(|x| x.parse().unwrap());
             Pos { x: res.next().unwrap(), y: res.next().unwrap(), z: res.next().unwrap() }
         }).collect();
-        let distances: HashSet<i32> = poss.iter().flat_map(|a| {
+        let distances: FxHashSet<i32> = poss.iter().flat_map(|a| {
             poss.iter().map(|b| a.distance(*b))
         }).collect();
         (poss, distances)
     }).collect()
 }
 
-fn match_scanner(beacons: &mut HashSet<Pos>, scanner_positions: &mut Vec<Pos>, scanner: &Scanner) {
+fn match_scanner(beacons: &mut FxHashSet<Pos>, scanner_positions: &mut Vec<Pos>, scanner: &Scanner) {
     for i in 0..24 {
-        let mut counter: HashMap<Pos, usize> = HashMap::new();
+        let mut counter: FxHashMap<Pos, usize> = FxHashMap::default();
         for rel in &scanner.0 {
             let rel = rel.rotation(i);
             for abs in beacons.iter() {
@@ -116,8 +116,8 @@ fn match_scanner(beacons: &mut HashSet<Pos>, scanner_positions: &mut Vec<Pos>, s
 fn solve(input: &Input) -> (usize, i32) {
     let mut remaining: Vec<Scanner> = input.iter().cloned().collect();
     let first = remaining.remove(0);
-    let mut beacons: HashSet<Pos> = HashSet::from_iter(first.0);
-    let mut distances: HashSet<i32> = HashSet::from_iter(first.1);
+    let mut beacons: FxHashSet<Pos> = FxHashSet::from_iter(first.0);
+    let mut distances: FxHashSet<i32> = FxHashSet::from_iter(first.1);
     let mut scanners: Vec<Pos> = vec![];
     while !remaining.is_empty() {
         let i = (0..remaining.len()).max_by_key(|&i| {
