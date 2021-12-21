@@ -37,36 +37,24 @@ struct State {
     p2: u32,
     s1: u32,
     s2: u32,
-    k: bool,
 }
 
 fn dirac(state: State, mem: &mut FxHashMap<State, (u64, u64)>) -> (u64, u64) {
-    if state.s1 >= 21 { return (1, 0); }
     if state.s2 >= 21 { return (0, 1); }
 
     match mem.get(&state) {
         Some(&result) => result,
         None => {
-            let (p, s) = if !state.k {
-                (state.p1, state.s1)
-            } else {
-                (state.p2, state.s2)
-            };
-
             let result = (0u32..27).fold((0, 0), |acc, i| {
                 let x = i / 9 % 3 + i / 3 % 3 + i % 3 + 3;
-                let q = (p - 1 + x) % 10 + 1;
-                let res = dirac(if !state.k {
-                    State { p1: q, p2: state.p2, s1: s + q, s2: state.s2, k: true }
-                } else {
-                    State { p1: state.p1, p2: q, s1: state.s1, s2: s + q, k: false }
-                }, mem);
-                (acc.0 + res.0, acc.1 + res.1)
+                let q = (state.p1 - 1 + x) % 10 + 1;
+                let res = dirac(State { p1: state.p2, p2: q, s1: state.s2, s2: state.s1 + q }, mem);
+                (acc.0 + res.1, acc.1 + res.0)
             });
 
             mem.insert(state, result);
             result
-        },
+        }
     }
 }
 
@@ -76,7 +64,6 @@ fn part2(input: &Input) -> String {
         p2: input.1,
         s1: 0,
         s2: 0,
-        k: false,
     }, &mut FxHashMap::default());
     a.max(b).to_string()
 }
