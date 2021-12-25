@@ -1,3 +1,4 @@
+#![allow(unused)]
 {% for feature in features -%}
 #![feature({{ feature }})]
 {% endfor %}
@@ -63,7 +64,9 @@ fn main() {
         println!();
         println!("=== Day {} ===", day.day);
         print_result(1, &part1, day.part1, &mut total, &mut failed);
-        print_result(2, &part2, day.part2, &mut total, &mut failed);
+        if day.day != 25 {
+            print_result(2, &part2, day.part2, &mut total, &mut failed);
+        }
         println!("  => {:.6} ms ({:.2}%)", duration.as_secs_f64() * 1000f64, duration.div_duration_f64(total_duration) * 100f64);
     }
     println!();

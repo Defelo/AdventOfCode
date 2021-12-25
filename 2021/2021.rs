@@ -1,3 +1,4 @@
+#![allow(unused)]
 #![feature(test)]
 #![feature(drain_filter)]
 #![feature(binary_heap_into_iter_sorted)]
@@ -142,7 +143,7 @@ fn main() {
         Day { day: 22, func: d22::run, part1: "623748", part2: "1227345351869476" },
         Day { day: 23, func: d23::run, part1: "", part2: "" },
         Day { day: 24, func: d24::run, part1: "", part2: "" },
-        Day { day: 25, func: d25::run, part1: "", part2: "" },
+        Day { day: 25, func: d25::run, part1: "380", part2: "" },
         
     ] {
         if !Path::new(format!("2021/{:02}.txt", day.day).as_str()).exists() {continue;}
@@ -159,7 +160,9 @@ fn main() {
         println!();
         println!("=== Day {} ===", day.day);
         print_result(1, &part1, day.part1, &mut total, &mut failed);
-        print_result(2, &part2, day.part2, &mut total, &mut failed);
+        if day.day != 25 {
+            print_result(2, &part2, day.part2, &mut total, &mut failed);
+        }
         println!("  => {:.6} ms ({:.2}%)", duration.as_secs_f64() * 1000f64, duration.div_duration_f64(total_duration) * 100f64);
     }
     println!();
