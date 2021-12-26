@@ -142,7 +142,7 @@ fn main() {
         Day { day: 21, func: d21::run, part1: "1067724", part2: "630947104784464" },
         Day { day: 22, func: d22::run, part1: "623748", part2: "1227345351869476" },
         Day { day: 23, func: d23::run, part1: "", part2: "" },
-        Day { day: 24, func: d24::run, part1: "", part2: "" },
+        Day { day: 24, func: d24::run, part1: "96979989692495", part2: "51316214181141" },
         Day { day: 25, func: d25::run, part1: "380", part2: "" },
         
     ] {
