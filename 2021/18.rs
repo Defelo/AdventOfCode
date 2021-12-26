@@ -114,7 +114,9 @@ fn part1(input: &Input) -> String {
 
 fn part2(input: &Input) -> String {
     input.iter().flat_map(|a| {
-        input.iter().map(|b| magnitude(&add(a, b), 1))
+        input.iter().filter_map(move |b| {
+            if a == b { Option::None } else { Option::Some(magnitude(&add(a, b), 1)) }
+        })
     }).max().unwrap().to_string()
 }
 
