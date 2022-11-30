@@ -1,4 +1,5 @@
 import ast
+import bisect
 import collections
 import functools
 import graphlib
@@ -172,6 +173,11 @@ def floats(inp):
 def pfloats(inp):
     return [float(x[0]) for x in re.finditer(r"(\d*\.)?\d+", inp)]
 
+
+def is_prime(n):
+    if n < 5: return n in [2, 3]
+    if n % 6 not in [1, 5]: return False
+    return all(n%i for i in range(2, int(n**.5)+1))
 
 # __all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io", "json", "ast", "np"]
 # __all__ += dir()
