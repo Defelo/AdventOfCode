@@ -6,8 +6,9 @@ from IPython.display import display, Markdown
 SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
-def load(year, day, strip=True):
-    f = Path(__file__).parent / f"{year}/{day:02}.txt"
+def load(year, day, strip=True, f=None):
+    if not f:
+        f = Path(__file__).parent / f"{year}/{day:02}.txt"
     if not f.exists():
         puzzle = _fetch_input(year, day)
         if puzzle is None:
@@ -22,10 +23,10 @@ def load(year, day, strip=True):
     return puzzle
 
 
-def setup(year, day, strip=True, show_title=True):
+def setup(year, day, strip=True, show_title=True, f=None):
     if show_title:
         display(Markdown(f"# Day {day:02}"))
-    return load(year, day, strip)
+    return load(year, day, strip, Path(f) if isinstance(f, str) else f)
 
 
 def create_file(path, content, debug=False):
