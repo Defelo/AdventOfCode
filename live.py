@@ -17,6 +17,7 @@ puzzle = aoc.setup(year, day, show_title=False, f="input.txt")
 # puzzle = open("example.txt").read()
 plines = puzzle.splitlines()
 
+# nums = ints(puzzle)
 # nums = [int(x) for x in puzzle.split(",")]
 
 for line in plines:
