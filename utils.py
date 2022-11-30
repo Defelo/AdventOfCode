@@ -160,5 +160,18 @@ def chinese_remainder(n, a):
     return s % prod
 
 
+def ints(inp):
+    return [int(x[0]) for x in re.finditer(r"[+-]?\d+", inp)]
+
+def pints(inp):
+    return [int(x[0]) for x in re.finditer(r"\d+", inp)]
+
+def floats(inp):
+    return [float(x[0]) for x in re.finditer(r"[+-]?(\d*\.)?\d+", inp)]
+
+def pfloats(inp):
+    return [float(x[0]) for x in re.finditer(r"(\d*\.)?\d+", inp)]
+
+
 # __all__ = ["itertools", "collections", "functools", "re", "graphlib", "operator", "heapq", "io", "json", "ast", "np"]
 # __all__ += dir()
