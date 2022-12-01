@@ -13,7 +13,7 @@ def ans(answer):
 
 year, day = (t := date.today()).year, t.day
 
-puzzle = aoc.setup(year, day, show_title=False, f="input.txt")
+puzzle = aoc.setup(year, day, f="input.txt")
 # puzzle = open("example.txt").read()
 plines = puzzle.splitlines()
 

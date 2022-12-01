@@ -1,8 +1,5 @@
 from pathlib import Path
 
-import requests
-from IPython.display import display, Markdown
-
 SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
@@ -23,9 +20,7 @@ def load(year, day, strip=True, f=None):
     return puzzle
 
 
-def setup(year, day, strip=True, show_title=True, f=None):
-    if show_title:
-        display(Markdown(f"# Day {day:02}"))
+def setup(year, day, strip=True, f=None):
     return load(year, day, strip, Path(f) if isinstance(f, str) else f)
 
 
@@ -38,6 +33,8 @@ def create_file(path, content, debug=False):
 
 
 def _fetch_input(year, day, debug=False):
+    import requests
+
     if debug:
         print(f"Fetching input for {year}/{day:02}")
     response = requests.get(f"https://adventofcode.com/{year}/day/{day}/input", cookies={"session": SESSION})
