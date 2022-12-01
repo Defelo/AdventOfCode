@@ -3,7 +3,7 @@ from datetime import date
 import pyperclip
 
 import aoc
-from utils import *  # noqa
+from utils.live import *
 
 
 def ans(answer):
