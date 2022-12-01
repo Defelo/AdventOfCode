@@ -3,6 +3,12 @@ from pathlib import Path
 SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
+def run(year, day, part1, part2, strip=True, f=None):
+    puzzle = load(year, day, strip, f)
+    print("part 1:", part1(puzzle))
+    print("part 2:", part2(puzzle))
+
+
 def load(year, day, strip=True, f=None):
     if not f:
         f = Path(__file__).parent / f"{year}/{day:02}.txt"

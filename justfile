@@ -3,6 +3,7 @@ alias r := run
 alias c := clean
 alias cc := clean_all
 alias gs := get_session
+alias d := day
 
 _default:
     @just --list
@@ -22,3 +23,6 @@ clean_all: clean
 
 get_session:
     python get_session.py
+
+day year day:
+    PYTHONPATH=. python {{year}}/{{day}}.py
