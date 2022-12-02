@@ -34,14 +34,14 @@ name = "2022_01"
 path = "2022/01.rs"
 harness = false
 
-# [[bin]]
-# name = "2022_02"
-# path = "2022/02.rs"
+[[bin]]
+name = "2022_02"
+path = "2022/02.rs"
 
-# [[bench]]
-# name = "2022_02"
-# path = "2022/02.rs"
-# harness = false
+[[bench]]
+name = "2022_02"
+path = "2022/02.rs"
+harness = false
 
 # [[bin]]
 # name = "2022_03"
