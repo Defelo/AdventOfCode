@@ -30,6 +30,222 @@ name = "2022_01"
 path = "2022/01.rs"
 
 [[bench]]
-name = "2022"
+name = "2022_01"
 path = "2022/01.rs"
 harness = false
+
+# [[bin]]
+# name = "2022_02"
+# path = "2022/02.rs"
+
+# [[bench]]
+# name = "2022_02"
+# path = "2022/02.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_03"
+# path = "2022/03.rs"
+
+# [[bench]]
+# name = "2022_03"
+# path = "2022/03.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_04"
+# path = "2022/04.rs"
+
+# [[bench]]
+# name = "2022_04"
+# path = "2022/04.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_05"
+# path = "2022/05.rs"
+
+# [[bench]]
+# name = "2022_05"
+# path = "2022/05.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_06"
+# path = "2022/06.rs"
+
+# [[bench]]
+# name = "2022_06"
+# path = "2022/06.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_07"
+# path = "2022/07.rs"
+
+# [[bench]]
+# name = "2022_07"
+# path = "2022/07.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_08"
+# path = "2022/08.rs"
+
+# [[bench]]
+# name = "2022_08"
+# path = "2022/08.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_09"
+# path = "2022/09.rs"
+
+# [[bench]]
+# name = "2022_09"
+# path = "2022/09.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_10"
+# path = "2022/10.rs"
+
+# [[bench]]
+# name = "2022_10"
+# path = "2022/10.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_11"
+# path = "2022/11.rs"
+
+# [[bench]]
+# name = "2022_11"
+# path = "2022/11.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_12"
+# path = "2022/12.rs"
+
+# [[bench]]
+# name = "2022_12"
+# path = "2022/12.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_13"
+# path = "2022/13.rs"
+
+# [[bench]]
+# name = "2022_13"
+# path = "2022/13.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_14"
+# path = "2022/14.rs"
+
+# [[bench]]
+# name = "2022_14"
+# path = "2022/14.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_15"
+# path = "2022/15.rs"
+
+# [[bench]]
+# name = "2022_15"
+# path = "2022/15.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_16"
+# path = "2022/16.rs"
+
+# [[bench]]
+# name = "2022_16"
+# path = "2022/16.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_17"
+# path = "2022/17.rs"
+
+# [[bench]]
+# name = "2022_17"
+# path = "2022/17.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_18"
+# path = "2022/18.rs"
+
+# [[bench]]
+# name = "2022_18"
+# path = "2022/18.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_19"
+# path = "2022/19.rs"
+
+# [[bench]]
+# name = "2022_19"
+# path = "2022/19.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_20"
+# path = "2022/20.rs"
+
+# [[bench]]
+# name = "2022_20"
+# path = "2022/20.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_21"
+# path = "2022/21.rs"
+
+# [[bench]]
+# name = "2022_21"
+# path = "2022/21.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_22"
+# path = "2022/22.rs"
+
+# [[bench]]
+# name = "2022_22"
+# path = "2022/22.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_23"
+# path = "2022/23.rs"
+
+# [[bench]]
+# name = "2022_23"
+# path = "2022/23.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_24"
+# path = "2022/24.rs"
+
+# [[bench]]
+# name = "2022_24"
+# path = "2022/24.rs"
+# harness = false
+
+# [[bin]]
+# name = "2022_25"
+# path = "2022/25.rs"
+
+# [[bench]]
+# name = "2022_25"
+# path = "2022/25.rs"
+# harness = false
