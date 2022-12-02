@@ -3,133 +3,33 @@ name = "AdventOfCode"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+opt-level = 3
+debug = false
+strip = true
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = "abort"
+incremental = false
+codegen-units = 1
+rpath = false
 
 [dependencies]
 regex = "*"
 counter = "*"
 rustc-hash = "*"
+criterion = "0.4.0"
 
-# --- 2020 ---
-[[bin]]
-name = "2020_01"
-path = "2020/01.rs"
-
-[[bin]]
-name = "2020_02"
-path = "2020/02.rs"
+[lib]
+name = "aoc"
+path = "lib.rs"
 
 [[bin]]
-name = "2020_03"
-path = "2020/03.rs"
+name = "2022_01"
+path = "2022/01.rs"
 
-[[bin]]
-name = "2020_04"
-path = "2020/04.rs"
-
-
-# --- 2021 ---
-[[bin]]
-name = "2021"
-path = "2021/2021.rs"
-
-[[bin]]
-name = "2021_01"
-path = "2021/01.rs"
-
-[[bin]]
-name = "2021_02"
-path = "2021/02.rs"
-
-[[bin]]
-name = "2021_03"
-path = "2021/03.rs"
-
-[[bin]]
-name = "2021_04"
-path = "2021/04.rs"
-
-[[bin]]
-name = "2021_05"
-path = "2021/05.rs"
-
-[[bin]]
-name = "2021_06"
-path = "2021/06.rs"
-
-[[bin]]
-name = "2021_07"
-path = "2021/07.rs"
-
-[[bin]]
-name = "2021_08"
-path = "2021/08.rs"
-
-[[bin]]
-name = "2021_09"
-path = "2021/09.rs"
-
-[[bin]]
-name = "2021_10"
-path = "2021/10.rs"
-
-[[bin]]
-name = "2021_11"
-path = "2021/11.rs"
-
-[[bin]]
-name = "2021_12"
-path = "2021/12.rs"
-
-[[bin]]
-name = "2021_13"
-path = "2021/13.rs"
-
-[[bin]]
-name = "2021_14"
-path = "2021/14.rs"
-
-[[bin]]
-name = "2021_15"
-path = "2021/15.rs"
-
-[[bin]]
-name = "2021_16"
-path = "2021/16.rs"
-
-[[bin]]
-name = "2021_17"
-path = "2021/17.rs"
-
-[[bin]]
-name = "2021_18"
-path = "2021/18.rs"
-
-[[bin]]
-name = "2021_19"
-path = "2021/19.rs"
-
-[[bin]]
-name = "2021_20"
-path = "2021/20.rs"
-
-[[bin]]
-name = "2021_21"
-path = "2021/21.rs"
-
-[[bin]]
-name = "2021_22"
-path = "2021/22.rs"
-
-[[bin]]
-name = "2021_23"
-path = "2021/23.rs"
-
-[[bin]]
-name = "2021_24"
-path = "2021/24.rs"
-
-[[bin]]
-name = "2021_25"
-path = "2021/25.rs"
-
+[[bench]]
+name = "2022"
+path = "2022/01.rs"
+harness = false
