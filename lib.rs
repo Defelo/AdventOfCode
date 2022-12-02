@@ -34,10 +34,8 @@ impl<T, U: Display, V: Display> Day<T, U, V> {
     pub fn run(&self) {
         println!("=== {}/{:02} ===", self.year, self.day);
         let input = (self.get_input)(&self.get_raw_input());
-        let ans1 = (self.part1)(&input);
-        let ans2 = (self.part2)(&input);
-        println!("part 1: {ans1}");
-        println!("part 2: {ans2}");
+        println!("part 1: {}", (self.part1)(&input));
+        println!("part 2: {}", (self.part2)(&input));
     }
 
     pub fn bench(&self, c: &mut criterion::Criterion) {
