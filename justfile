@@ -3,7 +3,6 @@ alias r := run
 alias c := clean
 alias cc := clean_all
 alias gs := get_session
-alias d := day
 
 _default:
     @just --list
@@ -24,5 +23,21 @@ clean_all: clean
 get_session:
     python get_session.py
 
-day year day:
+py year day:
     PYTHONPATH=. python {{year}}/{{day}}.py
+
+pyh year day *args:
+    PYTHONPATH=. hyperfine {{args}} 'python {{year}}/{{day}}.py'
+
+rs year day:
+    cargo run --bin {{year}}_{{day}}
+
+rsr year day:
+    cargo run --release --bin {{year}}_{{day}}
+
+rsb year day *args:
+    cargo bench --bench {{year}}_{{day}} {{args}}
+
+rsh year day *args:
+    cargo build --release --bin {{year}}_{{day}}
+    hyperfine {{args}} 'target/release/{{year}}_{{day}}'
