@@ -1,0 +1,15 @@
+2022/03/input           time:   [28.470 µs 28.907 µs 29.495 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  1 (1.00%) high mild
+  9 (9.00%) high severe
+
+2022/03/1               time:   [10.496 µs 10.670 µs 10.868 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  3 (3.00%) high mild
+  5 (5.00%) high severe
+
+2022/03/2               time:   [10.681 µs 10.821 µs 10.978 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+
