@@ -18,7 +18,7 @@ run: backup
 
 # run live.py on example.txt
 test:
-    for file in example*.txt; do test -s $file && python live.py $file; done
+    set -e; for file in example*.txt; do if [[ -s $file ]]; then python live.py $file; fi; done
 
 # restore live.py and remove input
 clean:
