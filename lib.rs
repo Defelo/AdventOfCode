@@ -40,14 +40,14 @@ impl<T, U: Display, V: Display> Day<T, U, V> {
 
     pub fn bench(&self, c: &mut criterion::Criterion) {
         let raw_input = self.get_raw_input();
-        c.bench_function(&format!("{}/{}/input", self.year, self.day), |b| {
+        c.bench_function(&format!("{}/{:02}/input", self.year, self.day), |b| {
             b.iter(|| (self.get_input)(black_box(&raw_input)))
         });
         let input = (self.get_input)(&raw_input);
-        c.bench_function(&format!("{}/{}/1", self.year, self.day), |b| {
+        c.bench_function(&format!("{}/{:02}/1", self.year, self.day), |b| {
             b.iter(|| (self.part1)(black_box(&input)))
         });
-        c.bench_function(&format!("{}/{}/2", self.year, self.day), |b| {
+        c.bench_function(&format!("{}/{:02}/2", self.year, self.day), |b| {
             b.iter(|| (self.part2)(black_box(&input)))
         });
     }
