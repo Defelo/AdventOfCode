@@ -1,5 +1,6 @@
 alias b := backup
 alias r := run
+alias t := test
 alias c := clean
 alias cc := clean_all
 alias gs := get_session
@@ -13,7 +14,11 @@ backup:
 
 # run live.py after creating a backup
 run: backup
-    python live.py
+    python live.py input.txt
+
+# run live.py on example.txt
+test:
+    for file in example*.txt; do test -s $file && python live.py $file; done
 
 # restore live.py and remove input
 clean:
