@@ -1,4 +1,4 @@
-def part1(puzzle):
+def part1(puzzle: str):
     out = 0
     for line in puzzle.splitlines():
         a, b = line.split()
@@ -14,7 +14,7 @@ def part1(puzzle):
     return out
 
 
-def part2(puzzle):
+def part2(puzzle: str):
     out = 0
     for line in puzzle.splitlines():
         a, b = line.split()

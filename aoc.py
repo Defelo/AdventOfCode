@@ -9,7 +9,7 @@ def run(year, day, part1, part2, strip=True, f=None):
     print("part 2:", part2(puzzle))
 
 
-def load(year, day, strip=True, f=None):
+def load(year, day, strip=True, f=None) -> str:
     if not f:
         f = Path(__file__).parent / f"{year}/{day:02}.txt"
     if not f.exists():
@@ -26,7 +26,7 @@ def load(year, day, strip=True, f=None):
     return puzzle
 
 
-def setup(year, day, strip=True, f=None):
+def setup(year, day, strip=True, f=None) -> str:
     return load(year, day, strip, Path(f) if isinstance(f, str) else f)
 
 
