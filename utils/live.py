@@ -14,6 +14,8 @@ import statistics
 
 import numpy as np
 
+import pyperclip
+
 from .graph import *
 from .grid import *
 from .list import *
@@ -24,3 +26,8 @@ heappush = heapq.heappush
 heappop = heapq.heappop
 reduce = functools.reduce
 Counter = collections.Counter
+
+
+def ans(answer):
+    print(answer)
+    pyperclip.copy(str(answer))
