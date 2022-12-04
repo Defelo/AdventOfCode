@@ -39,7 +39,11 @@ py year day:
 
 # benchmark python solution using hyperfine
 pyh year day *args:
-    PYTHONPATH=. hyperfine {{args}} 'python {{year}}/{{day}}.py'
+    PYTHONPATH=. hyperfine --shell sh {{args}} 'python {{year}}/{{day}}.py'
+
+# benchmark python solutions using hyperfine
+ypyh year *args:
+    PYTHONPATH=. hyperfine --shell sh {{args}} "$(for f in {{year}}/*.py; do printf 'python '$f'; '; done)"
 
 # run rust solution
 rs year day:
@@ -56,4 +60,9 @@ rsb year day *args:
 # benchmark rust solution using hyperfine
 rsh year day *args:
     cargo build --release --bin {{year}}_{{day}}
-    hyperfine {{args}} 'target/release/{{year}}_{{day}}'
+    hyperfine --shell sh {{args}} 'target/release/{{year}}_{{day}}'
+
+# benchmark rust solutions using hyperfine
+yrsh year *args:
+    cargo build --release
+    hyperfine --shell sh {{args}} "$(for f in target/release/{{year}}_*; do if [[ -x $f ]]; then printf ./$f'; '; fi; done)"
