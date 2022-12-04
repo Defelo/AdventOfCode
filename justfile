@@ -10,15 +10,18 @@ _default:
 
 # create backup of live.py
 backup:
-    cp live.py $(date +"%Y%m%d_%H%M%S_live.py.bak")
+    @echo -e "\033[1mCreating backup of live.py\033[0m"; cp -v live.py $(date +"%Y%m%d_%H%M%S_live.py.bak")
 
-# run live.py after creating a backup
-run: backup
-    python live.py input.txt
+# run live.py on examples and input.txt after creating a backup
+live: backup test run
+
+# run live.py on input.txt
+run:
+    @echo -e "\033[1mRunning on input.txt\033[0m"; python live.py input.txt
 
 # run live.py on example.txt
 test:
-    set -e; for file in example*.txt; do if [[ -s $file ]]; then python live.py $file; fi; done
+    @set -e; for file in example*.txt; do if [[ -s $file ]]; then echo -e "\033[1mRunning on $file\033[0m"; python live.py $file; fi; done
 
 # restore live.py and remove input
 clean:
