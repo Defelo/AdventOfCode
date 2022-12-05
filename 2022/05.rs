@@ -44,7 +44,7 @@ impl<'input> Solver<'input> {
     }
 }
 
-fn get_input(input: &str) -> Input {
+fn setup(input: &str) -> Input {
     let (initial, instructions) = input.split_once("\n\n").unwrap();
     let mut it = initial.lines().rev();
     let mut stacks: Vec<_> = it

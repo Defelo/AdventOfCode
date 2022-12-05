@@ -1,6 +1,6 @@
 type Input = Vec<(u8, u8, u8, u8)>;
 
-fn get_input(input: &str) -> Input {
+fn setup(input: &str) -> Input {
     input
         .lines()
         .map(|line| {

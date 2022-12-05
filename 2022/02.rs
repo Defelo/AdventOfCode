@@ -1,6 +1,6 @@
 type Input = Vec<(u32, u32)>;
 
-fn get_input(input: &str) -> Input {
+fn setup(input: &str) -> Input {
     input
         .trim()
         .split('\n')
