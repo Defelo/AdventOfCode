@@ -1,47 +1,24 @@
 type Input = (Vec<String>, Vec<(usize, usize, usize)>);
 
-struct Solver<'input> {
-    stacks: &'input Vec<String>,
-    instructions: &'input Vec<(usize, usize, usize)>,
-    get_next: fn(cnt: usize, h: usize) -> usize,
-}
-
-impl<'input> Solver<'input> {
-    pub fn new(
-        (stacks, instructions): &'input Input,
-        get_next: fn(cnt: usize, h: usize) -> usize,
-    ) -> Self {
-        Self {
-            stacks,
-            instructions,
-            get_next,
-        }
-    }
-
-    fn get_crate(&self, ins: usize, st: usize, h: usize) -> char {
-        if ins == 0 {
-            return self.stacks[st].chars().nth_back(h).unwrap();
-        }
-        let (cnt, i, j) = self.instructions[ins - 1];
-        if st == j {
-            if h < cnt {
-                self.get_crate(ins - 1, i, (self.get_next)(cnt, h))
-            } else {
-                self.get_crate(ins - 1, st, h - cnt)
+pub fn solve((stacks, instructions): &Input, get_next: fn(usize, usize) -> usize) -> String {
+    (0..stacks.len())
+        .map(|mut st| {
+            let mut h = 0;
+            for &(cnt, i, j) in instructions.iter().rev() {
+                if st == j {
+                    if h < cnt {
+                        st = i;
+                        h = (get_next)(cnt, h);
+                    } else {
+                        h -= cnt;
+                    }
+                } else if st == i {
+                    h += cnt;
+                }
             }
-        } else if st == i {
-            self.get_crate(ins - 1, st, h + cnt)
-        } else {
-            self.get_crate(ins - 1, st, h)
-        }
-    }
-
-    pub fn solve(self) -> String {
-        let n = self.instructions.len();
-        (0..self.stacks.len())
-            .map(|i| self.get_crate(n, i, 0))
-            .collect()
-    }
+            stacks[st].chars().nth_back(h).unwrap()
+        })
+        .collect()
 }
 
 fn setup(input: &str) -> Input {
@@ -79,11 +56,11 @@ fn setup(input: &str) -> Input {
 }
 
 fn part1(input: &Input) -> String {
-    Solver::new(input, |cnt, h| cnt - h - 1).solve()
+    solve(input, |cnt, h| cnt - h - 1)
 }
 
 fn part2(input: &Input) -> String {
-    Solver::new(input, |_, h| h).solve()
+    solve(input, |_, h| h)
 }
 
 aoc::main!(2022, 5);
