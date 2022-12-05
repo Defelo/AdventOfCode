@@ -79,3 +79,23 @@ macro_rules! main {
         criterion::criterion_main!(benches);
     };
 }
+
+#[macro_export]
+macro_rules! example {
+    ($name:ident, $path:expr, $part1:expr, $part2:expr) => {
+        #[cfg(test)]
+        mod $name {
+            #[test]
+            fn part1() {
+                let input = super::get_input(&include_str!($path));
+                assert_eq!(super::part1(&input), $part1);
+            }
+
+            #[test]
+            fn part2() {
+                let input = super::get_input(&include_str!($path));
+                assert_eq!(super::part2(&input), $part2);
+            }
+        }
+    };
+}

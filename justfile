@@ -56,6 +56,10 @@ rs year day:
 rsr year day:
     cargo run --release --bin {{year}}_{{day}}
 
+# test rust solution
+rst year day:
+    cargo test --bin {{year}}_{{day}}
+
 # benchmark rust solution using criterion
 rsb year day *args:
     cargo bench --bench {{year}}_{{day}} {{args}}
