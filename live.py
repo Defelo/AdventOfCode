@@ -6,7 +6,7 @@ from utils.live import *
 
 year, day = (t := date.today()).year, t.day
 
-puzzle = aoc.setup(year, day, f=sys.argv[1] if len(sys.argv) > 1 else "input.txt")
+puzzle = aoc.setup(year, day, strip="\n", f=sys.argv[1] if len(sys.argv) > 1 else "input.txt")
 plines = puzzle.splitlines()
 
 # nums = ints(puzzle)

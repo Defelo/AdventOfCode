@@ -1,15 +1,23 @@
+from typing import Any, Callable
 from pathlib import Path
 
 SESSION = Path(__file__).parent.joinpath(".session.txt").read_text().strip()
 
 
-def run(year, day, part1, part2, strip=True, f=None):
+def run(
+    year: int,
+    day: int,
+    part1: Callable[[str], Any],
+    part2: Callable[[str], Any],
+    strip: str | bool = "\n",
+    f: Path | None = None,
+):
     puzzle = load(year, day, strip, f)
     print("part 1:", part1(puzzle))
     print("part 2:", part2(puzzle))
 
 
-def load(year, day, strip=True, f=None) -> str:
+def load(year: int, day: int, strip: str | bool = "\n", f: Path | None = None) -> str:
     if not f:
         f = Path(__file__).parent / f"{year}/{day:02}.txt"
     if not f.exists():
@@ -21,16 +29,16 @@ def load(year, day, strip=True, f=None) -> str:
         puzzle = f.read_text()
 
     if strip:
-        puzzle = puzzle.strip()
+        puzzle = puzzle.strip() if strip is True else puzzle.strip(strip)
 
     return puzzle
 
 
-def setup(year, day, strip=True, f=None) -> str:
+def setup(year: int, day: int, strip: str | bool = "\n", f: str | None = None) -> str:
     return load(year, day, strip, Path(f) if isinstance(f, str) else f)
 
 
-def create_file(path, content, debug=False):
+def create_file(path: str, content: str, debug: bool = False) -> None:
     if debug:
         print(f"Creating file {path}")
     with open(path, "w") as f:
@@ -38,7 +46,7 @@ def create_file(path, content, debug=False):
         f.flush()
 
 
-def _fetch_input(year, day, debug=False):
+def _fetch_input(year: int, day: int, debug: bool = False) -> str | None:
     import requests
 
     if debug:
