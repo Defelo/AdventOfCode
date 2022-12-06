@@ -33,3 +33,4 @@ fn part2(input: &Input) -> u32 {
 }
 
 aoc::main!(2022, 1);
+aoc::example!(ex01, "01.1.txt", 24000, 45000);
