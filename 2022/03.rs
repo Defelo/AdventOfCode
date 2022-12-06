@@ -1,10 +1,10 @@
-type Input = Vec<Vec<u8>>;
+type Input<'a> = Vec<&'a [u8]>;
 
 fn setup(input: &str) -> Input {
     input
         .trim()
         .split('\n')
-        .map(|line| line.as_bytes().into())
+        .map(|line| line.as_bytes())
         .collect()
 }
 
@@ -20,8 +20,8 @@ fn part1(input: &Input) -> u32 {
     input
         .iter()
         .map(|line| {
-            (bytes_to_set(&line[..line.len() / 2]) & bytes_to_set(&line[line.len() / 2..]))
-                .trailing_zeros()
+            let n = line.len() >> 1;
+            (bytes_to_set(&line[..n]) & bytes_to_set(&line[n..])).trailing_zeros()
         })
         .sum()
 }
@@ -30,7 +30,7 @@ fn part2(input: &Input) -> u32 {
     (0..input.len())
         .step_by(3)
         .map(|i| {
-            (bytes_to_set(&input[i]) & bytes_to_set(&input[i + 1]) & bytes_to_set(&input[i + 2]))
+            (bytes_to_set(input[i]) & bytes_to_set(input[i + 1]) & bytes_to_set(input[i + 2]))
                 .trailing_zeros()
         })
         .sum()
