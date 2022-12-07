@@ -1,6 +1,6 @@
 use rustc_hash::FxHashMap;
 
-type Input = (u64, Vec<u64>);
+type Input<'a> = Vec<Node<'a>>;
 
 struct Node<'a> {
     size: u64,
@@ -71,18 +71,23 @@ fn setup(input: &str) -> Input {
             nodes[parent_id].size += size;
         }
     }
-    (nodes[0].size, nodes.iter().map(|node| node.size).collect())
+    nodes
 }
 
-fn part1((_, sizes): &Input) -> u64 {
-    sizes.iter().filter(|x| **x <= 100000).sum()
-}
-
-fn part2((root_size, sizes): &Input) -> u64 {
-    let free = 70000000 - root_size;
-    *sizes
+fn part1(nodes: &Input) -> u64 {
+    nodes
         .iter()
-        .filter(|x| **x >= 30000000 - free)
+        .map(|node| node.size)
+        .filter(|x| *x <= 100000)
+        .sum()
+}
+
+fn part2(nodes: &Input) -> u64 {
+    let free = 70000000 - nodes[0].size;
+    nodes
+        .iter()
+        .map(|node| node.size)
+        .filter(|x| *x >= 30000000 - free)
         .min()
         .unwrap()
 }
