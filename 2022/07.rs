@@ -1,42 +1,77 @@
-use std::collections::{HashMap, HashSet};
+use rustc_hash::FxHashMap;
 
 type Input = (u64, Vec<u64>);
 
+struct Node<'a> {
+    size: u64,
+    parent_id: Option<usize>,
+    names: FxHashMap<&'a str, usize>,
+    visited: bool,
+}
+
+impl<'a> Node<'a> {
+    fn new(parent_id: Option<usize>) -> Self {
+        Self {
+            size: 0,
+            parent_id,
+            names: FxHashMap::default(),
+            visited: false,
+        }
+    }
+}
+
 fn setup(input: &str) -> Input {
-    let mut out = HashMap::new();
-    let mut seen = HashSet::new();
-    let mut pwd = vec![];
+    let mut nodes = vec![Node::new(None)];
+    let mut pwd = 0;
+    let mut visiting = None;
     for line in input.trim().lines() {
         let mut split = line.split(' ');
         match (split.next(), split.next(), split.next()) {
             (Some("$"), Some("cd"), Some(dir)) => {
                 if dir == "/" {
-                    pwd.clear();
+                    pwd = 0;
                 } else if dir == ".." {
-                    pwd.pop();
+                    pwd = nodes[pwd].parent_id.unwrap_or(0)
                 } else {
-                    pwd.push(dir);
+                    pwd = match nodes[pwd].names.get(dir) {
+                        Some(id) => *id,
+                        None => {
+                            let id = nodes.len();
+                            nodes.push(Node::new(Some(pwd)));
+                            nodes[pwd].names.insert(dir, id);
+                            id
+                        }
+                    }
                 }
             }
-            (Some(size), Some(name), None) => {
+            (Some(size), Some(_), None) => {
                 if let Ok(size) = size.parse::<u64>() {
-                    let key = (pwd.join("/"), name);
-                    if seen.contains(&key) {
+                    if nodes[pwd].visited {
                         continue;
                     }
-                    seen.insert(key);
-
-                    for i in 0..=pwd.len() {
-                        out.entry(pwd[..i].join("/"))
-                            .and_modify(|x| *x += size)
-                            .or_insert(size);
-                    }
+                    visiting = Some(pwd);
+                    nodes[pwd].size += size;
                 }
             }
-            _ => {}
+            _ => {
+                if let Some(v) = visiting {
+                    nodes[v].visited = true;
+                    visiting = None;
+                }
+            }
         }
     }
-    (out[""], out.values().copied().collect())
+    for i in (1..nodes.len()).rev() {
+        if let Node {
+            size,
+            parent_id: Some(parent_id),
+            ..
+        } = nodes[i]
+        {
+            nodes[parent_id].size += size;
+        }
+    }
+    (nodes[0].size, nodes.iter().map(|node| node.size).collect())
 }
 
 fn part1((_, sizes): &Input) -> u64 {
