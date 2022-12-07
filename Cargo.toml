@@ -78,3 +78,12 @@ path = "2022/06.rs"
 name = "2022_06"
 path = "2022/06.rs"
 harness = false
+
+[[bin]]
+name = "2022_07"
+path = "2022/07.rs"
+
+[[bench]]
+name = "2022_07"
+path = "2022/07.rs"
+harness = false
