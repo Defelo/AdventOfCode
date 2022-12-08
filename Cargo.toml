@@ -23,7 +23,7 @@ criterion = "0.4.0"
 
 [lib]
 name = "aoc"
-path = "lib.rs"
+path = "lib/lib.rs"
 
 [[bin]]
 name = "2022_01"
@@ -86,4 +86,13 @@ path = "2022/07.rs"
 [[bench]]
 name = "2022_07"
 path = "2022/07.rs"
+harness = false
+
+[[bin]]
+name = "2022_08"
+path = "2022/08.rs"
+
+[[bench]]
+name = "2022_08"
+path = "2022/08.rs"
 harness = false

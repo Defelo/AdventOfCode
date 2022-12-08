@@ -1,3 +1,5 @@
+pub mod iter_ext;
+
 #[macro_export]
 macro_rules! main {
     ($year:expr, $day:expr) => {
