@@ -1,2 +1,2 @@
 # AdventOfCode
-my solutions for the [Advent of Code](https://adventofcode.com/) puzzles
+[Advent of Code](https://adventofcode.com/) solutions in Python, Rust, Haskell (2020) and APL (2021)
