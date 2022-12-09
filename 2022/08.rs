@@ -1,29 +1,6 @@
-use aoc::iter_ext::IterExt;
+use aoc::{grid::Direction, iter_ext::IterExt};
 
 type Input = Vec<Vec<u8>>;
-
-enum Direction {
-    North,
-    East,
-    South,
-    West,
-}
-
-impl Direction {
-    fn step(&self, x: usize, y: usize, width: usize, height: usize) -> Option<(usize, usize)> {
-        Some(match self {
-            Direction::North if y > 0 => (x, y - 1),
-            Direction::East if x < width - 1 => (x + 1, y),
-            Direction::South if y < height - 1 => (x, y + 1),
-            Direction::West if x > 0 => (x - 1, y),
-            _ => return None,
-        })
-    }
-
-    fn iter() -> std::slice::Iter<'static, Direction> {
-        [Self::North, Self::East, Self::South, Self::West].iter()
-    }
-}
 
 struct CoordIterator<'a> {
     x: usize,

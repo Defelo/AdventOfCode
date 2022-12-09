@@ -1,3 +1,4 @@
+pub mod grid;
 pub mod iter_ext;
 
 #[macro_export]
