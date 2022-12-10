@@ -1,4 +1,4 @@
-from utils.parsing import ints
+from utils.parsing import ints, parse_ascii
 
 
 def get_input(puzzle: str) -> list[int | None]:
@@ -22,12 +22,7 @@ def part1(puzzle: str):
 
 
 def part2(puzzle: str):
-    lines = []
-    for i, x in execute(get_input(puzzle)):
-        if i % 40 == 0:
-            lines.append("")
-        lines[-1] += " #"[abs(i % 40 - x) <= 1] * 2
-    return "\n" + "\n".join(lines)
+    return parse_ascii({(i // 40, i % 40) for i, x in execute(get_input(puzzle)) if abs(i % 40 - x) <= 1})
 
 
 if __name__ == "__main__":
