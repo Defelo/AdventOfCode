@@ -1,5 +1,6 @@
 pub mod grid;
 pub mod iter_ext;
+pub mod parsing;
 
 #[macro_export]
 macro_rules! main {
