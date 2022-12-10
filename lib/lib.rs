@@ -36,20 +36,31 @@ macro_rules! main {
 
 #[macro_export]
 macro_rules! example {
-    ($name:ident, $path:expr, $part1:expr, $part2:expr) => {
+    ($name:ident, $path:expr $(, p1: $part1:expr)? $(, p2: $part2:expr)?) => {
         #[cfg(test)]
         mod $name {
-            #[test]
+            $(#[test]
             fn part1() {
                 let data = super::setup(&include_str!($path));
                 assert_eq!(super::part1(&data), $part1);
-            }
+            })?
 
-            #[test]
+            $(#[test]
             fn part2() {
                 let data = super::setup(&include_str!($path));
                 assert_eq!(super::part2(&data), $part2);
-            }
+            })?
         }
+    };
+    ($name:ident, $path:expr, $part1:expr, $part2:expr) => {
+        aoc::example!($name, $path, p1: $part1, p2: $part2);
+    }
+}
+
+#[macro_export]
+macro_rules! test_input {
+    ($path:expr, $part1:expr, $part2:expr) => {
+        #[cfg(feature = "test_input")]
+        aoc::example!(input, $path, $part1, $part2);
     };
 }

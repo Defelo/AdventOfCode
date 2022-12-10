@@ -21,6 +21,10 @@ counter = "*"
 rustc-hash = "*"
 criterion = "0.4.0"
 
+[features]
+default = ["test_input"]
+test_input = []
+
 [lib]
 name = "aoc"
 path = "lib/lib.rs"
