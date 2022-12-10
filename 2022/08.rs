@@ -77,3 +77,4 @@ fn part2(grid: &Input) -> usize {
 
 aoc::main!(2022, 8);
 aoc::example!(ex01, "08.1.txt", 21, 8);
+aoc::test_input!("08.txt", 1825, 235200);

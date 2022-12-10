@@ -94,3 +94,4 @@ fn part2(nodes: &Input) -> u64 {
 
 aoc::main!(2022, 7);
 aoc::example!(ex01, "07.1.txt", 95437, 24933642);
+aoc::test_input!("07.txt", 1206825, 9608311);

@@ -57,3 +57,4 @@ aoc::example!(ex02, "06.2.txt", 5, 23);
 aoc::example!(ex03, "06.3.txt", 6, 23);
 aoc::example!(ex04, "06.4.txt", 10, 29);
 aoc::example!(ex05, "06.5.txt", 11, 26);
+aoc::test_input!("06.txt", 1802, 3551);

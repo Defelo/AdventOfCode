@@ -69,3 +69,4 @@ fn part2(input: &Input) -> usize {
 aoc::main!(2022, 9);
 aoc::example!(ex01, "09.1.txt", 13, 1);
 aoc::example!(ex02, "09.2.txt", 88, 36);
+aoc::test_input!("09.txt", 6030, 2545);

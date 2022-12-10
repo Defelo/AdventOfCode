@@ -65,3 +65,4 @@ fn part2(input: &Input) -> String {
 
 aoc::main!(2022, 5);
 aoc::example!(ex01, "05.1.txt", "CMZ", "MCD");
+aoc::test_input!("05.txt", "QMBMJDFTD", "NBTVTJNFJ");

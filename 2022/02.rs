@@ -23,3 +23,4 @@ fn part2(input: &Input) -> u32 {
 
 aoc::main!(2022, 2);
 aoc::example!(ex01, "02.1.txt", 15, 12);
+aoc::test_input!("02.txt", 10816, 11657);
