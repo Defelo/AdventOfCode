@@ -20,6 +20,8 @@ regex = "*"
 counter = "*"
 rustc-hash = "*"
 criterion = "0.4.0"
+itertools = "0.10.5"
+num = "0.4.0"
 
 [features]
 default = ["test_input"]
@@ -117,4 +119,13 @@ path = "2022/10.rs"
 [[bench]]
 name = "2022_10"
 path = "2022/10.rs"
+harness = false
+
+[[bin]]
+name = "2022_11"
+path = "2022/11.rs"
+
+[[bench]]
+name = "2022_11"
+path = "2022/11.rs"
 harness = false
