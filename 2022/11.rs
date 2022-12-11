@@ -81,42 +81,71 @@ fn setup(input: &str) -> Input {
         .unwrap()
 }
 
-fn simulate(monkeys: &Input, rounds: usize, div3: bool) -> u64 {
-    let lcm = monkeys.iter().fold(1, |acc, monkey| acc.lcm(&monkey.test));
-    let mut cnt = vec![0; monkeys.len()];
-    let mut items: Vec<Vec<u64>> = monkeys
-        .iter()
-        .map(|monkey| monkey.starting.clone())
-        .collect();
-    for _ in 0..rounds {
-        for i in 0..monkeys.len() {
-            items.push(Vec::new());
-            for item in items.swap_remove(i) {
-                cnt[i] += 1;
-                let mut j = monkeys[i].operation.apply(item);
-                if div3 {
-                    j /= 3;
+struct Solver<'a> {
+    monkeys: &'a Input,
+    rounds: usize,
+    div3: bool,
+    cnt: Vec<u64>,
+    modulus: u64,
+}
+
+impl<'a> Solver<'a> {
+    fn new(monkeys: &'a Input, rounds: usize, div3: bool) -> Self {
+        Self {
+            monkeys,
+            rounds,
+            div3,
+            cnt: vec![0; monkeys.len()],
+            modulus: monkeys.iter().fold(1, |acc, monkey| acc.lcm(&monkey.test)),
+        }
+    }
+
+    fn simulate_item(&mut self, mut monkey: usize, mut item: u64) {
+        for _ in 0..self.rounds {
+            let mut last = monkey;
+            while last <= monkey {
+                last = monkey;
+                self.cnt[monkey] += 1;
+                item = self.monkeys[monkey].operation.apply(item);
+                if self.div3 {
+                    item /= 3;
                 }
-                j %= lcm;
-                let new = if j % monkeys[i].test == 0 {
-                    monkeys[i].true_idx
+                item %= self.modulus;
+                monkey = if item % self.monkeys[monkey].test == 0 {
+                    self.monkeys[monkey].true_idx
                 } else {
-                    monkeys[i].false_idx
+                    self.monkeys[monkey].false_idx
                 };
-                items[new].push(j);
             }
         }
     }
-    cnt.sort_unstable();
-    cnt[monkeys.len() - 1] * cnt[monkeys.len() - 2]
+
+    fn solve(mut self) -> u64 {
+        for (m, monkey) in self.monkeys.iter().enumerate() {
+            for &item in &monkey.starting {
+                self.simulate_item(m, item);
+            }
+        }
+
+        let (a, b) = self.cnt.iter().fold((0, 0), |(a, b), &x| {
+            if x > a {
+                (x, a)
+            } else if x > b {
+                (a, x)
+            } else {
+                (a, b)
+            }
+        });
+        a * b
+    }
 }
 
 fn part1(input: &Input) -> u64 {
-    simulate(input, 20, true)
+    Solver::new(input, 20, true).solve()
 }
 
 fn part2(input: &Input) -> u64 {
-    simulate(input, 10000, false)
+    Solver::new(input, 10000, false).solve()
 }
 
 aoc::main!(2022, 11);
