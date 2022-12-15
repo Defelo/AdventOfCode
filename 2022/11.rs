@@ -1,5 +1,8 @@
+use std::collections::hash_map::Entry;
+
 use itertools::Itertools;
 use num::Integer;
+use rustc_hash::FxHashMap;
 
 type Input = Vec<Monkey>;
 
@@ -85,7 +88,6 @@ struct Solver<'a> {
     monkeys: &'a Input,
     rounds: usize,
     div3: bool,
-    cnt: Vec<u64>,
     modulus: u64,
 }
 
@@ -95,39 +97,71 @@ impl<'a> Solver<'a> {
             monkeys,
             rounds,
             div3,
-            cnt: vec![0; monkeys.len()],
             modulus: monkeys.iter().fold(1, |acc, monkey| acc.lcm(&monkey.test)),
         }
     }
 
-    fn simulate_item(&mut self, mut monkey: usize, mut item: u64) {
-        for _ in 0..self.rounds {
-            let mut last = monkey;
-            while last <= monkey {
-                last = monkey;
-                self.cnt[monkey] += 1;
-                item = self.monkeys[monkey].operation.apply(item);
-                if self.div3 {
-                    item /= 3;
-                }
-                item %= self.modulus;
-                monkey = if item % self.monkeys[monkey].test == 0 {
-                    self.monkeys[monkey].true_idx
-                } else {
-                    self.monkeys[monkey].false_idx
-                };
+    fn simulate_round(&self, monkey: &mut usize, item: &mut u64, mut cnt: impl FnMut(usize)) {
+        let mut last = *monkey;
+        while last <= *monkey {
+            last = *monkey;
+            cnt(*monkey);
+            *item = self.monkeys[*monkey].operation.apply(*item);
+            if self.div3 {
+                *item /= 3;
             }
+            *item %= self.modulus;
+            *monkey = if *item % self.monkeys[*monkey].test == 0 {
+                self.monkeys[*monkey].true_idx
+            } else {
+                self.monkeys[*monkey].false_idx
+            };
+        }
+    }
+
+    fn simulate_item(&mut self, mut monkey: usize, mut item: u64, cnt: &mut [u64]) {
+        // find cycle start and length
+        let mut _cnt = vec![0; self.monkeys.len()];
+        let mut m = monkey;
+        let mut i = item;
+        let mut seen = FxHashMap::default();
+        let mut iteration = 0;
+        while let Entry::Vacant(e) = seen.entry((m, i)) {
+            e.insert(iteration);
+            self.simulate_round(&mut m, &mut i, |i| _cnt[i] += 1);
+            iteration += 1;
+            if iteration == self.rounds {
+                (0..cnt.len()).for_each(|i| cnt[i] += _cnt[i]);
+                return;
+            }
+        }
+        let start = seen[&(m, i)];
+        let length = iteration - start;
+
+        // run optimized simulation
+        for _ in 0..start {
+            self.simulate_round(&mut monkey, &mut item, |i| {
+                cnt[i] += 1;
+                _cnt[i] -= 1;
+            });
+        }
+        for i in 0..cnt.len() {
+            cnt[i] += _cnt[i] * ((self.rounds - start) / length) as u64;
+        }
+        for _ in 0..(self.rounds - start) % length {
+            self.simulate_round(&mut monkey, &mut item, |i| cnt[i] += 1);
         }
     }
 
     fn solve(mut self) -> u64 {
+        let mut cnt = vec![0; self.monkeys.len()];
         for (m, monkey) in self.monkeys.iter().enumerate() {
             for &item in &monkey.starting {
-                self.simulate_item(m, item);
+                self.simulate_item(m, item, &mut cnt);
             }
         }
 
-        let (a, b) = self.cnt.iter().fold((0, 0), |(a, b), &x| {
+        let (a, b) = cnt.iter().fold((0, 0), |(a, b), &x| {
             if x > a {
                 (x, a)
             } else if x > b {
