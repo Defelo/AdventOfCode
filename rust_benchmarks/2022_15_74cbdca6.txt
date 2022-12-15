@@ -1,0 +1,15 @@
+2022/15/setup           time:   [68.053 µs 68.701 µs 69.382 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+2022/15/1               time:   [496.51 ns 499.37 ns 502.78 ns]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) high mild
+  6 (6.00%) high severe
+
+2022/15/2               time:   [18.565 µs 18.741 µs 18.950 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+
