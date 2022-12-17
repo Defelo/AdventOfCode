@@ -3,6 +3,9 @@ name = "AdventOfCode"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev]
+opt-level = 3
+
 [profile.release]
 opt-level = 3
 debug = false
@@ -164,4 +167,13 @@ path = "2022/15.rs"
 [[bench]]
 name = "2022_15"
 path = "2022/15.rs"
+harness = false
+
+[[bin]]
+name = "2022_16"
+path = "2022/16.rs"
+
+[[bench]]
+name = "2022_16"
+path = "2022/16.rs"
 harness = false
