@@ -49,12 +49,12 @@ ypyh year *args:
     PYTHONPATH=. hyperfine --shell sh {{args}} "$(for f in {{year}}/*.py; do printf 'python '$f'; '; done)"
 
 # run rust solution
-rs year day:
-    cargo run --bin {{year}}_{{day}}
+rs year day *args:
+    cargo run --bin {{year}}_{{day}} -- {{args}}
 
 # run rust solution in release mode
-rsr year day:
-    cargo run --release --bin {{year}}_{{day}}
+rsr year day *args:
+    cargo run --release --bin {{year}}_{{day}} -- {{args}}
 
 # test rust solution
 rst year day:

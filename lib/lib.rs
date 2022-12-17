@@ -7,7 +7,10 @@ macro_rules! main {
     ($year:expr, $day:expr) => {
         #[cfg(not(test))]
         fn main() {
-            let input = std::fs::read_to_string(&format!("{}/{:02}.txt", $year, $day)).unwrap();
+            let path = std::env::args()
+                .nth(1)
+                .unwrap_or_else(|| format!("{}/{:02}.txt", $year, $day));
+            let input = std::fs::read_to_string(&path).unwrap();
             let data = setup(&input);
             println!("{}", part1(&data));
             println!("{}", part2(&data));
