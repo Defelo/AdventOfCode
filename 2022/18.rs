@@ -6,7 +6,7 @@ use rustc_hash::FxHashSet;
 type Input = Vec<Cube>;
 
 #[derive(Clone, Hash, PartialEq, Eq)]
-struct Cube(i8, i8, i8);
+struct Cube(i16, i16, i16);
 
 impl Cube {
     fn sides(&self) -> [CubeSide; 6] {
@@ -72,52 +72,35 @@ fn part1(input: &Input) -> usize {
 }
 
 fn part2(input: &Input) -> usize {
-    let mut out = part1(input);
+    let mut out = 0;
     let (minx, maxx) = input.iter().map(|x| x.0).minmax().into_option().unwrap();
     let (miny, maxy) = input.iter().map(|x| x.1).minmax().into_option().unwrap();
     let (minz, maxz) = input.iter().map(|x| x.2).minmax().into_option().unwrap();
+    let n = ((maxx - minx + 3) * (maxy - miny + 3) * (maxz - minz + 3)) as _;
 
     let cubes = input.iter().collect::<FxHashSet<_>>();
-    let mut checked = FxHashSet::default();
-    let mut queue = VecDeque::new();
-    let mut visited = FxHashSet::default();
-    for candidate in input
-        .iter()
-        .flat_map(|x| x.neighbors())
-        .filter(|x| !cubes.contains(x))
-    {
-        if checked.contains(&candidate) {
+    let mut queue = VecDeque::with_capacity(n);
+    queue.push_front(Cube(minx - 1, miny - 1, minz - 1));
+    let mut visited = FxHashSet::with_capacity_and_hasher(n, Default::default());
+    while let Some(p) = queue.pop_front() {
+        if visited.contains(&p) {
             continue;
         }
-        queue.clear();
-        queue.push_front(candidate);
-        visited.clear();
-        loop {
-            let Some(p) = queue.pop_front() else {
-                out -= visited.iter().flat_map(|p: &Cube| p.neighbors()).filter(|q| cubes.contains(q)).count();
-                break;
-            };
+        visited.insert(p.clone());
 
-            if !(minx..=maxx).contains(&p.0)
-                || !(miny..=maxy).contains(&p.1)
-                || !(minz..=maxz).contains(&p.2)
+        for q in p.neighbors() {
+            if !(minx - 1..=maxx + 1).contains(&q.0)
+                || !(miny - 1..=maxy + 1).contains(&q.1)
+                || !(minz - 1..=maxz + 1).contains(&q.2)
             {
-                break;
-            }
-
-            if visited.contains(&p) {
                 continue;
             }
-            visited.insert(p.clone());
-
-            for q in p.neighbors() {
-                if !cubes.contains(&q) && !visited.contains(&q) {
-                    queue.push_back(q);
-                }
+            if cubes.contains(&q) {
+                out += 1;
+            } else if !visited.contains(&q) {
+                queue.push_back(q);
             }
         }
-
-        checked.extend(visited.drain());
     }
 
     out
