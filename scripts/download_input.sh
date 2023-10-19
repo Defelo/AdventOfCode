@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
 prog=$(realpath "$0")
-cd $(dirname "$prog")
+while ! [[ -e shell.nix ]]; do cd ..; done
 
 year=$(date +%Y)
 month=$(date +%m)
@@ -24,7 +26,7 @@ elif [[ $# -eq 2 ]]; then
   year=$1
   day=$2
 elif [[ $# -ne 0 ]] || [[ $month -ne 12 ]] || [[ $day -gt 25 ]]; then
-  echo "usage: $0 <year> <day>"
+  echo "usage: aoc-download-input <year> <day>"
   exit 1
 fi
 

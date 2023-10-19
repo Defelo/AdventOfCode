@@ -1,11 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
+import os
+import re
+import sqlite3
+from pathlib import Path
+
+import requests
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
-from pathlib import Path
-import requests
-import sqlite3
-import re
 
 key = PBKDF2("peanuts", b"saltysalt", 16, 1)
 
@@ -23,7 +25,9 @@ session = chrome_decrypt(
     ).fetchone()[0]
 )
 print(session)
-with open(".session.txt", "w") as file:
+if not os.path.isdir(".cache"):
+    os.mkdir(".cache")
+with open(".cache/session", "w") as file:
     file.write(session)
 
 if match := re.search(
