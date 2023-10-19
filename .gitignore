@@ -1,3 +1,5 @@
 /.cache
+/.direnv
 target
+.build
 __pycache__

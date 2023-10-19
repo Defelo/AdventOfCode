@@ -1,0 +1,24 @@
+alias b := build
+alias r := run
+alias t := test
+alias ty := test-year
+alias ta := test-all
+
+_default:
+    @just --list
+
+build year day:
+    mkdir -p .build/{{year}}/{{day}}
+    ghc -o .build/{{year}}/{{day}}/{{day}} -outputdir .build/{{year}}/{{day}} -O {{year}}/{{day}}.hs >&2
+
+run year day: (build year day)
+    .build/{{year}}/{{day}}/{{day}}
+
+test year day: (build year day)
+    .build/{{year}}/{{day}}/{{day}} test
+
+test-year year:
+    @for day in $(ls {{year}}); do just test {{year}} $(basename $day .hs); done
+
+test-all:
+    @set -e; for year in *; do [[ -d $year ]] || continue; just test-year $year; done
