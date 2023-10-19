@@ -1,11 +1,3 @@
-.ipynb_checkpoints
-__pycache__
-/.session.txt
-/.idea
-/target
-input.txt
-/.stversions
-/.stfolder
-/leaderboard.ipynb
-/example*.txt
 /.cache
+target
+__pycache__
