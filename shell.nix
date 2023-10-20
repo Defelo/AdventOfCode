@@ -33,6 +33,8 @@ in
     ];
     packages = [
       just
+      jq
+      hyperfine
 
       # Python
       (python311.withPackages (p:

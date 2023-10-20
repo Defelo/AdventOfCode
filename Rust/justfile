@@ -6,6 +6,10 @@ alias ty := test-year
 alias by := bench-year
 alias ta := test-all
 alias ba := bench-all
+alias hf := hyperfine
+alias hfe := hyperfine-example
+
+target := `cargo metadata --format-version=1 | jq -r .target_directory`
 
 _default:
     @just --list
@@ -33,3 +37,12 @@ test-all:
 
 bench-all:
     cargo bench --bin '*'
+
+build year day:
+    cargo build --release --bin {{year}}_{{day}}
+
+hyperfine year day *args: (build year day)
+    hyperfine {{args}} {{target}}/release/{{year}}_{{day}}
+
+hyperfine-example year day ex *args: (build year day)
+    hyperfine {{args}} '{{target}}/release/{{year}}_{{day}} ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}'
