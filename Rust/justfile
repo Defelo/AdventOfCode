@@ -1,0 +1,31 @@
+alias r := run
+alias t := test
+alias b := bench
+alias ty := test-year
+alias by := bench-year
+alias ta := test-all
+alias ba := bench-all
+
+_default:
+    @just --list
+
+run year day:
+    cargo run --bin {{year}}_{{day}}
+
+test year day:
+    cargo test --bin {{year}}_{{day}}
+
+bench year day:
+    cargo bench --bin {{year}}_{{day}}
+
+test-year year:
+    cargo test --bin '{{year}}_*'
+
+bench-year year:
+    cargo bench --bin '{{year}}_*'
+
+test-all:
+    cargo test --bin '*'
+
+bench-all:
+    cargo bench --bin '*'
