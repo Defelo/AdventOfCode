@@ -23,6 +23,7 @@ counter = "0.5.7"
 itertools = "0.11.0"
 num = "0.4.1"
 paste = "1.0.14"
+rayon = "1.8.0"
 regex = "1.10.2"
 rustc-hash = "1.1.0"
 
@@ -176,6 +177,9 @@ path = "2022/17.rs"
 [[bin]]
 name = "2022_18"
 path = "2022/18.rs"
+[[bin]]
+name = "2022_19"
+path = "2022/19.rs"
 [[bin]]
 name = "2022_21"
 path = "2022/21.rs"
