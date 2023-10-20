@@ -1,3 +1,4 @@
+alias e := example
 alias r := run
 alias t := test
 alias b := bench
@@ -8,6 +9,9 @@ alias ba := bench-all
 
 _default:
     @just --list
+
+example year day ex:
+    cargo run --bin {{year}}_{{day}} -- ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 run year day:
     cargo run --bin {{year}}_{{day}}

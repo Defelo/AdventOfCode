@@ -38,7 +38,9 @@ macro_rules! __ifnot25 {
 macro_rules! __main {
     ($year:literal, $day:tt) => {
         fn main() {
-            let path = ::std::concat!("../.cache/", $year, "/", $day);
+            let path = ::std::env::args()
+                .nth(1)
+                .unwrap_or_else(|| ::std::concat!("../.cache/", $year, "/", $day).into());
             let input = ::std::fs::read_to_string(path).unwrap();
             let input = setup(&input);
             ::std::println!("{}", part1(&input));
