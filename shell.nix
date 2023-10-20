@@ -28,14 +28,23 @@ with import <nixpkgs> {}; let
 in
   mkShell {
     buildInputs = [
-      just
-
       downloadInput
       getSession
+    ];
+    packages = [
+      just
+
+      # Python
+      (python311.withPackages (p:
+        with p; [
+          numpy
+          pyperclip
+        ]))
 
       # Haskell
       (haskellPackages.ghcWithPackages (p: with p; [regex-tdfa]))
       haskell-language-server
       ormolu # haskell code formatter
     ];
+    PYTHONPATH = ".";
   }

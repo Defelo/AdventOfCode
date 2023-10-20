@@ -1,20 +1,15 @@
-def get_input(puzzle: str) -> str:
-    return puzzle
+from lib import *
+
+input = read_input(2022, 6)
 
 
-def part1(puzzle: str):
-    for i in range(4, len(puzzle)):
-        if len(set(puzzle[i - 4 : i])) == 4:
-            return i
+for i in range(4, len(input)):
+    if len(set(input[i - 4 : i])) == 4:
+        print(i)
+        break
 
 
-def part2(puzzle: str):
-    for i in range(14, len(puzzle)):
-        if len(set(puzzle[i - 14 : i])) == 14:
-            return i
-
-
-if __name__ == "__main__":
-    from aoc import run
-
-    run(2022, 6, part1, part2)
+for i in range(14, len(input)):
+    if len(set(input[i - 14 : i])) == 14:
+        print(i)
+        break

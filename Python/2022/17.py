@@ -1,3 +1,7 @@
+from lib import *
+
+input = read_input(2022, 17).strip()
+
 SHAPES = [
     [[1, 1, 1, 1]],
     [[0, 1, 0], [1, 1, 1], [0, 1, 0]],
@@ -11,11 +15,7 @@ START_X = 2
 START_Y = 3
 
 
-def get_input(puzzle: str) -> str:
-    return puzzle
-
-
-def part1(puzzle: str):
+def part1():
     grid = set()
     height = 0
     sh = 0
@@ -38,8 +38,8 @@ def part1(puzzle: str):
         x = START_X
         y = height + START_Y + len(s) - 1
         while True:
-            d = {"<": -1, ">": 1}[puzzle[st]]
-            st = (st + 1) % len(puzzle)
+            d = {"<": -1, ">": 1}[input[st]]
+            st = (st + 1) % len(input)
             if test(s, x + d, y):
                 x += d
             if test(s, x, y - 1):
@@ -51,7 +51,7 @@ def part1(puzzle: str):
     return height
 
 
-def part2(puzzle: str):
+def part2():
     grid = set()
     height = 0
     st = 0
@@ -87,8 +87,8 @@ def part2(puzzle: str):
         x = START_X
         y = height + START_Y + len(s) - 1
         while True:
-            d = {"<": -1, ">": 1}[puzzle[st]]
-            st = (st + 1) % len(puzzle)
+            d = {"<": -1, ">": 1}[input[st]]
+            st = (st + 1) % len(input)
             if test(s, x + d, y):
                 x += d
             if test(s, x, y - 1):
@@ -105,7 +105,5 @@ def part2(puzzle: str):
     return height
 
 
-if __name__ == "__main__":
-    from aoc import run
-
-    run(2022, 17, part1, part2)
+print(part1())
+print(part2())

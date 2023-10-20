@@ -1,8 +1,8 @@
-from utils.grid import NEIGH_DICT
+from lib import *
 
+input = read_input(2022, 9)
 
-def get_input(puzzle: str) -> list[tuple[int, int, int]]:
-    return [(*NEIGH_DICT[line[0]], int(line[2:])) for line in puzzle.splitlines()]
+lines = [(*NEIGH_DICT[line[0]], int(line[2:])) for line in input.splitlines()]
 
 
 def solve(lines, n):
@@ -21,17 +21,5 @@ def solve(lines, n):
     return len(visited)
 
 
-def part1(puzzle: str):
-    lines = get_input(puzzle)
-    return solve(lines, 2)
-
-
-def part2(puzzle: str):
-    lines = get_input(puzzle)
-    return solve(lines, 10)
-
-
-if __name__ == "__main__":
-    from aoc import run
-
-    run(2022, 9, part1, part2)
+print(solve(lines, 2))
+print(solve(lines, 10))

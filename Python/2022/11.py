@@ -1,20 +1,19 @@
-from utils.parsing import ints
-import math
+from lib import *
+
+input = read_input(2022, 11)
 
 
-def get_input(puzzle: str) -> tuple[list[tuple[str, int, int, int]], list[list[int]]]:
-    monkeys = []
-    items = []
-    for monkey in puzzle.split("\n\n"):
-        lines = monkey.splitlines()
-        starting = ints(lines[1])
-        (op,) = lines[2].split(maxsplit=3)[3:]
-        (test,) = ints(lines[3])
-        (tt,) = ints(lines[4])
-        (tf,) = ints(lines[5])
-        monkeys.append((op, test, tt, tf))
-        items.append(starting)
-    return monkeys, items
+monkeys = []
+items = []
+for monkey in input.split("\n\n"):
+    lines = monkey.splitlines()
+    starting = ints(lines[1])
+    (op,) = lines[2].split(maxsplit=3)[3:]
+    (test,) = ints(lines[3])
+    (tt,) = ints(lines[4])
+    (tf,) = ints(lines[5])
+    monkeys.append((op, test, tt, tf))
+    items.append(starting)
 
 
 def simulate(monkeys, items, rounds, div3):
@@ -34,17 +33,5 @@ def simulate(monkeys, items, rounds, div3):
     return cnt[-1] * cnt[-2]
 
 
-def part1(puzzle: str):
-    monkeys, items = get_input(puzzle)
-    return simulate(monkeys, items, 20, True)
-
-
-def part2(puzzle: str):
-    monkeys, items = get_input(puzzle)
-    return simulate(monkeys, items, 10000, False)
-
-
-if __name__ == "__main__":
-    from aoc import run
-
-    run(2022, 11, part1, part2)
+print(simulate(monkeys, deepcopy(items), 20, True))
+print(simulate(monkeys, items, 10000, False))

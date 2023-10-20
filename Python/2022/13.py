@@ -1,8 +1,8 @@
-def get_input(puzzle: str) -> list[tuple[list, list]]:
-    out = []
-    for pair in puzzle.split("\n\n"):
-        out.append(tuple(map(eval, pair.splitlines())))
-    return out
+from lib import *
+
+input = read_input(2022, 13)
+
+pairs = [tuple(map(eval, pair.splitlines())) for pair in input.split("\n\n")]
 
 
 def compare(a, b):
@@ -28,19 +28,10 @@ def compare(a, b):
         return None
 
 
-def part1(puzzle: str):
-    return sum((i + 1) * (compare(a, b) is True) for i, (a, b) in enumerate(get_input(puzzle)))
+print(sum((i + 1) * (compare(a, b) is True) for i, (a, b) in enumerate(pairs)))
 
 
-def part2(puzzle: str):
-    packets = [[[2]], [[6]]] + [x for a, b in get_input(puzzle) for x in [a, b]]
-
-    out = sum(compare(packet, packets[0]) is True for packet in packets) + 1
-    out *= sum(compare(packet, packets[1]) is True for packet in packets) + 1
-    return out
-
-
-if __name__ == "__main__":
-    from aoc import run
-
-    run(2022, 13, part1, part2)
+packets = [[[2]], [[6]]] + [x for a, b in pairs for x in [a, b]]
+out = sum(compare(packet, packets[0]) is True for packet in packets) + 1
+out *= sum(compare(packet, packets[1]) is True for packet in packets) + 1
+print(out)
