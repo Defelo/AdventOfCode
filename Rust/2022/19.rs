@@ -1,6 +1,10 @@
 #![feature(test)]
 
-use std::ops::Add;
+use std::{
+    cmp::Ordering,
+    collections::BinaryHeap,
+    ops::{Add, Mul},
+};
 
 use rayon::prelude::*;
 use regex::Regex;
@@ -37,21 +41,35 @@ impl Add for Resources {
     }
 }
 
+impl Mul<u32> for Resources {
+    type Output = Self;
+
+    fn mul(self, rhs: u32) -> Self::Output {
+        Self {
+            ore: self.ore * rhs,
+            clay: self.clay * rhs,
+            obsidian: self.obsidian * rhs,
+            geode: self.geode * rhs,
+        }
+    }
+}
+
 impl Resources {
     fn checked_sub(self, rhs: Self) -> Option<Self> {
-        match (
-            self.ore.checked_sub(rhs.ore),
-            self.clay.checked_sub(rhs.clay),
-            self.obsidian.checked_sub(rhs.obsidian),
-            self.geode.checked_sub(rhs.geode),
-        ) {
-            (Some(ore), Some(clay), Some(obsidian), Some(geode)) => Some(Resources {
-                ore,
-                clay,
-                obsidian,
-                geode,
-            }),
-            _ => None,
+        Some(Self {
+            ore: self.ore.checked_sub(rhs.ore)?,
+            clay: self.clay.checked_sub(rhs.clay)?,
+            obsidian: self.obsidian.checked_sub(rhs.obsidian)?,
+            geode: self.geode.checked_sub(rhs.geode)?,
+        })
+    }
+
+    fn saturating_sub(self, rhs: Self) -> Self {
+        Self {
+            ore: self.ore.saturating_sub(rhs.ore),
+            clay: self.clay.saturating_sub(rhs.clay),
+            obsidian: self.obsidian.saturating_sub(rhs.obsidian),
+            geode: self.geode.saturating_sub(rhs.geode),
         }
     }
 
@@ -74,30 +92,25 @@ fn setup(input: &str) -> Input {
                 .find_iter(line)
                 .skip(1)
                 .map(|num| num.as_str().parse().unwrap());
+            let mut next = || nums.next().unwrap();
             Blueprint {
                 ore_cost: Resources {
-                    ore: nums.next().unwrap(),
-                    clay: 0,
-                    obsidian: 0,
-                    geode: 0,
+                    ore: next(),
+                    ..Default::default()
                 },
                 clay_cost: Resources {
-                    ore: nums.next().unwrap(),
-                    clay: 0,
-                    obsidian: 0,
-                    geode: 0,
+                    ore: next(),
+                    ..Default::default()
                 },
                 obsidian_cost: Resources {
-                    ore: nums.next().unwrap(),
-                    clay: nums.next().unwrap(),
-                    obsidian: 0,
-                    geode: 0,
+                    ore: next(),
+                    clay: next(),
+                    ..Default::default()
                 },
                 geode_cost: Resources {
-                    ore: nums.next().unwrap(),
-                    clay: 0,
-                    obsidian: nums.next().unwrap(),
-                    geode: 0,
+                    ore: next(),
+                    obsidian: next(),
+                    ..Default::default()
                 },
             }
         })
@@ -109,10 +122,18 @@ struct State {
     time: u32,
     resources: Resources,
     robots: Resources,
-    could_have_built_ore: bool,
-    could_have_built_clay: bool,
-    could_have_built_obsidian: bool,
-    could_have_built_geode: bool,
+}
+
+impl PartialOrd for State {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for State {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.resources.geode.cmp(&other.resources.geode)
+    }
 }
 
 impl State {
@@ -124,81 +145,76 @@ impl State {
                 ore: 1,
                 ..Default::default()
             },
-            could_have_built_ore: false,
-            could_have_built_clay: false,
-            could_have_built_obsidian: false,
-            could_have_built_geode: false,
         }
     }
 
-    fn next(self, blueprint: &Blueprint) -> impl Iterator<Item = State> {
-        let build = |could_have_built: bool, cost, add_bots| {
-            (!could_have_built)
-                .then(|| {
-                    self.time.checked_sub(1).and_then(|time| {
-                        self.resources.checked_sub(cost).map(|resources| State {
-                            time,
-                            resources: resources + self.robots,
-                            robots: self.robots + add_bots,
-                            could_have_built_ore: false,
-                            could_have_built_clay: false,
-                            could_have_built_obsidian: false,
-                            could_have_built_geode: false,
-                        })
-                    })
-                })
-                .flatten()
-        };
-
-        let build_ore_bot = build(
-            self.could_have_built_ore,
-            blueprint.ore_cost,
-            Resources {
-                ore: 1,
-                ..Default::default()
-            },
-        );
-        let build_clay_bot = build(
-            self.could_have_built_clay,
-            blueprint.clay_cost,
-            Resources {
-                clay: 1,
-                ..Default::default()
-            },
-        );
-        let build_obsidian_bot = build(
-            self.could_have_built_obsidian,
-            blueprint.obsidian_cost,
-            Resources {
-                obsidian: 1,
-                ..Default::default()
-            },
-        );
-        let build_geode_bot = build(
-            self.could_have_built_geode,
-            blueprint.geode_cost,
-            Resources {
-                geode: 1,
-                ..Default::default()
-            },
-        );
-
-        let noop = self.time.checked_sub(1).map(|time| State {
-            time,
-            resources: self.resources + self.robots,
+    fn next_noop(self) -> Self {
+        Self {
+            time: 0,
+            resources: self.resources + self.robots * self.time,
             robots: self.robots,
-            could_have_built_ore: build_ore_bot.is_some(),
-            could_have_built_clay: build_clay_bot.is_some(),
-            could_have_built_obsidian: build_obsidian_bot.is_some(),
-            could_have_built_geode: build_geode_bot.is_some(),
-        });
+        }
+    }
 
+    fn next_build_bot(self, cost: Resources, robots: Resources) -> Option<Self> {
+        let missing = cost.saturating_sub(self.resources);
+
+        if missing.clay > 0 && self.robots.clay == 0
+            || missing.obsidian > 0 && self.robots.obsidian == 0
+            || missing.geode > 0 && self.robots.geode == 0
+        {
+            return None;
+        }
+
+        let t = 1 + [
+            (missing.ore > 0).then(|| missing.ore.div_ceil(self.robots.ore)),
+            (missing.clay > 0).then(|| missing.clay.div_ceil(self.robots.clay)),
+            (missing.obsidian > 0).then(|| missing.obsidian.div_ceil(self.robots.obsidian)),
+            (missing.geode > 0).then(|| missing.geode.div_ceil(self.robots.geode)),
+        ]
+        .into_iter()
+        .flatten()
+        .max()
+        .unwrap_or(0);
+
+        Some(Self {
+            time: self.time.checked_sub(t)?,
+            resources: (self.resources + self.robots * t).checked_sub(cost)?,
+            robots: self.robots + robots,
+        })
+    }
+
+    fn next(self, blueprint: &Blueprint) -> impl Iterator<Item = State> {
         [
-            noop,
-            build_ore_bot,
-            build_clay_bot,
-            build_obsidian_bot,
-            build_geode_bot,
+            Some(self.next_noop()),
+            self.next_build_bot(
+                blueprint.ore_cost,
+                Resources {
+                    ore: 1,
+                    ..Default::default()
+                },
+            ),
+            self.next_build_bot(
+                blueprint.clay_cost,
+                Resources {
+                    clay: 1,
+                    ..Default::default()
+                },
+            ),
+            self.next_build_bot(
+                blueprint.obsidian_cost,
+                Resources {
+                    obsidian: 1,
+                    ..Default::default()
+                },
+            ),
+            self.next_build_bot(
+                blueprint.geode_cost,
+                Resources {
+                    geode: 1,
+                    ..Default::default()
+                },
+            ),
         ]
         .into_iter()
         .flatten()
@@ -212,16 +228,11 @@ fn solve(blueprint: &Blueprint, max_time: u32) -> u32 {
         .max(blueprint.obsidian_cost)
         .max(blueprint.geode_cost);
 
-    let mut queue = Vec::from([State::init(max_time)]);
+    let mut queue = BinaryHeap::from([State::init(max_time)]);
     let mut seen = FxHashSet::default();
     let mut out = 0;
-    let mut best_score = 0;
     while let Some(state) = queue.pop() {
-        best_score = best_score.max(state.resources.geode + state.robots.geode * state.time);
-        out = out.max(state.resources.geode);
-        if state.time == 0 {
-            continue;
-        }
+        out = out.max(state.resources.geode + state.robots.geode * state.time);
 
         for next in state.next(blueprint) {
             if next.robots.ore > max_costs.ore
@@ -232,7 +243,7 @@ fn solve(blueprint: &Blueprint, max_time: u32) -> u32 {
             }
 
             let t = next.time;
-            if next.resources.geode + t * next.robots.geode + t * (t + 1) / 2 < best_score {
+            if next.resources.geode + t * next.robots.geode + t * t.saturating_sub(1) / 2 < out {
                 continue;
             }
 
