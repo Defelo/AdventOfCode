@@ -1,13 +1,16 @@
-pub trait IterExt<I>
-where
-    I: Iterator,
-{
-    fn take_while_inclusive<P>(self, predicate: P) -> TakeWhileInclusive<I, P>
+pub trait IterExt: Iterator {
+    fn take_while_inclusive<P>(self, predicate: P) -> TakeWhileInclusive<Self, P>
     where
-        P: FnMut(&I::Item) -> bool;
+        Self: Sized,
+        P: FnMut(&Self::Item) -> bool;
+
+    fn chain_if_empty<U>(self, other: U) -> ChainIfEmpty<Self, U::IntoIter>
+    where
+        Self: Sized,
+        U: IntoIterator<Item = Self::Item>;
 }
 
-impl<I> IterExt<I> for I
+impl<I> IterExt for I
 where
     I: Iterator,
 {
@@ -16,6 +19,17 @@ where
         P: FnMut(&I::Item) -> bool,
     {
         TakeWhileInclusive::new(self, predicate)
+    }
+
+    fn chain_if_empty<U>(self, other: U) -> ChainIfEmpty<I, U::IntoIter>
+    where
+        U: IntoIterator<Item = Self::Item>,
+    {
+        ChainIfEmpty {
+            iter: self,
+            other: other.into_iter(),
+            state: State::Unknown,
+        }
     }
 }
 
@@ -55,6 +69,43 @@ where
     }
 }
 
+enum State {
+    Empty,
+    NotEmpty,
+    Unknown,
+}
+
+pub struct ChainIfEmpty<I, U> {
+    iter: I,
+    other: U,
+    state: State,
+}
+
+impl<I, U> Iterator for ChainIfEmpty<I, U>
+where
+    I: Iterator,
+    U: Iterator<Item = I::Item>,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.state {
+            State::Empty => self.other.next(),
+            State::NotEmpty => self.iter.next(),
+            State::Unknown => match self.iter.next() {
+                Some(x) => {
+                    self.state = State::NotEmpty;
+                    Some(x)
+                }
+                None => {
+                    self.state = State::Empty;
+                    self.other.next()
+                }
+            },
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests_take_while_inclusive {
     use super::*;
@@ -78,4 +129,26 @@ mod tests_take_while_inclusive {
     test!(split, [1, 2, 3, 4], |x| x < 3, vec![1, 2, 3]);
     test!(always_true, [1, 2, 3, 4], |_| true, vec![1, 2, 3, 4]);
     test!(always_false, [1, 2, 3, 4], |_| false, vec![1]);
+}
+
+#[cfg(test)]
+mod tests_chain_if_empty {
+    use super::*;
+
+    macro_rules! test {
+        ($name:ident, $inp1:expr, $inp2:expr, $exp: expr) => {
+            #[test]
+            fn $name() {
+                assert_eq!(
+                    $inp1.into_iter().chain_if_empty($inp2).collect::<Vec<_>>(),
+                    $exp
+                );
+            }
+        };
+    }
+
+    test!(both_empty, Vec::<i32>::new(), [], vec![]);
+    test!(first_empty, [], [4, 5, 6], vec![4, 5, 6]);
+    test!(second_empty, [1, 2, 3], [], vec![1, 2, 3]);
+    test!(both_nonempty, [1, 2, 3], [4, 5, 6], vec![1, 2, 3]);
 }
