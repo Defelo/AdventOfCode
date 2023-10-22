@@ -5,6 +5,7 @@ pub use test::Bencher;
 
 pub mod grid;
 pub mod iter_ext;
+pub mod math;
 pub mod parsing;
 
 extern crate test;
