@@ -1,3 +1,4 @@
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -22,25 +23,30 @@ print(
 )
 
 for year in range(2022, 2014, -1):
-    print()
-    print(f"## [{year}](https://adventofcode.com/{year})")
-    print("|Mo|Tu|We|Th|Fr|Sa|Su|")
-    print("|-|-|-|-|-|-|-|")
-
+    lines = []
     line = [""] * date(year, 12, 1).weekday()
+    langs = Counter()
     for day in range(1, 26):
         if len(line) == 7:
-            print("|" + "|".join(line) + "|")
-            line.clear()
+            lines.append(line)
+            line = []
         line.append(f"[**{day}**](https://adventofcode.com/{year}/day/{day})")
         for lang in names:
-            line[-1] += link(year, day, lang)
+            l = link(year, day, lang)
+            if l:
+                langs.update([lang])
+                line[-1] += l
 
     for day in range(26, 32):
         if len(line) == 7:
-            print("|" + "|".join(line) + "|")
-            line.clear()
+            lines.append(line)
+            line = []
         line.append(f"{day}")
 
-    if line:
+    s = [f"{names[k]}: {v}/25" for k, v in langs.most_common()]
+    print()
+    print(f"## [{year}](https://adventofcode.com/{year})" + f" ({' | '.join(s)})" * bool(s))
+    print("|Mo|Tu|We|Th|Fr|Sa|Su|")
+    print("|-|-|-|-|-|-|-|")
+    for line in lines + [line] * bool(line):
         print("|" + "|".join(line + [""] * (7 - len(line))) + "|")
