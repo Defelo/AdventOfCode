@@ -7,8 +7,8 @@ exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py", ".ipynb", ""], "apl": [".ipy
 logos = {"rs": ".assets/rs.svg", "hs": ".assets/hs.svg", "py": ".assets/py.svg", "apl": ".assets/apl.png"}
 
 
-def logo(lang):
-    return f'<img height=12 src="{logos[lang]}">'
+def logo(lang, height=12):
+    return f'<img height={height} src="{logos[lang]}">'
 
 
 def link(year, day, lang):
@@ -47,7 +47,7 @@ for year in range(2022, 2014, -1):
             line = []
         line.append(f"{day}")
 
-    s = [f"{names[k]}: {v}/25" for k, v in langs.most_common()]
+    s = [f"[{logo(k, height=18)} {names[k]}]({names[k]}/{year}): {v}/25" for k, v in langs.most_common()]
     print()
     print(f"## [{year}](https://adventofcode.com/{year})" + f" ({' | '.join(s)})" * bool(s))
     print("|Mo|Tu|We|Th|Fr|Sa|Su|")
