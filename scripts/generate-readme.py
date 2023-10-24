@@ -3,12 +3,7 @@ from pathlib import Path
 
 names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL"}
 exts = {"rs": ["rs"], "hs": ["hs"], "py": ["py", "ipynb"], "apl": ["ipynb"]}
-logos = {
-    "rs": "https://rustacean.net/assets/rustacean-flat-noshadow.svg",
-    "hs": "https://upload.wikimedia.org/wikipedia/commons/1/1c/Haskell-Logo.svg",
-    "py": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
-    "apl": "https://aplwiki.com/images/thumb/c/c6/APL_logo.png/600px-APL_logo.png",
-}
+logos = {"rs": ".assets/rs.svg", "hs": ".assets/hs.svg", "py": ".assets/py.svg", "apl": ".assets/apl.png"}
 
 
 def link(year, day, lang):
