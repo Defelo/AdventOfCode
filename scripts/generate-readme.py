@@ -4,11 +4,10 @@ from pathlib import Path
 
 names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL"}
 exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py", ".ipynb", ""], "apl": [".ipynb"]}
-logos = {"rs": ".assets/rs.svg", "hs": ".assets/hs.svg", "py": ".assets/py.svg", "apl": ".assets/apl.png"}
 
 
 def logo(lang, height=12):
-    return f'<img height={height} src="{logos[lang]}">'
+    return f'<img height={height} src=".assets/{lang}.svg">'
 
 
 def link(year, day, lang):
