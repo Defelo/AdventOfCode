@@ -1,0 +1,26 @@
+name: update_readme
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  update_readme:
+    name: update readme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate readme
+        run: python3 scripts/generate-readme.py > README.md
+      - name: Commit and push
+        run: |
+          set -ex
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          if git commit -m 'Update README.md'; then
+            git push
+          fi
