@@ -1,5 +1,5 @@
 # AdventOfCode
-[Advent of Code](https://adventofcode.com/) solutions in Rust, Haskell, Python and APL
+[Advent of Code](https://adventofcode.com/) solutions in [<img height=12 src=".assets/rs.svg"> Rust](Rust), [<img height=12 src=".assets/hs.svg"> Haskell](Haskell), [<img height=12 src=".assets/py.svg"> Python](Python) and [<img height=12 src=".assets/apl.png"> APL](APL)
 
 ## [2022](https://adventofcode.com/2022) (Rust: 22/25 | Python: 18/25 | Haskell: 9/25)
 |Mo|Tu|We|Th|Fr|Sa|Su|

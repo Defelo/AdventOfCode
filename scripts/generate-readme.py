@@ -7,20 +7,24 @@ exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py", ".ipynb", ""], "apl": [".ipy
 logos = {"rs": ".assets/rs.svg", "hs": ".assets/hs.svg", "py": ".assets/py.svg", "apl": ".assets/apl.png"}
 
 
+def logo(lang):
+    return f'<img height=12 src="{logos[lang]}">'
+
+
 def link(year, day, lang):
     for ext in exts[lang]:
         if not Path(f"{names[lang]}/{year}/{day:02}{ext}").exists():
             continue
 
-        return f' [<img height=12 src="{logos[lang]}">]({names[lang]}/{year}/{day:02}{ext} "{names[lang]} solution for {year}/{day:02}")'
+        return f' [{logo(lang)}]({names[lang]}/{year}/{day:02}{ext} "{names[lang]} solution for {year}/{day:02}")'
 
     return ""
 
 
 print("# AdventOfCode")
-print(
-    f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join([*names.values()][:-1])} and {[*names.values()][-1]}"
-)
+
+lst = [f"[{logo(k)} {v}]({v})" for k, v in names.items()]
+print(f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join(lst[:-1])} and {lst[-1]}")
 
 for year in range(2022, 2014, -1):
     lines = []
