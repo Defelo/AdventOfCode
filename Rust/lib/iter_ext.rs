@@ -1,3 +1,5 @@
+use std::iter::Iterator;
+
 pub trait IterExt: Iterator {
     fn take_while_inclusive<P>(self, predicate: P) -> TakeWhileInclusive<Self, P>
     where
@@ -8,6 +10,11 @@ pub trait IterExt: Iterator {
     where
         Self: Sized,
         U: IntoIterator<Item = Self::Item>;
+
+    fn transpose(self) -> Transpose<Self>
+    where
+        Self: Sized,
+        Self::Item: Iterator;
 }
 
 impl<I> IterExt for I
@@ -29,6 +36,16 @@ where
             iter: self,
             other: other.into_iter(),
             state: State::Unknown,
+        }
+    }
+
+    fn transpose(self) -> Transpose<Self>
+    where
+        Self::Item: Iterator,
+    {
+        Transpose {
+            iter: self,
+            iterators: Vec::new(),
         }
     }
 }
@@ -103,6 +120,33 @@ where
                 }
             },
         }
+    }
+}
+
+pub struct Transpose<I>
+where
+    I: Iterator,
+    I::Item: Iterator,
+{
+    iter: I,
+    iterators: Vec<I::Item>,
+}
+
+impl<I> Iterator for Transpose<I>
+where
+    I: Iterator,
+    I::Item: Iterator,
+{
+    type Item = Vec<<<I as Iterator>::Item as IntoIterator>::Item>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.iterators.is_empty() {
+            self.iterators = self.iter.by_ref().collect();
+        }
+        self.iterators
+            .iter_mut()
+            .map(|it| it.next())
+            .collect::<Option<Vec<_>>>()
     }
 }
 
