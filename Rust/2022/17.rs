@@ -178,9 +178,10 @@ fn part2(input: &Input) -> u64 {
                     let l = n - i - 1;
                     if n >= l * 2 && steps[n - l..] == steps[n - 2 * l..n - l] {
                         let left = 1000000000000 - round;
-                        height +=
-                            (left / l) as u64 * (steps[n - 1].height - steps[n - l - 1].height);
-                        height += steps[n - l - 1 + left % l].height - steps[n - l - 1].height;
+                        let s: &Step = &steps[n - l - 1];
+                        let t: &Step = &steps[n - l - 1 + left % l];
+                        height += (left / l) as u64 * (steps[n - 1].height - s.height);
+                        height += t.height - s.height;
                         return Some(height);
                     }
                 }
