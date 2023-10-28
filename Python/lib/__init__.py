@@ -21,6 +21,7 @@ import re
 import statistics
 from collections import Counter
 from copy import deepcopy
+from dataclasses import dataclass
 from functools import cache, partial, reduce
 from heapq import heapify, heappop, heappush
 from pathlib import Path
