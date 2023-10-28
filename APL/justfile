@@ -1,0 +1,19 @@
+alias r := run
+alias t := test
+alias ty := test-year
+alias ta := test-all
+
+_default:
+    @just --list
+
+run year day:
+    dyalogscript {{year}}/{{day}}.apl
+
+test year day:
+    @diff <(just run {{year}} {{day}}) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
+
+test-year year:
+    @set -e; for day in $(ls {{year}}); do just test {{year}} $(basename $day .apl); done
+
+test-all:
+    @set -e; for year in *; do [[ -d $year ]] || continue; just test-year $year; done

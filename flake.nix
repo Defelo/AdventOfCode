@@ -5,7 +5,13 @@
 
   outputs = {nixpkgs, ...}: let
     system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfreePredicate = pkg:
+        builtins.elem (nixpkgs.lib.getName pkg) [
+          "dyalog"
+        ];
+    };
 
     downloadInput = pkgs.stdenvNoCC.mkDerivation {
       name = "aoc-download-input";
@@ -56,6 +62,11 @@
         (haskellPackages.ghcWithPackages (p: with p; [regex-tdfa]))
         haskell-language-server
         ormolu # haskell code formatter
+
+        # APL
+        (dyalog.override {
+          acceptLicense = true;
+        })
       ];
       PYTHONPATH = ".";
     };
