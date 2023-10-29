@@ -20,6 +20,7 @@ import math
 import operator
 import re
 import statistics
+import string
 from collections import Counter, deque
 from copy import deepcopy
 from dataclasses import dataclass

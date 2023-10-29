@@ -3,7 +3,7 @@ from datetime import date
 from pathlib import Path
 
 names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL"}
-exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py", ""], "apl": [".apl"]}
+exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"]}
 
 
 def logo(lang, height=12):
