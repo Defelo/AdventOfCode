@@ -11,6 +11,7 @@ import bisect
 import collections
 import functools
 import graphlib
+import hashlib
 import heapq
 import io
 import itertools
