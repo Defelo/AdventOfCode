@@ -54,6 +54,7 @@
         # Python
         (python311.withPackages (p:
           with p; [
+            z3
             numpy
             pyperclip
           ]))

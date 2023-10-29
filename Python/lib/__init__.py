@@ -20,15 +20,17 @@ import math
 import operator
 import re
 import statistics
-from collections import Counter
+from collections import Counter, deque
 from copy import deepcopy
 from dataclasses import dataclass
+from datetime import date, datetime, time, timedelta
 from functools import cache, partial, reduce
 from heapq import heapify, heappop, heappush
 from pathlib import Path
 
 import numpy as np
 import pyperclip
+import z3
 
 
 def read_input(year: int, day: int) -> str:
