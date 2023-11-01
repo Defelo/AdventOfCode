@@ -2,12 +2,14 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL"}
-exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"]}
+names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL", "ua": "Uiua"}
+exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"], "ua": [".ua"]}
+
+logos = {k.name.split(".")[0]: str(k) for k in Path(".assets").iterdir()}
 
 
 def logo(lang, height=12):
-    return f'<img height={height} src=".assets/{lang}.svg">'
+    return f'<img height={height} src="{logos[lang]}">'
 
 
 def link(year, day, lang):

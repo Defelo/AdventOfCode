@@ -68,6 +68,9 @@
         (dyalog.override {
           acceptLicense = true;
         })
+
+        # Uiua
+        uiua
       ];
       PYTHONPATH = ".";
     };
