@@ -19,7 +19,7 @@ example year day ex:
     uiua run --no-update --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 watch-example year day ex:
-    uiua watch --no-update --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}//{{ex}}
+    uiua watch --no-update --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 test year day:
     @diff <(just run {{year}} {{day}}) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
