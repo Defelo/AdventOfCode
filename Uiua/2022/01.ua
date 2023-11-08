@@ -1,4 +1,4 @@
-&i "lib.ua" "Load"
+&i "../lib.ua" "Load"
 
 ⊜(/+⊜parse≠@\n.)≡/↥◫2⊂∶1≠@\n.
 ↙3⊏⍖.

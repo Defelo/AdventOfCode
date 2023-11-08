@@ -10,16 +10,16 @@ _default:
     @just --list
 
 run year day:
-    uiua run --no-update --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
+    uiua run --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
 
 watch year day:
-    uiua watch --no-update --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
+    uiua watch --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
 
 example year day ex:
-    uiua run --no-update --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
+    uiua run --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 watch-example year day ex:
-    uiua watch --no-update --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
+    uiua watch --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 test year day:
     @diff <(just run {{year}} {{day}}) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
