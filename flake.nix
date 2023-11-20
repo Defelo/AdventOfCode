@@ -1,14 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs-uiua.url = "github:Defelo/nixpkgs/uiua";
   };
 
-  outputs = {
-    nixpkgs,
-    nixpkgs-uiua,
-    ...
-  }: let
+  outputs = {nixpkgs, ...}: let
     defaultSystems = [
       "x86_64-linux"
       "x86_64-darwin"
@@ -27,7 +22,6 @@
                   "dyalog"
                 ];
             };
-            pkgs-uiua = import nixpkgs-uiua {inherit system;};
 
             downloadInput = pkgs.stdenvNoCC.mkDerivation {
               name = "aoc-download-input";
@@ -62,7 +56,6 @@
   in {
     devShells = eachDefaultSystem ({
       pkgs,
-      pkgs-uiua,
       downloadInput,
       getSession,
       ...
@@ -96,7 +89,7 @@
           })
 
           # Uiua
-          pkgs-uiua.uiua
+          uiua
         ];
         PYTHONPATH = ".";
       };
