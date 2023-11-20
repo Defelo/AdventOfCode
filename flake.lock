@@ -15,9 +15,26 @@
         "type": "github"
       }
     },
+    "nixpkgs-uiua": {
+      "locked": {
+        "lastModified": 1700435388,
+        "narHash": "sha256-eswSLNk6huBZ4xY/EDLJknL5Bu5ejP7eAlt0e9pCk6o=",
+        "owner": "Defelo",
+        "repo": "nixpkgs",
+        "rev": "b8686281f85087067be905a4daa2bc0ad2e014cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Defelo",
+        "ref": "uiua",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-uiua": "nixpkgs-uiua"
       }
     }
   },
