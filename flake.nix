@@ -23,6 +23,13 @@
                 ];
             };
 
+            python = pkgs.python311.withPackages (p:
+              with p; [
+                z3
+                numpy
+                pyperclip
+              ]);
+
             downloadInput = pkgs.stdenvNoCC.mkDerivation {
               name = "aoc-download-input";
               dontUnpack = true;
@@ -37,6 +44,9 @@
                     coreutils
                     curl
                     gnugrep
+                    termdown
+                    less
+                    glibc
                   ]}
               '';
             };
@@ -50,6 +60,24 @@
                 pycrypto
               ];
             };
+            live = pkgs.stdenvNoCC.mkDerivation {
+              name = "aoc-live";
+              dontUnpack = true;
+              nativeBuildInputs = with pkgs; [makeWrapper];
+              installPhase = ''
+                mkdir -p $out/bin
+                cp ${./scripts/live.sh} $out/bin/aoc-live
+                chmod +x $out/bin/*
+                wrapProgram $out/bin/* --set PATH ${with pkgs;
+                  lib.makeBinPath [
+                    python
+                    bash
+                    coreutils
+                    inotify-tools
+                    wl-clipboard
+                  ]}
+              '';
+            };
           };
         })
         defaultSystems);
@@ -58,12 +86,15 @@
       pkgs,
       downloadInput,
       getSession,
+      live,
+      python,
       ...
     }: {
       default = pkgs.mkShell {
         buildInputs = [
           downloadInput
           getSession
+          live
         ];
         packages = with pkgs; [
           just
@@ -71,12 +102,7 @@
           hyperfine
 
           # Python
-          (python311.withPackages (p:
-            with p; [
-              z3
-              numpy
-              pyperclip
-            ]))
+          python
 
           # Haskell
           (haskellPackages.ghcWithPackages (p: with p; [regex-tdfa]))

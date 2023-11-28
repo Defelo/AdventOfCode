@@ -34,8 +34,11 @@ import pyperclip
 import z3
 
 
-def read_input(year: int, day: int) -> str:
-    f = Path(__file__).parent / f"../../.cache/{year}/{day}"
+def read_input(year: int, day: int, example: int | None = None) -> str:
+    if example is None:
+        f = Path(__file__).parent / f"../../.cache/{year}/{day}"
+    else:
+        f = Path(__file__).parent / f"../../examples/{year}/{day}/{example}"
     return f.read_text()
 
 
