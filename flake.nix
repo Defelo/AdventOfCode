@@ -28,6 +28,8 @@
                 z3
                 numpy
                 pyperclip
+                requests
+                beautifulsoup4
               ]);
 
             downloadInput = pkgs.stdenvNoCC.mkDerivation {

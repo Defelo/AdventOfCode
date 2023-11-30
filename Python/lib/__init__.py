@@ -33,8 +33,14 @@ import numpy as np
 import pyperclip
 import z3
 
+YEAR: int | None = None
+DAY: int | None = None
+
 
 def read_input(year: int, day: int, example: int | None = None) -> str:
+    global YEAR, DAY
+    YEAR = year
+    DAY = day
     if example is None:
         f = Path(__file__).parent / f"../../.cache/{year}/{day}"
     else:
@@ -45,3 +51,17 @@ def read_input(year: int, day: int, example: int | None = None) -> str:
 def ans(answer):
     print(answer)
     pyperclip.copy(str(answer))
+
+    submit_part = input("\nSubmit solution? level=")
+    if submit_part in ["1", "2"] and YEAR is not None and DAY is not None:
+        import bs4
+        import requests
+
+        session = (Path(__file__).parent / f"../../.cache/session").read_text()
+        resp = requests.post(
+            f"https://adventofcode.com/{YEAR}/day/{DAY}/answer",
+            cookies={"session": session},
+            data={"level": submit_part, "answer": answer},
+        ).text
+        bs = bs4.BeautifulSoup(resp, "html.parser")
+        print(bs.main.article.p.text)
