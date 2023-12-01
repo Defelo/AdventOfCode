@@ -8,6 +8,7 @@ while ! [[ -e flake.nix ]]; do cd ..; done
 year=$(date +%Y)
 month=$(date +%m)
 day=$(date +%d)
+day=${day#0}
 
 usage() {
   echo "usage: aoc-download-input [YEAR DAY] [--live]"
@@ -30,6 +31,7 @@ if [[ $# -eq 1 ]] && [[ "$1" = "--all" ]]; then
   exit
 elif [[ $# -eq 1 ]] && [[ "$1" = "--live" ]]; then
   TZ="Etc/GMT+4" date +"%Y %m %d" | read year month day
+  day=${day#0}
   if [[ $month -ne 12 ]] || [[ $day -gt 25 ]]; then
     usage
   fi
@@ -45,7 +47,7 @@ echo $year/$day
 mkdir -p .cache/$year
 session=$(cat .cache/session)
 
-if [[ "$3" = "--live" ]]; then
+if [[ "$3" = "--live" ]] || [[ "$1" = "--live" ]]; then
   termdown --no-figlet -T "$(printf 'AoC %d/%02d' $year $day)" -c 10 "$(date -d "$year-12-$day 00:00 EST")"
   while ! curl -sf -H "Cookie: session=$session" https://adventofcode.com/$year/day/$day/input -o .cache/$year/$day; do
     echo "Download failed, retrying..."
