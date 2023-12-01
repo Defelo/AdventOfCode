@@ -27,7 +27,7 @@ print("# AdventOfCode")
 lst = [f"[{logo(k)} {v}]({v})" for k, v in names.items()]
 print(f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join(lst[:-1])} and {lst[-1]}")
 
-for year in range(2022, 2014, -1):
+for year in range(2023, 2014, -1):
     lines = []
     line = [""] * date(year, 12, 1).weekday()
     langs = Counter()
