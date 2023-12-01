@@ -1,3 +1,4 @@
+import base64
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -14,10 +15,17 @@ def logo(lang, height=12):
 
 def link(year, day, lang):
     for ext in exts[lang]:
-        if not Path(f"{names[lang]}/{year}/{day:02}{ext}").exists():
+        p = Path(f"{names[lang]}/{year}/{day:02}{ext}")
+        if not p.exists():
             continue
 
-        return f' [{logo(lang)}]({names[lang]}/{year}/{day:02}{ext} "{names[lang]} solution for {year}/{day:02}")'
+        if lang == "ua":
+            src = '&fwa "../lib.ua" "Load ← &sc"\n'.encode() + p.read_bytes()
+            url = f"https://uiua.org/pad?src={base64.urlsafe_b64encode(src).decode()}"
+        else:
+            url = f"{names[lang]}/{year}/{day:02}{ext}"
+
+        return f' [{logo(lang)}]({url} "{names[lang]} solution for {year}/{day:02}")'
 
     return ""
 
