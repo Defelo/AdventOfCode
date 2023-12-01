@@ -1,9 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
+    uiua.url = "github:uiua-lang/uiua";
   };
 
-  outputs = {nixpkgs, ...}: let
+  outputs = {
+    nixpkgs,
+    uiua,
+    ...
+  }: let
     defaultSystems = [
       "x86_64-linux"
       "x86_64-darwin"
@@ -85,6 +90,7 @@
         defaultSystems);
   in {
     devShells = eachDefaultSystem ({
+      system,
       pkgs,
       downloadInput,
       getSession,
@@ -117,7 +123,7 @@
           })
 
           # Uiua
-          uiua
+          uiua.packages.${system}.default
         ];
         PYTHONPATH = ".";
       };
