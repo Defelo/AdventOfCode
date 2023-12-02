@@ -67,6 +67,15 @@
                 pycrypto
               ];
             };
+            pruneLeaderboard = pkgs.python3.pkgs.buildPythonApplication {
+              name = "aoc-prune-leaderboard";
+              pyproject = false;
+              dontUnpack = true;
+              installPhase = "mkdir -p $out/bin; cp ${./scripts/prune_leaderboard.py} $out/bin/aoc-prune-leaderboard; chmod +x $out/bin/*";
+              propagatedBuildInputs = with pkgs.python3.pkgs; [
+                requests
+              ];
+            };
             live = pkgs.stdenvNoCC.mkDerivation {
               name = "aoc-live";
               dontUnpack = true;
@@ -94,6 +103,7 @@
       pkgs,
       downloadInput,
       getSession,
+      pruneLeaderboard,
       live,
       python,
       ...
@@ -102,6 +112,7 @@
         buildInputs = [
           downloadInput
           getSession
+          pruneLeaderboard
           live
         ];
         packages = with pkgs; [
