@@ -1,8 +1,9 @@
 &i "../lib.ua" "Load"
 
 Colors ← {"red" "green" "blue"}
-ParseCount ← ×parse⊔⊃⊢(⬚0↯[3]⍘⊚⊗⊙Colors⊢⇌)⊜□≠@ .
-ParseRound ← /+⊜ParseCount≠@,.
-ParseGame ← ⊜ParseRound≠@;.
+ParseCount ← ⊗⊙Colors ⊙⊐parse ⍘⊟⇌ ⊜□≠@ .
+ParseRound ← /+⊜(×⬚0↯¤3⍘⊚ParseCount)≠@,.
+ParseGame ← ⊜ParseRound≠@;. ↘+2⊗@:.
 
-∩/+ ⊃/×(×+1⇡⧻./×≤12_13_14) ⍉⊜(/↥ParseGame↘+2⊗@:.)≠@\n.
+⊜(/↥ParseGame)≠@\n.
+∩/+ ⊃/×(×+1⇡⧻./×≤12_13_14)⍉
