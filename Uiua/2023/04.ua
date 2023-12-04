@@ -3,10 +3,8 @@
 ParseCard ← ∩⊔⍘⊟ ⊜(□⊜parse≠@ .)≠@|. ↘+2⊗@:.
 Matches ← ⧻▽∊,
 Points ← ⌊ⁿ⊙2-1
-WinMatrix ← ⬚0≡(⊂∩↯⊙(0⊙1)) +1⇡⧻.
+WinMatrix ← ⬚0≡(⊂1⊂∩↯⊙(0⊙1)) ⇡⧻.⊂0
+A ← /+≡Points
+B ← ⊢; ⍥⊃∘(/+×)⧻. ⊃∘(¬⊢) WinMatrix
 
-⊜(Matches ParseCard)≠@\n.
-⊃(
-  0 ↯⊙1⧻. WinMatrix
-  ⊙(;;) ⍥⊃(+⊙/+)⋅(/+×,)⧻,
-)(/+≡Points)
+⊃B A ⊜(Matches ParseCard)≠@\n.
