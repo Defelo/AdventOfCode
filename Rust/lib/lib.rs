@@ -7,6 +7,7 @@ pub mod grid;
 pub mod iter_ext;
 pub mod math;
 pub mod parsing;
+pub mod range;
 
 extern crate test;
 
