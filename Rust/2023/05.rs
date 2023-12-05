@@ -1,10 +1,9 @@
 #![feature(test)]
 
-use std::ops::Range;
-
-use aoc::range::{RangeExt, RangeRel};
+use aoc::range::RangeExt;
 use itertools::Itertools;
 
+type Range = std::ops::Range<i64>;
 type Map = Vec<RangeMap>;
 
 #[derive(Debug)]
@@ -15,7 +14,7 @@ struct Input {
 
 #[derive(Debug)]
 struct RangeMap {
-    source: Range<i64>,
+    source: Range,
     offset: i64,
 }
 
@@ -60,37 +59,52 @@ fn seed_to_location(seed: i64, maps: &[Map]) -> i64 {
     })
 }
 
-fn seed_range_to_location_range(
-    seeds: Range<i64>,
-    maps: &[Map],
-) -> impl IntoIterator<Item = Range<i64>> {
-    maps.iter().fold(vec![seeds], |mut seeds, map| {
-        let mut mapped = Vec::new();
-        for range_map in map {
-            let mut new_seeds = Vec::new();
-            for seed_range in seeds.iter().cloned() {
-                match seed_range.rel(&range_map.source) {
-                    RangeRel::LeftOf | RangeRel::RightOf => new_seeds.push(seed_range),
-                    RangeRel::ContainedIn => mapped.push(seed_range.add(range_map.offset)),
-                    RangeRel::Contains => {
-                        new_seeds.push(seed_range.start..range_map.source.start);
-                        mapped.push(range_map.source.add(range_map.offset));
-                        new_seeds.push(range_map.source.end..seed_range.end);
-                    }
-                    RangeRel::ContainsStartOf => {
-                        new_seeds.push(seed_range.start..range_map.source.start);
-                        mapped.push((range_map.source.start..seed_range.end).add(range_map.offset));
-                    }
-                    RangeRel::ContainsEndOf => {
-                        mapped.push((seed_range.start..range_map.source.end).add(range_map.offset));
-                        new_seeds.push(range_map.source.end..seed_range.end);
-                    }
-                }
-            }
-            seeds = new_seeds;
+#[derive(Debug, Clone)]
+enum MaybeMappedRange {
+    Mapped(Range),
+    Unchanged(Range),
+}
+
+impl MaybeMappedRange {
+    fn unwrap(self) -> Range {
+        match self {
+            Self::Mapped(range) => range,
+            Self::Unchanged(range) => range,
         }
-        mapped.extend(seeds);
-        mapped
+    }
+}
+
+fn map_seed_ranges(seeds: Vec<MaybeMappedRange>, range_map: &RangeMap) -> Vec<MaybeMappedRange> {
+    seeds
+        .iter()
+        .cloned()
+        .flat_map(|seed_range| {
+            let MaybeMappedRange::Unchanged(seed_range) = seed_range else {
+                return [Some(seed_range), None, None].into_iter().flatten();
+            };
+
+            let (left, after_start) = seed_range.split_at(range_map.source.start);
+            let (before_end, right) = seed_range.split_at(range_map.source.end);
+            let mid = (|| after_start?.intersect(&before_end?))();
+            [
+                left.map(MaybeMappedRange::Unchanged),
+                mid.map(|mid| MaybeMappedRange::Mapped(mid.add(range_map.offset))),
+                right.map(MaybeMappedRange::Unchanged),
+            ]
+            .into_iter()
+            .flatten()
+        })
+        .collect()
+}
+
+fn seed_ranges_to_location_ranges(seeds: Vec<Range>, maps: &[Map]) -> Vec<Range> {
+    maps.iter().fold(seeds, |seeds, map| {
+        let seeds = seeds.into_iter().map(MaybeMappedRange::Unchanged).collect();
+        map.iter()
+            .fold(seeds, map_seed_ranges)
+            .into_iter()
+            .map(MaybeMappedRange::unwrap)
+            .collect()
     })
 }
 
@@ -104,11 +118,14 @@ fn part1(input: &Input) -> i64 {
 }
 
 fn part2(input: &Input) -> i64 {
-    input
+    let seeds = input
         .seeds
         .iter()
         .tuples()
-        .flat_map(|(&start, &len)| seed_range_to_location_range(start..start + len, &input.maps))
+        .map(|(&start, &len)| start..start + len)
+        .collect();
+    seed_ranges_to_location_ranges(seeds, &input.maps)
+        .into_iter()
         .map(|range| range.start)
         .min()
         .unwrap()
