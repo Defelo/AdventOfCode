@@ -124,7 +124,7 @@
           python
 
           # Haskell
-          (haskellPackages.ghcWithPackages (p: with p; [regex-tdfa]))
+          (haskellPackages.ghcWithPackages (p: with p; [split regex-tdfa]))
           haskell-language-server
           ormolu # haskell code formatter
 
