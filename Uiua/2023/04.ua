@@ -1,6 +1,6 @@
 &i "../lib.ua" "Load"
 
-ParseCard ← ∩⊔⍘⊟ ⊜(□⊜parse≠@ .)≠@|. ↘+2⊗@:.
+ParseCard ← ∩°□°⊟ ⊜(□⊜⋕≠@ .)≠@|. ↘+2⊗@:.
 Matches ← ⧻▽∊,
 Points ← ⌊ⁿ⊙2-1
 WinMatrix ← ⬚0≡(⊂1⊂∩↯⊙(0⊙1)) ⇡⧻.⊂0

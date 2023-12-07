@@ -1,1 +1,1 @@
-Load ← &fras ⊔⊢⇌ &args
+Load ← &fras °□⊢⇌ &args

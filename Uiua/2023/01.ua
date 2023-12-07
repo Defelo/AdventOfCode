@@ -6,4 +6,4 @@ Digits ← +@1⇡9
 Find ← /+ ×+1⇡9 ≡⊐⌕
 Extract ← +×10 ∩⊢⊃∘⇌ ▽≠0.
 
-⍘⊟/+ ⊜(⊟ ∩Extract ⊃↥∘ ∩Find Digits,Nums¤)≠@\n.
+°⊟/+ ⊜(⊟ ∩Extract ⊃↥∘ ∩Find Digits,Nums¤)≠@\n.
