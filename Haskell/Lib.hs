@@ -1,5 +1,6 @@
-module Lib (aoc) where
+module Lib (aoc, listToTuple, fork) where
 
+import Control.Applicative
 import Control.Monad
 import Data.Bool
 import Data.Functor
@@ -63,6 +64,12 @@ exampleOutputPath year day ex part = exampleInputPath year day ex ++ "." ++ show
 
 strip :: String -> String
 strip = Data.Text.unpack . Data.Text.strip . Data.Text.pack
+
+listToTuple :: [a] -> (a, a)
+listToTuple = fork (curry id) head last
+
+fork :: (b -> c -> d) -> (a -> b) -> (a -> c) -> a -> d
+fork = liftA2
 
 class Print a where
   toString :: a -> String

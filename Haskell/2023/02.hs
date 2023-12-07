@@ -1,4 +1,3 @@
-import Control.Applicative
 import Data.List
 import Data.List.Split
 import Lib
@@ -28,7 +27,7 @@ parseGame :: String -> Game
 parseGame = map parseCubeCounts . splitOn "; " . last . splitOn ": "
 
 parseCubeCounts :: String -> CubeCounts
-parseCubeCounts = collectCounts . map (liftA2 (curry id) (read . head) last . words) . splitOn ", "
+parseCubeCounts = collectCounts . map (fork (curry id) (read . head) last . words) . splitOn ", "
 
 collectCounts :: [(Int, String)] -> CubeCounts
 collectCounts = flip map ["red", "green", "blue"] . flip getCount

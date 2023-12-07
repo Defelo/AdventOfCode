@@ -1,6 +1,5 @@
-import Control.Applicative
-import Control.Arrow
 import Control.Monad
+import Data.Bifunctor
 import Lib
 
 type Time = Int
@@ -16,7 +15,7 @@ solve1 :: Input -> Int
 solve1 = product . map (uncurry solve) . uncurry zip
 
 solve2 :: Input -> Int
-solve2 = uncurry solve . join (***) joinInts
+solve2 = uncurry solve . join bimap joinInts
 
 solve :: Time -> Distance -> Int
 solve time distance =
@@ -26,7 +25,7 @@ solve time distance =
    in root + (time + root + 1 + root_is_int) `mod` 2 - root_is_int
 
 setup :: String -> Input
-setup = liftA2 (curry id) head last . map parseLine . lines
+setup = listToTuple . map parseLine . lines
 
 parseLine :: String -> [Int]
 parseLine = map read . tail . words
