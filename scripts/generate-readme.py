@@ -35,6 +35,16 @@ print("# AdventOfCode")
 lst = [f"[{logo(k)} {v}]({v})" for k, v in names.items()]
 print(f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join(lst[:-1])} and {lst[-1]}")
 
+print()
+print("### Global Leaderboard Placement")
+print("|Year|Rank|Score|")
+print("|-|-|-|")
+with open(".leaderboard.csv") as f:
+    for line in reversed(f.readlines()):
+        year, score, rank, _ = line.strip().split(",")
+        if rank != "None":
+            print(f"|[{year}](https://adventofcode.com/{year}/leaderboard)|**{rank}**|{score}|")
+
 for year in range(2023, 2014, -1):
     lines = []
     line = [""] * date(year, 12, 1).weekday()

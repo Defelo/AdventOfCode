@@ -1,6 +1,14 @@
 # AdventOfCode
 [Advent of Code](https://adventofcode.com/) solutions in [<img height=12 src=".assets/rs.svg"> Rust](Rust), [<img height=12 src=".assets/hs.svg"> Haskell](Haskell), [<img height=12 src=".assets/py.svg"> Python](Python), [<img height=12 src=".assets/apl.svg"> APL](APL) and [<img height=12 src=".assets/ua.png"> Uiua](Uiua)
 
+### Global Leaderboard Placement
+|Year|Rank|Score|
+|-|-|-|
+|[2023](https://adventofcode.com/2023/leaderboard)|**76**|262|
+|[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|
+|[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|
+|[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|
+
 ## [2023](https://adventofcode.com/2023) ([<img height=18 src=".assets/rs.svg"> Rust](Rust/2023): 7/25 | [<img height=18 src=".assets/ua.png"> Uiua](Uiua/2023): 7/25 | [<img height=18 src=".assets/hs.svg"> Haskell](Haskell/2023): 3/25)
 |Mo|Tu|We|Th|Fr|Sa|Su|
 |-|-|-|-|-|-|-|

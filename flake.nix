@@ -76,6 +76,16 @@
                 requests
               ];
             };
+            fetchRanks = pkgs.python3.pkgs.buildPythonApplication {
+              name = "aoc-fetch-ranks";
+              pyproject = false;
+              dontUnpack = true;
+              installPhase = "mkdir -p $out/bin; cp ${./scripts/fetch_ranks.py} $out/bin/aoc-fetch-ranks; chmod +x $out/bin/*";
+              propagatedBuildInputs = with pkgs.python3.pkgs; [
+                requests
+                beautifulsoup4
+              ];
+            };
             live = pkgs.stdenvNoCC.mkDerivation {
               name = "aoc-live";
               dontUnpack = true;
@@ -104,6 +114,7 @@
       downloadInput,
       getSession,
       pruneLeaderboard,
+      fetchRanks,
       live,
       python,
       ...
@@ -113,6 +124,7 @@
           downloadInput
           getSession
           pruneLeaderboard
+          fetchRanks
           live
         ];
         packages = with pkgs; [
