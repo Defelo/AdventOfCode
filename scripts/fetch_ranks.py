@@ -5,6 +5,8 @@ import re
 import requests
 from bs4 import BeautifulSoup, NavigableString
 
+YEAR = 2023
+
 s = requests.session()
 
 with open(".cache/session") as f:
@@ -12,9 +14,21 @@ with open(".cache/session") as f:
 
 me = re.search(r"<code>((\d+)-[\da-f]+)</code>", s.get("https://adventofcode.com/leaderboard/private", cookies={"session": session}).text)[1].split("-")[0]  # type: ignore
 
+years = {}
+try:
+    with open(".leaderboard.csv", "r") as file:
+        for line in file.readlines():
+            years[int(line.split(",")[0])] = line
+except FileNotFoundError:
+    pass
+
 file = open(".leaderboard.csv", "w")
 
-for year in range(2015, 2024):
+for year in range(2015, YEAR + 1):
+    if year in years and year != YEAR:
+        file.write(years[year])
+        continue
+
     scores = {}
     names = {}
 
