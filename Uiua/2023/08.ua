@@ -8,7 +8,7 @@ FindStartAndGoal ← ∩(⊗□) "AAA","ZZZ"⊢⍉
 StartAndGoalMask ← ∩=@A,@Z≡(⊢⇌)⊢⍉
 Step ← ⊃(⊏⊃(⊏◿⧻,⋅⊙⋅⋅∘|⊏⊙⋅⋅∘)|+1⋅∘|⋅⋅⊙⊙∘)
 Run! ← ⋅⊙⋅⋅; ⍢Step(¬^3) ⊙0
-LCM ← ÷⊃(;⍢⊃◿∘±)×
+LCM ← ÷;⊃⍢⊃◿∘±×
 A ← Run!(=⊙⋅∘) FindStartAndGoal
 B ← /LCM ≡(Run!(⊏⊙⋅∘)) ⊓(⊚|¤|¤|¤) StartAndGoalMask
 
