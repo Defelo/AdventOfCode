@@ -4,7 +4,7 @@
 ### Global Leaderboard Placement
 |Year|Rank|Score|
 |-|-|-|
-|[2023](https://adventofcode.com/2023/leaderboard)|**76**|262|
+|[2023](https://adventofcode.com/2023/leaderboard)|**66**|327|
 |[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|
 |[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|
 |[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|
