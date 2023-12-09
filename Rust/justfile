@@ -18,26 +18,26 @@ _default:
 example year day ex:
     cargo run --bin {{year}}_{{day}} -- ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
-run year day:
-    cargo run --bin {{year}}_{{day}}
+run year day *args:
+    cargo run --bin {{year}}_{{day}} {{args}}
 
-test year day:
-    cargo test --bin {{year}}_{{day}}
+test year day *args:
+    cargo test --bin {{year}}_{{day}} {{args}}
 
-bench year day:
-    cargo bench --bin {{year}}_{{day}}
+bench year day *args:
+    cargo bench --bin {{year}}_{{day}} {{args}}
 
-test-year year:
-    cargo test --bin '{{year}}_*'
+test-year year *args:
+    cargo test --bin '{{year}}_*' {{args}}
 
-bench-year year:
-    cargo bench --bin '{{year}}_*'
+bench-year year *args:
+    cargo bench --bin '{{year}}_*' {{args}}
 
-test-all:
-    cargo test --bin '*'
+test-all *args:
+    cargo test --bin '*' {{args}}
 
-bench-all:
-    cargo bench --bin '*'
+bench-all *args:
+    cargo bench --bin '*' {{args}}
 
 build year day:
     cargo build --release --bin {{year}}_{{day}}
