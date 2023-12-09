@@ -18,7 +18,8 @@ aoc year day setup part1 part2 examples = do
 
 main :: (Print b, Print c) => Int -> Int -> (String -> a) -> (a -> b) -> (a -> c) -> IO ()
 main year day setup part1 part2 = do
-  let path = inputPath year day
+  args <- getArgs
+  let path = if length args == 1 then head args else inputPath year day
   input <- readFile path <&> setup
   (putStrLn . toString . part1) input
   (putStrLn . toString . part2) input

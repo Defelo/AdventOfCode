@@ -1,4 +1,5 @@
 alias b := build
+alias e := example
 alias r := run
 alias t := test
 alias ty := test-year
@@ -11,8 +12,11 @@ build year day:
     mkdir -p .build/{{year}}/{{day}}
     ghc -o .build/{{year}}/{{day}}/{{day}} -outputdir .build/{{year}}/{{day}} -O {{year}}/{{day}}.hs >&2
 
-run year day: (build year day)
-    .build/{{year}}/{{day}}/{{day}}
+example year day ex: (build year day)
+    .build/{{year}}/{{day}}/{{day}} ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
+
+run year day *args: (build year day)
+    .build/{{year}}/{{day}}/{{day}} {{args}}
 
 test year day: (build year day)
     .build/{{year}}/{{day}}/{{day}} test
