@@ -11,10 +11,10 @@ pub trait IterExt: Iterator {
         Self: Sized,
         U: IntoIterator<Item = Self::Item>;
 
-    fn transpose(self) -> Transpose<Self>
+    fn transpose(self) -> Transpose<<Self::Item as IntoIterator>::IntoIter>
     where
         Self: Sized,
-        Self::Item: Iterator;
+        Self::Item: IntoIterator;
 }
 
 impl<I> IterExt for I
@@ -39,13 +39,12 @@ where
         }
     }
 
-    fn transpose(self) -> Transpose<Self>
+    fn transpose(self) -> Transpose<<Self::Item as std::iter::IntoIterator>::IntoIter>
     where
-        Self::Item: Iterator,
+        Self::Item: IntoIterator,
     {
         Transpose {
-            iter: self,
-            iterators: Vec::new(),
+            iterators: self.map(|it| it.into_iter()).collect(),
         }
     }
 }
@@ -123,26 +122,14 @@ where
     }
 }
 
-pub struct Transpose<I>
-where
-    I: Iterator,
-    I::Item: Iterator,
-{
-    iter: I,
-    iterators: Vec<I::Item>,
+pub struct Transpose<I: Iterator> {
+    iterators: Vec<I>,
 }
 
-impl<I> Iterator for Transpose<I>
-where
-    I: Iterator,
-    I::Item: Iterator,
-{
-    type Item = Vec<<<I as Iterator>::Item as IntoIterator>::Item>;
+impl<I: Iterator> Iterator for Transpose<I> {
+    type Item = Vec<I::Item>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.iterators.is_empty() {
-            self.iterators = self.iter.by_ref().collect();
-        }
         self.iterators
             .iter_mut()
             .map(|it| it.next())
