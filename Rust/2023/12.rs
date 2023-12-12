@@ -77,19 +77,13 @@ fn part2(input: &Input) -> usize {
         .par_iter()
         .map(|report| {
             count(&Report {
-                springs: std::iter::once(&report.springs[..])
-                    .cycle()
-                    .take(5)
+                springs: [&report.springs[..]; 5]
+                    .into_iter()
                     .intersperse(&[Spring::Unknown])
                     .flatten()
                     .copied()
                     .collect(),
-                groups: std::iter::once(&report.groups)
-                    .cycle()
-                    .take(5)
-                    .flatten()
-                    .copied()
-                    .collect(),
+                groups: [&report.groups; 5].into_iter().flatten().copied().collect(),
             })
         })
         .sum()
