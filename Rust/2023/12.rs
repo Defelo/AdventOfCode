@@ -1,5 +1,6 @@
 #![feature(test, iter_intersperse)]
 
+use ndarray::Array2;
 use rayon::prelude::*;
 
 type Input = Vec<Report>;
@@ -45,8 +46,8 @@ fn setup(input: &str) -> Input {
 }
 
 fn count(report: &Report) -> usize {
-    let mut dp = vec![vec![0; report.groups.len() + 1]; report.springs.len() + 1];
-    dp[report.springs.len()][report.groups.len()] = 1;
+    let mut dp = Array2::zeros((report.springs.len() + 1, report.groups.len() + 1));
+    dp[[report.springs.len(), report.groups.len()]] = 1;
     for i in (0..report.springs.len()).rev() {
         for j in 0..report.groups.len() + 1 {
             if matches!(report.springs[i], Spring::Damaged | Spring::Unknown)
@@ -56,15 +57,15 @@ fn count(report: &Report) -> usize {
                 && (i + report.groups[j] >= report.springs.len()
                     || report.springs[i + report.groups[j]] != Spring::Damaged)
             {
-                dp[i][j] += dp[report.springs.len().min(i + report.groups[j] + 1)][j + 1];
+                dp[[i, j]] += dp[[report.springs.len().min(i + report.groups[j] + 1), j + 1]];
             }
 
             if matches!(report.springs[i], Spring::Operational | Spring::Unknown) {
-                dp[i][j] += dp[report.springs.len().min(i + 1)][j];
+                dp[[i, j]] += dp[[report.springs.len().min(i + 1), j]];
             }
         }
     }
-    dp[0][0]
+    dp[[0, 0]]
 }
 
 fn part1(input: &Input) -> usize {
