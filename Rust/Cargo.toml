@@ -20,6 +20,7 @@ rpath = false
 
 [dependencies]
 counter = "0.5.7"
+indexmap = "2.1.0"
 itertools = "0.11.0"
 ndarray = "0.15.6"
 num = "0.4.1"
@@ -265,3 +266,6 @@ path = "2023/13.rs"
 [[bin]]
 name = "2023_14"
 path = "2023/14.rs"
+[[bin]]
+name = "2023_15"
+path = "2023/15.rs"
