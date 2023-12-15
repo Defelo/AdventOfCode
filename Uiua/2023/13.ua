@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 Mismatches ← /+♭≠ ∩↙,: ↧∩⧻,, ⊙⇌ ⊃↘↙
 Solve! ← +×100: ∩(/+×=^0: ⊙≡Mismatches. ⍜(-1)⇡⊃⧻¤) ⍉.

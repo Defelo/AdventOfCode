@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 Colors ← {"red" "green" "blue"}
 ParseCount ← ⊗⊙Colors ⊙⊐⋕ °⊟⇌ ⊜□≠@ .

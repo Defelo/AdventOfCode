@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 ◿23-@A⊜(⊜⊢≠@ .)≠@\n.
 

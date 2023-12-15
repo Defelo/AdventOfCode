@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 ParseCard ← +2⊗⊙"23456789TJQKA"
 ParseHand ← ⊂⊓(ParseCard°□|⋕)°⊟ ⊜□≠@ .

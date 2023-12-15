@@ -20,7 +20,7 @@ def link(year, day, lang):
             continue
 
         if lang == "ua":
-            src = '&fwa "../lib.ua" "Load ← &sc"\n'.encode() + p.read_bytes()
+            src = "&sc\n".encode() + p.read_bytes().split(b"\n", 1)[1]
             url = f"https://uiua.org/pad?src={base64.urlsafe_b64encode(src).decode()}"
         else:
             url = f"{names[lang]}/{year}/{day:02}{ext}"

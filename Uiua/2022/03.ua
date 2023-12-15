@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 Priority ← +⊃(×26<@a)(◿32-@@)
 Intersect ← ⊝▽⊃≡∊∘⊙¤

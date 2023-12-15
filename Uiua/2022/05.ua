@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 ParseStep ← (
   regex "move (\\d+) from (\\d+) to (\\d+)"

@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 Nums ← {"one" "two" "three" "four" "five"
         "six" "seven" "eight" "nine"}

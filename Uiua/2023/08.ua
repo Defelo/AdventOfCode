@@ -1,4 +1,4 @@
-&i "../lib.ua" "Load"
+&fras ⊢⇌ &args
 
 ParseInstructions ← =@R°□⊢
 ParseNode ← ↘1⊢regex"([^ ,]+) = \\(([^ ,]+), ([^ ,]+)\\)"
