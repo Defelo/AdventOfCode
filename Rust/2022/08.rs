@@ -4,15 +4,15 @@ use aoc::{grid::Direction, iter_ext::IterExt};
 
 type Input = Vec<Vec<u8>>;
 
-struct CoordIterator<'a> {
+struct CoordIterator {
     x: usize,
     y: usize,
     width: usize,
     height: usize,
-    direction: &'a Direction,
+    direction: Direction,
 }
 
-impl Iterator for CoordIterator<'_> {
+impl Iterator for CoordIterator {
     type Item = (usize, usize);
 
     fn next(&mut self) -> Option<Self::Item> {

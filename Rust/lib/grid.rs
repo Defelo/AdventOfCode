@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Direction {
     North,
     East,
@@ -7,7 +7,7 @@ pub enum Direction {
 }
 
 impl Direction {
-    pub fn step(&self, x: usize, y: usize, width: usize, height: usize) -> Option<(usize, usize)> {
+    pub fn step(self, x: usize, y: usize, width: usize, height: usize) -> Option<(usize, usize)> {
         Some(match self {
             Direction::North if y > 0 => (x, y - 1),
             Direction::East if x < width - 1 => (x + 1, y),
@@ -17,7 +17,7 @@ impl Direction {
         })
     }
 
-    pub fn step_signed(&self, (x, y): (isize, isize)) -> (isize, isize) {
+    pub fn step_signed(self, (x, y): (isize, isize)) -> (isize, isize) {
         match self {
             Direction::North => (x, y - 1),
             Direction::East => (x + 1, y),
@@ -26,8 +26,35 @@ impl Direction {
         }
     }
 
-    pub fn iter() -> std::slice::Iter<'static, Direction> {
-        [Self::North, Self::East, Self::South, Self::West].iter()
+    pub fn invert(self) -> Self {
+        match self {
+            Direction::North => Direction::South,
+            Direction::East => Direction::West,
+            Direction::South => Direction::North,
+            Direction::West => Direction::East,
+        }
+    }
+
+    pub fn rotate_left(self) -> Self {
+        match self {
+            Direction::North => Direction::West,
+            Direction::East => Direction::North,
+            Direction::South => Direction::East,
+            Direction::West => Direction::South,
+        }
+    }
+
+    pub fn rotate_right(self) -> Self {
+        match self {
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
+        }
+    }
+
+    pub fn iter() -> impl Iterator<Item = Self> {
+        [Self::North, Self::East, Self::South, Self::West].into_iter()
     }
 }
 
