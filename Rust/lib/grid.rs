@@ -26,6 +26,15 @@ impl Direction {
         }
     }
 
+    pub fn step_signed_n(self, (x, y): (isize, isize), n: isize) -> (isize, isize) {
+        match self {
+            Direction::North => (x, y - n),
+            Direction::East => (x + n, y),
+            Direction::South => (x, y + n),
+            Direction::West => (x - n, y),
+        }
+    }
+
     pub fn invert(self) -> Self {
         match self {
             Direction::North => Direction::South,
