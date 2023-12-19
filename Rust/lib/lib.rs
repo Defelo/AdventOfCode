@@ -3,11 +3,13 @@
 #[doc(hidden)]
 pub use test::Bencher;
 
+pub mod arrays;
 pub mod grid;
 pub mod iter_ext;
 pub mod math;
 pub mod parsing;
 pub mod range;
+pub mod tuples;
 
 extern crate test;
 

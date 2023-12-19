@@ -1,9 +1,8 @@
 #![feature(test)]
 
-use aoc::range::RangeExt;
 use itertools::Itertools;
 
-type Range = std::ops::Range<i64>;
+type Range = aoc::range::Range<i64>;
 type Map = Vec<RangeMap>;
 
 #[derive(Debug)]
@@ -38,7 +37,7 @@ fn setup(input: &str) -> Input {
                     let source_start = nums.next().unwrap();
                     let len = nums.next().unwrap();
                     RangeMap {
-                        source: source_start..source_start + len,
+                        source: Range::from(source_start..source_start + len),
                         offset: dest_start - source_start,
                     }
                 })
@@ -122,7 +121,7 @@ fn part2(input: &Input) -> i64 {
         .seeds
         .iter()
         .tuples()
-        .map(|(&start, &len)| start..start + len)
+        .map(|(&start, &len)| Range::from(start..start + len))
         .collect();
     seed_ranges_to_location_ranges(seeds, &input.maps)
         .into_iter()

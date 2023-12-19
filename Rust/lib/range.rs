@@ -1,4 +1,10 @@
-use std::ops::{Add, Range};
+use std::ops::Add;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+pub struct Range<T> {
+    pub start: T,
+    pub end: T,
+}
 
 pub enum RangeRel {
     LeftOf,
@@ -9,27 +15,35 @@ pub enum RangeRel {
     ContainsEndOf,
 }
 
-pub trait RangeExt<T> {
-    fn rel(&self, other: &Range<T>) -> RangeRel
-    where
-        T: PartialOrd;
-
-    fn add<N>(&self, n: N) -> Range<<T as Add<N>>::Output>
-    where
-        T: Copy + Add<N>,
-        N: Copy;
-
-    fn split_at(&self, at: T) -> (Option<Range<T>>, Option<Range<T>>)
-    where
-        T: Copy + Ord;
-
-    fn intersect(&self, other: &Range<T>) -> Option<Range<T>>
-    where
-        T: Copy + Ord;
+impl<T> From<Range<T>> for std::ops::Range<T> {
+    fn from(value: Range<T>) -> Self {
+        value.start..value.end
+    }
 }
 
-impl<T> RangeExt<T> for Range<T> {
-    fn rel(&self, other: &Range<T>) -> RangeRel
+impl<T> From<std::ops::Range<T>> for Range<T> {
+    fn from(value: std::ops::Range<T>) -> Self {
+        Self {
+            start: value.start,
+            end: value.end,
+        }
+    }
+}
+
+impl<T> Range<T> {
+    pub fn into_std(self) -> std::ops::Range<T> {
+        self.into()
+    }
+
+    pub fn contains<U>(&self, item: &U) -> bool
+    where
+        T: PartialOrd<U>,
+        U: PartialOrd<T>,
+    {
+        &self.start <= item && item < &self.end
+    }
+
+    pub fn rel(&self, other: &Range<T>) -> RangeRel
     where
         T: PartialOrd,
     {
@@ -46,7 +60,7 @@ impl<T> RangeExt<T> for Range<T> {
         }
     }
 
-    fn add<N>(&self, n: N) -> Range<<T as Add<N>>::Output>
+    pub fn add<N>(&self, n: N) -> Range<<T as Add<N>>::Output>
     where
         T: Copy + Add<N>,
         N: Copy,
@@ -57,17 +71,17 @@ impl<T> RangeExt<T> for Range<T> {
         }
     }
 
-    fn split_at(&self, at: T) -> (Option<Range<T>>, Option<Range<T>>)
+    pub fn split_at(&self, at: T) -> (Option<Range<T>>, Option<Range<T>>)
     where
         T: Copy + Ord,
     {
         (
-            (self.start < at).then_some(self.start..at.min(self.end)),
-            (at < self.end).then_some(at.max(self.start)..self.end),
+            (self.start < at).then_some((self.start..at.min(self.end)).into()),
+            (at < self.end).then_some((at.max(self.start)..self.end).into()),
         )
     }
 
-    fn intersect(&self, other: &Range<T>) -> Option<Range<T>>
+    pub fn intersect(&self, other: &Range<T>) -> Option<Range<T>>
     where
         T: Copy + Ord,
     {
@@ -75,7 +89,7 @@ impl<T> RangeExt<T> for Range<T> {
         debug_assert!(other.start <= other.end);
         let start = self.start.max(other.start);
         let end = self.end.min(other.end);
-        (start < end).then_some(start..end)
+        (start < end).then_some((start..end).into())
     }
 }
 
@@ -85,25 +99,52 @@ mod tests {
 
     #[test]
     fn test_add() {
-        assert_eq!((10..20).add(5), 15..25);
+        assert_eq!(Range::from(10..20).add(5), Range::from(15..25));
     }
 
     #[test]
     fn test_split_at() {
-        assert_eq!((5..15).split_at(10), (Some(5..10), Some(10..15)));
-        assert_eq!((5..15).split_at(20), (Some(5..15), None));
-        assert_eq!((5..15).split_at(0), (None, Some(5..15)));
-        assert_eq!((5..15).split_at(15), (Some(5..15), None));
-        assert_eq!((5..15).split_at(5), (None, Some(5..15)));
+        assert_eq!(
+            Range::from(5..15).split_at(10),
+            (Some(Range::from(5..10)), Some(Range::from(10..15)))
+        );
+        assert_eq!(
+            Range::from(5..15).split_at(20),
+            (Some(Range::from(5..15)), None)
+        );
+        assert_eq!(
+            Range::from(5..15).split_at(0),
+            (None, Some(Range::from(5..15)))
+        );
+        assert_eq!(
+            Range::from(5..15).split_at(15),
+            (Some(Range::from(5..15)), None)
+        );
+        assert_eq!(
+            Range::from(5..15).split_at(5),
+            (None, Some(Range::from(5..15)))
+        );
     }
 
     #[test]
     fn test_intersect() {
-        assert_eq!((5..15).intersect(&(10..20)), Some(10..15));
-        assert_eq!((10..20).intersect(&(5..15)), Some(10..15));
-        assert_eq!((10..20).intersect(&(5..25)), Some(10..20));
-        assert_eq!((5..25).intersect(&(10..20)), Some(10..20));
-        assert_eq!((10..15).intersect(&(20..25)), None);
-        assert_eq!((20..25).intersect(&(10..15)), None);
+        assert_eq!(
+            Range::from(5..15).intersect(&(Range::from(10..20))),
+            Some(Range::from(10..15))
+        );
+        assert_eq!(
+            Range::from(10..20).intersect(&(Range::from(5..15))),
+            Some(Range::from(10..15))
+        );
+        assert_eq!(
+            Range::from(10..20).intersect(&(Range::from(5..25))),
+            Some(Range::from(10..20))
+        );
+        assert_eq!(
+            Range::from(5..25).intersect(&(Range::from(10..20))),
+            Some(Range::from(10..20))
+        );
+        assert_eq!(Range::from(10..15).intersect(&(Range::from(20..25))), None);
+        assert_eq!(Range::from(20..25).intersect(&(Range::from(10..15))), None);
     }
 }
