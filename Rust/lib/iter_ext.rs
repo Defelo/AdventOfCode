@@ -15,6 +15,16 @@ pub trait IterExt: Iterator {
     where
         Self: Sized,
         Self::Item: IntoIterator;
+
+    fn all_consume<P>(self, predicate: P) -> bool
+    where
+        Self: Sized,
+        P: FnMut(Self::Item) -> bool;
+
+    fn any_consume<P>(self, predicate: P) -> bool
+    where
+        Self: Sized,
+        P: FnMut(Self::Item) -> bool;
 }
 
 impl<I> IterExt for I
@@ -46,6 +56,24 @@ where
         Transpose {
             iterators: self.map(|it| it.into_iter()).collect(),
         }
+    }
+
+    fn all_consume<P>(self, mut predicate: P) -> bool
+    where
+        Self: Sized,
+        P: FnMut(Self::Item) -> bool,
+    {
+        #[allow(clippy::unnecessary_fold)]
+        self.fold(true, |acc, x| acc && predicate(x))
+    }
+
+    fn any_consume<P>(self, mut predicate: P) -> bool
+    where
+        Self: Sized,
+        P: FnMut(Self::Item) -> bool,
+    {
+        #[allow(clippy::unnecessary_fold)]
+        self.fold(false, |acc, x| acc || predicate(x))
     }
 }
 

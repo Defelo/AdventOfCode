@@ -2,7 +2,7 @@
 
 use std::collections::VecDeque;
 
-use aoc::tuples::TupleExt;
+use aoc::{iter_ext::IterExt, tuples::TupleExt};
 use itertools::Itertools;
 use num::Integer;
 use rustc_hash::FxHashMap;
@@ -86,7 +86,10 @@ fn setup(input: &str) -> Input {
     Input { modules, start, rx }
 }
 
-fn push_button(input: &Input, state: &mut [bool]) -> impl Iterator<Item = (usize, bool)> {
+fn push_button<'a>(
+    input: &'a Input,
+    state: &'a mut [bool],
+) -> impl Iterator<Item = (usize, bool)> + 'a {
     let mut queue = input
         .start
         .iter()
@@ -112,16 +115,17 @@ fn push_button(input: &Input, state: &mut [bool]) -> impl Iterator<Item = (usize
 
         Some((p, k))
     })
-    .collect_vec()
-    .into_iter()
 }
 
 fn part1(input: &Input) -> usize {
-    const N: usize = 1000;
     let mut state = vec![false; input.modules.len()];
-    let (lo, hi) = (0..N)
-        .flat_map(|_| push_button(input, &mut state).map(|(_, k)| k))
-        .fold((N, 0), |(lo, hi), k| (lo + !k as usize, hi + k as usize));
+    let (lo, hi) = (0..1000)
+        .map(|_| {
+            push_button(input, &mut state)
+                .map(|(_, k)| k)
+                .fold((1, 0), |(lo, hi), k| (lo + !k as usize, hi + k as usize))
+        })
+        .fold((0, 0), |acc, x| (acc.0 + x.0, acc.1 + x.1));
     lo * hi
 }
 
@@ -129,7 +133,9 @@ fn part2(input: &Input) -> usize {
     let rx = &input.modules[input.rx];
     let mut state = vec![false; input.modules.len()];
     (1..)
-        .filter(|_| push_button(input, &mut state).any(|(p, k)| !k && rx.inputs.contains(&p)))
+        .filter(|_| {
+            push_button(input, &mut state).any_consume(|(p, k)| !k && rx.inputs.contains(&p))
+        })
         .take(rx.inputs.len())
         .reduce(|a, b| a.lcm(&b))
         .unwrap()
