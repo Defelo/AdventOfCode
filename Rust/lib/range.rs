@@ -1,4 +1,6 @@
-use std::ops::Add;
+use std::ops::{Add, Sub};
+
+use num::One;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct Range<T> {
@@ -30,7 +32,34 @@ impl<T> From<std::ops::Range<T>> for Range<T> {
     }
 }
 
+impl<T: Sub<Output = T> + One> From<Range<T>> for std::ops::RangeInclusive<T> {
+    fn from(value: Range<T>) -> Self {
+        value.start..=value.end - T::one()
+    }
+}
+
+impl<T: Add<Output = T> + One> From<std::ops::RangeInclusive<T>> for Range<T> {
+    fn from(value: std::ops::RangeInclusive<T>) -> Self {
+        let (start, end) = value.into_inner();
+        Self {
+            start,
+            end: end + T::one(),
+        }
+    }
+}
+
 impl<T> Range<T> {
+    pub fn new(start: T, end: T) -> Self {
+        Self { start, end }
+    }
+
+    pub fn new_inclusive(start: T, end: T) -> Self
+    where
+        T: Add<Output = T> + One,
+    {
+        Self::new(start, end + T::one())
+    }
+
     pub fn into_std(self) -> std::ops::Range<T> {
         self.into()
     }
@@ -58,6 +87,13 @@ impl<T> Range<T> {
             _ if self.contains(&other.end) => RangeRel::ContainsEndOf,
             _ => unreachable!(),
         }
+    }
+
+    pub fn overlaps(&self, other: &Range<T>) -> bool
+    where
+        T: PartialOrd,
+    {
+        !matches!(self.rel(other), RangeRel::LeftOf | RangeRel::RightOf)
     }
 
     pub fn add<N>(&self, n: N) -> Range<<T as Add<N>>::Output>
