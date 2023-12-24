@@ -35,6 +35,7 @@
                 pyperclip
                 requests
                 beautifulsoup4
+                sympy
               ]);
 
             downloadInput = pkgs.stdenvNoCC.mkDerivation {
@@ -126,6 +127,7 @@
           pruneLeaderboard
           fetchRanks
           live
+          pkgs.z3
         ];
         packages = with pkgs; [
           just
@@ -149,6 +151,9 @@
           uiua.packages.${system}.default
         ];
         PYTHONPATH = ".";
+        LIBCLANG_PATH = with pkgs; lib.makeLibraryPath [llvmPackages.clang-unwrapped.lib];
+        LD_LIBRARY_PATH = with pkgs; lib.makeLibraryPath [z3.lib];
+        CPATH = with pkgs; lib.makeSearchPath "include" [musl.dev llvmPackages.clang-unwrapped.lib z3.dev];
       };
     });
   };

@@ -29,6 +29,7 @@ rayon = "1.8.0"
 regex = "1.10.2"
 rustc-hash = "1.1.0"
 smallvec = "1.11.1"
+z3 = "0.12.1"
 
 [dev-dependencies]
 proptest = "1.3.1"
@@ -290,3 +291,6 @@ path = "2023/21.rs"
 [[bin]]
 name = "2023_22"
 path = "2023/22.rs"
+[[bin]]
+name = "2023_24"
+path = "2023/24.rs"
