@@ -25,6 +25,13 @@ pub trait IterExt: Iterator {
     where
         Self: Sized,
         P: FnMut(Self::Item) -> bool;
+
+    fn index(mut self, elem: impl PartialEq<Self::Item>) -> Option<usize>
+    where
+        Self: Sized,
+    {
+        self.position(|x| elem == x)
+    }
 }
 
 impl<I> IterExt for I

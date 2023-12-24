@@ -62,7 +62,7 @@ impl Direction {
         }
     }
 
-    pub fn iter() -> impl Iterator<Item = Self> {
+    pub fn iter() -> impl Iterator<Item = Self> + Clone {
         [Self::North, Self::East, Self::South, Self::West].into_iter()
     }
 }
@@ -70,11 +70,17 @@ impl Direction {
 impl From<char> for Direction {
     fn from(c: char) -> Self {
         match c {
-            'U' | 'N' => Self::North,
-            'R' | 'E' => Self::East,
-            'D' | 'S' => Self::South,
-            'L' | 'W' => Self::West,
+            'U' | 'N' | '^' => Self::North,
+            'R' | 'E' | '>' => Self::East,
+            'D' | 'S' | 'v' => Self::South,
+            'L' | 'W' | '<' => Self::West,
             _ => panic!(),
         }
+    }
+}
+
+impl From<u8> for Direction {
+    fn from(c: u8) -> Self {
+        char::from(c).into()
     }
 }
