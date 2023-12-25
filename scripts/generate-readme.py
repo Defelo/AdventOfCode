@@ -3,8 +3,8 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL", "ua": "Uiua"}
-exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"], "ua": [".ua"]}
+names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL", "ua": "Uiua", "nix": "Nix"}
+exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"], "ua": [".ua"], "nix": [".nix"]}
 
 logos = {k.name.split(".")[0]: str(k) for k in Path(".assets").iterdir()}
 
