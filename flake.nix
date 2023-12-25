@@ -35,6 +35,7 @@
                 pyperclip
                 requests
                 beautifulsoup4
+                networkx
                 sympy
               ]);
 
