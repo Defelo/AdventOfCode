@@ -39,7 +39,7 @@ print()
 print("### Global Leaderboard Placement")
 print("|Year|Rank|Score|Top% (Leaderboard)|Top% (All participants)|")
 print("|-|-|-|-|-|")
-with open(".leaderboard.csv") as f:
+with open(".ranks.csv") as f:
     for line in reversed(f.readlines()):
         year, score, rank, leaderboard, total = line.strip().split(",")
         if rank != "None":
