@@ -37,13 +37,17 @@ print(f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join(lst[
 
 print()
 print("### Global Leaderboard Placement")
-print("|Year|Rank|Score|")
-print("|-|-|-|")
+print("|Year|Rank|Score|Top% (Leaderboard)|Top% (All participants)|")
+print("|-|-|-|-|-|")
 with open(".leaderboard.csv") as f:
     for line in reversed(f.readlines()):
-        year, score, rank, _ = line.strip().split(",")
+        year, score, rank, leaderboard, total = line.strip().split(",")
         if rank != "None":
-            print(f"|[{year}](https://adventofcode.com/{year}/leaderboard)|**{rank}**|{score}|")
+            lb = int(rank) / int(leaderboard)
+            t = int(rank) / int(total)
+            print(
+                f"|[{year}](https://adventofcode.com/{year}/leaderboard)|**{rank}**|{score}|{lb:.2%} (of {leaderboard})|{t:.4%} (of &ge;{total})|"
+            )
 
 for year in range(2023, 2014, -1):
     lines = []

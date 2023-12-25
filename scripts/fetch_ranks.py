@@ -3,7 +3,7 @@
 import re
 
 import requests
-from bs4 import BeautifulSoup, NavigableString
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 YEAR = 2023
 
@@ -31,6 +31,20 @@ for year in range(2015, YEAR + 1):
 
     scores = {}
     names = {}
+
+    resp = s.get(f"https://adventofcode.com/{year}/stats")
+    if resp.status_code == 404:
+        break
+    resp.encoding = "utf-8"
+    bs = BeautifulSoup(resp.text, "html.parser")
+    stats = bs.select_one(".stats")
+    total = 0
+    for x in stats:
+        if type(x) is not Tag:
+            continue
+        firstonly = int(x.select_one(".stats-firstonly").text.strip())
+        both = int(x.select_one(".stats-both").text.strip())
+        total = max(total, firstonly + both)
 
     for day in range(1, 26):
         print(f"\r{year}/{day:02} ", end="")
@@ -61,8 +75,8 @@ for year in range(2015, YEAR + 1):
         last = user_id
         # print(ranks[user_id], scores[user_id], names[user_id])
 
-    print(f"\r{year}: score={scores.get(me, 0)}, rank={ranks.get(me)}, total={len(ranks)}")
-    file.write(",".join(map(str, [year, scores.get(me, 0), ranks.get(me), len(ranks)])) + "\n")
+    print(f"\r{year}: score={scores.get(me, 0)}, rank={ranks.get(me)}, leaderboard={len(ranks)}, total={total}")
+    file.write(",".join(map(str, [year, scores.get(me, 0), ranks.get(me), len(ranks), total])) + "\n")
 
 file.flush()
 file.close()

@@ -2,12 +2,12 @@
 [Advent of Code](https://adventofcode.com/) solutions in [<img height=12 src=".assets/rs.svg"> Rust](Rust), [<img height=12 src=".assets/hs.svg"> Haskell](Haskell), [<img height=12 src=".assets/py.svg"> Python](Python), [<img height=12 src=".assets/apl.svg"> APL](APL) and [<img height=12 src=".assets/ua.png"> Uiua](Uiua)
 
 ### Global Leaderboard Placement
-|Year|Rank|Score|
-|-|-|-|
-|[2023](https://adventofcode.com/2023/leaderboard)|**125**|531|
-|[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|
-|[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|
-|[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|
+|Year|Rank|Score|Top% (Leaderboard)|Top% (All participants)|
+|-|-|-|-|-|
+|[2023](https://adventofcode.com/2023/leaderboard)|**126**|531|11.07% (of 1138)|0.0426% (of &ge;295591)|
+|[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|34.15% (of 1022)|0.1182% (of &ge;295315)|
+|[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|13.41% (of 1014)|0.0538% (of &ge;252775)|
+|[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|65.23% (of 952)|0.3190% (of &ge;194644)|
 
 ## [2023](https://adventofcode.com/2023) ([<img height=18 src=".assets/rs.svg"> Rust](Rust/2023): 25/25 | [<img height=18 src=".assets/ua.png"> Uiua](Uiua/2023): 12/25 | [<img height=18 src=".assets/hs.svg"> Haskell](Haskell/2023): 4/25)
 |Mo|Tu|We|Th|Fr|Sa|Su|
