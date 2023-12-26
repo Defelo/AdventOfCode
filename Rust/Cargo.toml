@@ -41,6 +41,9 @@ path = "lib/lib.rs"
 
 # 2020
 [[bin]]
+name = "2020"
+path = "2020/main.rs"
+[[bin]]
 name = "2020_01"
 path = "2020/01.rs"
 [[bin]]
