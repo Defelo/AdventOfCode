@@ -1,8 +1,6 @@
 #![feature(test)]
 #![feature(binary_heap_into_iter_sorted)]
 
-extern crate test;
-
 use std::collections::{BinaryHeap, VecDeque};
 
 use rustc_hash::FxHashSet;
