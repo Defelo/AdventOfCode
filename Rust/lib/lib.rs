@@ -28,6 +28,21 @@ macro_rules! main {
     };
 }
 
+#[macro_export]
+macro_rules! year {
+    ($($path:tt),*$(,)?) => {
+        #[cfg(not(test))]
+        fn main() {
+            $({
+                #[path = $path]
+                #[allow(unused_attributes)]
+                mod day;
+                day::_main();
+            })*
+        }
+    };
+}
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __ifnot25 {
@@ -51,6 +66,17 @@ macro_rules! __main {
             ::aoc::__ifnot25! { $day,
                 ::std::println!("{}", part2(&input));
             }
+        }
+
+        pub fn _main() {
+            let path = ::std::concat!("../.cache/", $year, "/", $day);
+            let input = ::std::fs::read_to_string(path).unwrap();
+            let input = setup(&input);
+            ::std::print!("[{}/{:02}/1] {:<20}", $year, $day, part1(&input));
+            ::aoc::__ifnot25! { $day,
+                ::std::print!("[{}/{:02}/2] {}", $year, $day, part2(&input));
+            }
+            ::std::println!();
         }
     };
 }

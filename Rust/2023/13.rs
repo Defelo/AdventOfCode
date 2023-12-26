@@ -67,7 +67,7 @@ fn solve<const N: usize>(input: &Input) -> usize {
         .iter()
         .map(|grid| {
             Reflection::generate_for(grid)
-                .find(|reflection| dbg!(reflection.count_mismatches(grid)) == N)
+                .find(|reflection| reflection.count_mismatches(grid) == N)
                 .unwrap()
                 .summarize()
         })

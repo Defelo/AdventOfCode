@@ -2,6 +2,7 @@ alias e := example
 alias r := run
 alias t := test
 alias b := bench
+alias y := year
 alias ty := test-year
 alias by := bench-year
 alias ta := test-all
@@ -27,6 +28,9 @@ test year day *args:
 bench year day *args:
     cargo bench --bin {{year}}_{{day}} {{args}}
 
+year year *args:
+    cargo run --bin {{year}} {{args}}
+
 test-year year *args:
     cargo test --bin '{{year}}_*' {{args}}
 
@@ -49,5 +53,5 @@ hyperfine-example year day ex *args: (build year day)
     hyperfine {{args}} '{{target}}/release/{{year}}_{{day}} ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}'
 
 hyperfine-year year *args:
-    cargo build --release --bin '{{year}}_*'
-    hyperfine {{args}} {{target}}/release/{{year}}_??
+    cargo build --release --bin {{year}}
+    hyperfine {{args}} {{target}}/release/{{year}}

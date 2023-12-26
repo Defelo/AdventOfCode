@@ -57,7 +57,7 @@ fn part2(input: &Input) -> usize {
         };
     }
 
-    dbg!(boxes)
+    boxes
         .into_iter()
         .enumerate()
         .flat_map(|(i, bx)| {
