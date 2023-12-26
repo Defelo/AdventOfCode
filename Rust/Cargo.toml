@@ -150,6 +150,9 @@ path = "2021/25.rs"
 
 # 2022
 [[bin]]
+name = "2022"
+path = "2022/main.rs"
+[[bin]]
 name = "2022_01"
 path = "2022/01.rs"
 [[bin]]
