@@ -3,6 +3,7 @@ alias r := run
 alias t := test
 alias b := bench
 alias y := year
+alias ya := year-all
 alias ty := test-year
 alias by := bench-year
 alias ta := test-all
@@ -42,6 +43,9 @@ test-all *args:
 
 bench-all *args:
     cargo bench --bin '*' {{args}}
+
+year-all *args:
+    @set -e; for year in *; do [[ -f $year/main.rs ]] || continue; just year $year {{args}}; done
 
 build year day:
     cargo build --release --bin {{year}}_{{day}}
