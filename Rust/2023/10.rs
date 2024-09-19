@@ -121,26 +121,28 @@ fn checked_step(input: &Input, p: Position, d: Direction) -> Option<Position> {
 }
 
 fn find_loop(input: &Input) -> impl Iterator<Item = Position> + '_ {
-    std::iter::successors(
-        Some((
-            input.start,
-            input
-                .start
-                .step(start_cell(input).connections()[0])
-                .unwrap(),
-        )),
-        |&(p, q)| {
-            let r = input.grid[q.y][q.x]
-                .connections()
-                .iter()
-                .filter_map(|&d| checked_step(input, q, d))
-                .find(|&r| r != p)
-                .unwrap();
+    IterExt::take_while_inclusive(
+        std::iter::successors(
+            Some((
+                input.start,
+                input
+                    .start
+                    .step(start_cell(input).connections()[0])
+                    .unwrap(),
+            )),
+            |&(p, q)| {
+                let r = input.grid[q.y][q.x]
+                    .connections()
+                    .iter()
+                    .filter_map(|&d| checked_step(input, q, d))
+                    .find(|&r| r != p)
+                    .unwrap();
 
-            Some((q, r))
-        },
+                Some((q, r))
+            },
+        ),
+        |&(_, q)| q != input.start,
     )
-    .take_while_inclusive(|&(_, q)| q != input.start)
     .map(|(p, _)| p)
 }
 

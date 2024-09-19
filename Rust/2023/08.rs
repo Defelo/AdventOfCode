@@ -74,20 +74,22 @@ fn setup(input: &str) -> Input {
 }
 
 fn solve(input: &Input, start: usize, is_goal: impl Fn(usize) -> bool) -> usize {
-    input
-        .instructions
-        .iter()
-        .cycle()
-        .scan(start, |p, instruction| {
-            let node = input.nodes[*p];
-            *p = match instruction {
-                Instruction::Left => node.left,
-                Instruction::Right => node.right,
-            };
-            Some(*p)
-        })
-        .take_while_inclusive(|&p| !is_goal(p))
-        .count()
+    Itertools::take_while_inclusive(
+        input
+            .instructions
+            .iter()
+            .cycle()
+            .scan(start, |p, instruction| {
+                let node = input.nodes[*p];
+                *p = match instruction {
+                    Instruction::Left => node.left,
+                    Instruction::Right => node.right,
+                };
+                Some(*p)
+            }),
+        |&p| !is_goal(p),
+    )
+    .count()
 }
 
 fn part1(input: &Input) -> usize {
