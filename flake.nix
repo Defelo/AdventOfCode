@@ -1,14 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    uiua.url = "github:uiua-lang/uiua";
   };
 
-  outputs = {
-    nixpkgs,
-    uiua,
-    ...
-  }: let
+  outputs = {nixpkgs, ...}: let
     defaultSystems = [
       "x86_64-linux"
       "x86_64-darwin"
@@ -149,7 +144,7 @@
           })
 
           # Uiua
-          uiua.packages.${system}.default
+          uiua
         ];
         PYTHONPATH = ".";
         LIBCLANG_PATH = with pkgs; lib.makeLibraryPath [llvmPackages.clang-unwrapped.lib];
