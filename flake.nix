@@ -139,9 +139,9 @@
           ormolu # haskell code formatter
 
           # APL
-          (dyalog.override {
-            acceptLicense = true;
-          })
+          # (dyalog.override {
+          #   acceptLicense = true;
+          # })
 
           # Uiua
           uiua
