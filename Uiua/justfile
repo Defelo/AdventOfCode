@@ -9,8 +9,8 @@ alias ta := test-all
 _default:
     @just --list
 
-run year day:
-    uiua run --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
+run year day *args:
+    uiua run --no-format {{args}} {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
 
 watch year day:
     uiua watch --no-format {{year}}/{{day}}.ua ../.cache/{{year}}/{{trim_start_match(day, "0")}}
@@ -22,7 +22,7 @@ watch-example year day ex:
     uiua watch --no-format {{year}}/{{day}}.ua ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
 
 test year day:
-    @diff <(just run {{year}} {{day}}) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
+    @diff <(just run {{year}} {{day}} --no-color) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
 
 test-year year:
     @set -e; for day in $(ls {{year}}); do just test {{year}} $(basename $day .ua); done
