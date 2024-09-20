@@ -1,7 +1,10 @@
 let
-  inherit (import ../lib) lib input solution scan;
-  inherit (lib) pipe trim stringToCharacters flip getAttr last;
-  inherit (lib.lists) findFirstIndex;
+  lib = import ../lib;
+  inherit (builtins) getAttr add;
+  inherit (lib.aoc) input solution;
+  inherit (lib.functions) pipe flip;
+  inherit (lib.lists) scan last findFirstIndex;
+  inherit (lib.strings) stringToCharacters trim;
 
   chars = {
     "(" = 1;
@@ -11,7 +14,7 @@ let
     trim
     stringToCharacters
     (map (flip getAttr chars))
-    (scan (acc: x: acc + x) 0)
+    (scan add 0)
   ];
 in
   solution {

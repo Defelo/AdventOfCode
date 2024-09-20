@@ -1,21 +1,22 @@
-rec {
-  inherit (import <nixpkgs> {}) lib;
+let
+  pipe = builtins.foldl' (acc: f: f acc);
 
-  scan = f: init: lst: let
-    mkAcc = out: acc: {inherit out acc;};
-    op = x: y: let
-      acc' = f x.acc y;
-    in
-      mkAcc (x.out ++ [acc']) acc';
-    result = builtins.foldl' op (mkAcc [] init) lst;
+  removeDotNix = s: let
+    removed = builtins.match "(.*)\\.nix" s;
   in
-    result.out;
+    if removed != null
+    then builtins.head removed
+    else s;
 
-  input = builtins.readFile (builtins.getEnv "INPUT");
-
-  solution = {
-    p1,
-    p2 ? null,
-  }:
-    "${toString p1}\n" + (lib.optionalString (p2 != null) "${toString p2}\n");
-}
+  lib = pipe ./. [
+    builtins.readDir
+    builtins.attrNames
+    (builtins.filter (name: name != "default.nix"))
+    (map (name: {
+      name = removeDotNix name;
+      value = import ./${name} lib;
+    }))
+    builtins.listToAttrs
+  ];
+in
+  lib
