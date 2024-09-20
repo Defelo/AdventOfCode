@@ -1,6 +1,16 @@
 rec {
   inherit (import <nixpkgs> {}) lib;
 
+  scan = f: init: lst: let
+    mkAcc = out: acc: {inherit out acc;};
+    op = x: y: let
+      acc' = f x.acc y;
+    in
+      mkAcc (x.out ++ [acc']) acc';
+    result = builtins.foldl' op (mkAcc [] init) lst;
+  in
+    result.out;
+
   input = builtins.readFile (builtins.getEnv "INPUT");
 
   solution = {
