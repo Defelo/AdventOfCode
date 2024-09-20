@@ -46,6 +46,9 @@ path = "2015/main.rs"
 [[bin]]
 name = "2015_01"
 path = "2015/01.rs"
+[[bin]]
+name = "2015_02"
+path = "2015/02.rs"
 
 # 2020
 [[bin]]
