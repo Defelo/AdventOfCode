@@ -8,7 +8,7 @@ _default:
     @just --list
 
 run year day:
-    INPUT=$(realpath ../.cache/{{year}}/{{trim_start_match(day, "0")}}) nix eval --raw -f {{year}}/{{day}}.nix --apply 's: "${toString s.p1}\n${toString s.p2}\n"'
+    INPUT=$(realpath ../.cache/{{year}}/{{trim_start_match(day, "0")}}) nix eval --raw -f {{year}}/{{day}}.nix
 
 example year day ex:
     INPUT=$(realpath ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}) nix eval --raw -f {{year}}/{{day}}.nix --apply 's: "${toString s.p1}\n${toString s.p2}\n"'
@@ -20,4 +20,4 @@ test-year year:
     @set -e; for day in $(ls {{year}}); do just test {{year}} $(basename $day .nix); done
 
 test-all:
-    @set -e; for year in *; do [[ -d $year ]] || continue; just test-year $year; done
+    @set -e; for year in *; do [[ -d $year ]] && [[ "$year" != "lib" ]] || continue; just test-year $year; done
