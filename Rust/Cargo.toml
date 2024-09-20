@@ -22,6 +22,7 @@ rpath = false
 counter = "0.6.0"
 indexmap = "2.5.0"
 itertools = "0.13.0"
+md-5 = "0.10.6"
 ndarray = "0.16.1"
 num = "0.4.3"
 paste = "1.0.15"
@@ -52,6 +53,9 @@ path = "2015/02.rs"
 [[bin]]
 name = "2015_03"
 path = "2015/03.rs"
+[[bin]]
+name = "2015_04"
+path = "2015/04.rs"
 
 # 2020
 [[bin]]
