@@ -145,6 +145,9 @@
 
           # Uiua
           uiua
+
+          # Nushell
+          nushell
         ];
         PYTHONPATH = ".";
         LIBCLANG_PATH = with pkgs; lib.makeLibraryPath [llvmPackages.clang-unwrapped.lib];

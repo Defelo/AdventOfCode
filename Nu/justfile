@@ -1,0 +1,23 @@
+alias r := run
+alias e := example
+alias t := test
+alias ty := test-year
+alias ta := test-all
+
+_default:
+    @just --list
+
+run year day:
+    nu {{year}}/{{day}}.nu ../.cache/{{year}}/{{trim_start_match(day, "0")}}
+
+example year day ex:
+    nu {{year}}/{{day}}.nu ../examples/{{year}}/{{trim_start_match(day, "0")}}/{{ex}}
+
+test year day:
+    @diff <(just run {{year}} {{day}}) <(cat ../.cache/{{year}}/{{trim_start_match(day, "0")}}.{1,2})
+
+test-year year:
+    @set -e; for day in $(ls {{year}}); do just test {{year}} $(basename $day .nu); done
+
+test-all:
+    @set -e; for year in *; do [[ -d $year ]] && [[ "$year" != "lib" ]] || continue; just test-year $year; done
