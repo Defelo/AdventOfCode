@@ -1,9 +1,7 @@
 &fras ⊢⇌ &args
 
-Colors ← {"red" "green" "blue"}
-ParseCount ← ⊗⊙Colors ⊙⊐⋕ °⊟⇌ ⊜□≠@ .
-ParseRound ← /+⊜(×⬚0↯¤3°⊚ParseCount)≠@,.
-ParseGame ← ⊜ParseRound≠@;. ↘+2⊗@:.
+Colors     ← {"red" "green" "blue"}
+ParseCount ← ⬚0↯¤3×°⊚:⊓⋕(⊗□⊙Colors)°$" _ _"
+⊜(/↥⊜(/+⊜ParseCount≠@,.)≠@;.:⋕°$"Game _:_")≠@\n.
 
-⊜(/↥ParseGame)≠@\n.
-∩/+ ⊃/×(×+1⇡⧻./×≤12_13_14)⍉
+⊃(/+/×|/+▽/×≤12_13_14)⍉
