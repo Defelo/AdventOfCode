@@ -1,9 +1,9 @@
 &fras ⊢⇌ &args
 
-Nums ← {"one" "two" "three" "four" "five"
-        "six" "seven" "eight" "nine"}
-Digits ← +@1⇡9
-Find ← /+ ×+1⇡9 ≡⊐⌕
-Extract ← +×10 ∩⊢⊃∘⇌ ▽≠0.
+Digits ← ≡(□¤)+@1⇡9
+Words  ← {"one" "two" "three" "four" "five" "six" "seven" "eight" "nine"}
 
-°⊟/+ ⊜(⊟ ∩Extract ⊃↥∘ ∩Find Digits,Nums¤)≠@\n.
+⊜□≠@\n.
+
+⊂Words,,¤Digits
+∩(/+≡◇(+×10∩⊢⟜⇌ ▽⊸≠0 /+×+1⇡9 /↥≡≡◇⌕⊙(¤¤))¤)
