@@ -1,6 +1,7 @@
 &fras ⊢⇌ &args
 
-⊜□≠@\n.
+Digits    ← "=-012"
+ToSnafu   ← ⊏⊙Digits [◌⍢(⌊⊃÷◿5+2|>0)]
+FromSnafu ← ∧(+×5:)⊙0 -2⊗⊙Digits
 
-/+≡(/+×ⁿ:5⇌⇡⧻.-2⊗:"=-012"°□)
-&p ;⍢(⌊÷5⊙⊂:⊏:"=-012"◿5.+2)(≠0):""
+&p ToSnafu /+ ⊜FromSnafu≠@\n.
