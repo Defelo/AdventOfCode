@@ -21,6 +21,12 @@ def link(year, day, lang):
 
         if lang == "ua":
             src = "&sc\n".encode() + p.read_bytes().split(b"\n", 1)[1]
+            if year == 2019:
+                intcode = p.parent.joinpath("Intcode.ua").read_bytes()
+                intcode = b"\n".join(
+                    b"  " + l for line in intcode.splitlines() if (l := line.strip()) and not l.startswith(b"#")
+                )
+                src = src.replace(b'Intcode ~ "Intcode.ua"', "┌─╴Intcode\n".encode() + intcode + "\n└─╴".encode(), 1)
             url = f"https://uiua.org/pad?src={base64.urlsafe_b64encode(src).decode()}"
         else:
             url = f"{names[lang]}/{year}/{day:02}{ext}"
