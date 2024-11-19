@@ -1,5 +1,5 @@
 # AdventOfCode
-[Advent of Code](https://adventofcode.com/) solutions in [<img height=12 src=".assets/rs.svg"> Rust](Rust), [<img height=12 src=".assets/hs.svg"> Haskell](Haskell), [<img height=12 src=".assets/py.svg"> Python](Python), [<img height=12 src=".assets/apl.svg"> APL](APL), [<img height=12 src=".assets/ua.png"> Uiua](Uiua), [<img height=12 src=".assets/nix.svg"> Nix](Nix) and [<img height=12 src=".assets/nu.svg"> Nu](Nu)
+[Advent of Code](https://adventofcode.com/) solutions in [<img height=12 src=".assets/rs.svg"> Rust](Rust), [<img height=12 src=".assets/ua.png"> Uiua](Uiua), [<img height=12 src=".assets/py.svg"> Python](Python), [<img height=12 src=".assets/apl.svg"> APL](APL), [<img height=12 src=".assets/hs.svg"> Haskell](Haskell), [<img height=12 src=".assets/nix.svg"> Nix](Nix) and [<img height=12 src=".assets/nu.svg"> Nu](Nu)
 
 ### Global Leaderboard Placement
 |Year|Rank|Score|Top% (Leaderboard)|Top% (All participants)|

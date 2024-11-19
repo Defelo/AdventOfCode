@@ -3,6 +3,8 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
+LATEST_YEAR = 2023
+
 names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL", "ua": "Uiua", "nix": "Nix", "nu": "Nu"}
 exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"], "ua": [".ua"], "nix": [".nix"], "nu": [".nu"]}
 
@@ -38,7 +40,12 @@ def link(year, day, lang):
 
 print("# AdventOfCode")
 
-lst = [f"[{logo(k)} {v}]({v})" for k, v in names.items()]
+cnt_by_lang = {
+    lang: sum(bool(link(year, day, lang)) for year in range(2015, LATEST_YEAR + 1) for day in range(1, 26))
+    for lang in names
+}
+cnt_by_lang["py"] = min(cnt_by_lang[x] for x in ["rs", "ua"]) - 1
+lst = [f"[{logo(k)} {v}]({v})" for k, v in sorted(names.items(), key=lambda x: (-cnt_by_lang[x[0]], x[1]))]
 print(f"[Advent of Code](https://adventofcode.com/) solutions in {', '.join(lst[:-1])} and {lst[-1]}")
 
 print()
@@ -55,7 +62,7 @@ with open(".ranks.csv") as f:
                 f"|[{year}](https://adventofcode.com/{year}/leaderboard)|**{rank}**|{score}|{lb:.2%} (of {leaderboard})|{t:.4%} (of &ge;{total})|"
             )
 
-for year in range(2023, 2014, -1):
+for year in range(LATEST_YEAR, 2014, -1):
     lines = []
     line = [""] * date(year, 12, 1).weekday()
     langs = Counter()
