@@ -46,6 +46,9 @@ echo $year/$day
 
 mkdir -p .cache/$year
 session=$(cat .cache/session)
+if [[ -n "$AOC_SESSION" ]]; then
+  session="$AOC_SESSION"
+fi
 
 if [[ "$3" = "--live" ]] || [[ "$1" = "--live" ]]; then
   termdown --no-figlet -T "$(printf 'AoC %d/%02d' $year $day)" -c 10 "$(date -d "$year-12-$day 00:00 EST")"
