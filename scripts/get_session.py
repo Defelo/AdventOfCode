@@ -14,7 +14,7 @@ key = PBKDF2("peanuts", b"saltysalt", 16, 1)
 
 def chrome_decrypt(encrypted_value):
     dec = AES.new(key, AES.MODE_CBC, IV=b" " * 16).decrypt(encrypted_value[3:])
-    decrypted = dec[: -dec[-1]].decode()
+    decrypted = dec[32 : -dec[-1]].decode()
     return decrypted
 
 
