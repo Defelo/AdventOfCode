@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 Digits    ← "=-012"
 ToSnafu   ← ⊏⊙Digits [◌⍢(⌊⊃÷◿5+2|>0)]

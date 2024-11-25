@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ⊜(⊜⋕≠@x.)≠@\n.
 

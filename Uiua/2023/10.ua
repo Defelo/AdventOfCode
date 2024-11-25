@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 N ← "J|LS"
 E ← "L-FS"

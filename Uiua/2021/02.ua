@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ⊜(⊓⊢⋕°$"_ _")≠@\n.
 -1⊗⊙"ufd"

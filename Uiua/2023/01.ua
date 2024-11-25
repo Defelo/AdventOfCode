@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 Digits ← ≡(□¤)+@1⇡9
 Words  ← {"one" "two" "three" "four" "five" "six" "seven" "eight" "nine"}

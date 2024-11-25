@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 Colors     ← {"red" "green" "blue"}
 ParseCount ← ⬚0↯¤3×°⊚:⊓⋕(⊗□⊙Colors)°$" _ _"

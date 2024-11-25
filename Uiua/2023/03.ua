@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 Nums ← (
   ∈+@0⇡10
@@ -7,14 +7,14 @@ Nums ← (
 )
 Symbols   ← ×⊃(≠@.)(=0Nums)
 Gears     ← =@*
-Neighbors ← ≡(×⬚0↻)☇1-1⇡3_3∩¤
+Neighbors ← ≡(×⬚0↻)♭₂-1⇡3_3∩¤
 A ← (
   Neighbors ⊃Symbols Nums
   ⊏◴♭/↥
 )
 B ← (
   Neighbors ⊃Nums Gears
-  ☇1⍉
+  ♭₂⍉
   ⬚0≡(▽=2⧻.▽≠0.◴)
   ≡/×≡⊏⊙¤
 )

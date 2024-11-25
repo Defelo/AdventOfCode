@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ParseSeeds        ← ≡⋕↘1⊜□≠@ .°□⊢
 ParseRangeMap     ← ⍜°[⊙⊙∘]⊃(-:|⋅∘|⋅+)⊜⋕≠@ .

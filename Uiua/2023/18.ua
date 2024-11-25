@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ParseInst ← ⊃↘↙2 ↘1⊢regex"^([RDLU]) (\\d+) \\(#(.{5})([0123])\\)$"
 ParseHex  ← ∧(+×16:)⊙0⊗⊙"0123456789abcdef"

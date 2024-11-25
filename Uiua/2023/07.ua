@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ParseCard ← +2⊗⊙"23456789TJQKA"
 ParseHand ← ⊂⊓(ParseCard°□|⋕)°⊟ ⊜□≠@ .
@@ -13,4 +13,4 @@ ReplaceJokers ← ⍜(↘¯1)(×≠11.)
 
 ⊜ParseHand≠@\n.
 ≡ReplaceJokers.
-∩(/+× +1⇡⧻. ⊢⇌⍉ Sort)
+∩(/+× +1⇡⧻. ⊣⍉ Sort)

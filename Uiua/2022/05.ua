@@ -1,4 +1,4 @@
-&fras ⊢⇌ &args
+&fras ⊣ &args
 
 ParseStep  ← [⊓⋕∩(-1⋕) °$"move _ from _ to _"]
 ExecSteps! ← ∧(⍜(°{⊙∘}⊏)(⊙(⊂^0)⊃↘↙:⊙:)⊙::°⊂)
