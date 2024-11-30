@@ -4,10 +4,10 @@
 ### Global Leaderboard Placement
 |Year|Rank|Score|Top% (Leaderboard)|Top% (All participants)|
 |-|-|-|-|-|
-|[2023](https://adventofcode.com/2023/leaderboard)|**126**|531|11.07% (of 1138)|0.0426% (of &ge;295608)|
-|[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|34.15% (of 1022)|0.1182% (of &ge;295315)|
-|[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|13.41% (of 1014)|0.0538% (of &ge;252776)|
-|[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|65.23% (of 952)|0.3190% (of &ge;194644)|
+|[2023](https://adventofcode.com/2023/leaderboard)|**126**|531|11.07% (of 1138)|0.0375% (of &ge;335944)|
+|[2022](https://adventofcode.com/2022/leaderboard)|**349**|147|34.15% (of 1022)|0.1163% (of &ge;299966)|
+|[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|13.41% (of 1014)|0.0532% (of &ge;255548)|
+|[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|65.23% (of 952)|0.3146% (of &ge;197402)|
 
 ## [2024](https://adventofcode.com/2024)
 |Mo|Tu|We|Th|Fr|Sa|Su|
