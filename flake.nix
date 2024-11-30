@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     uiua.url = "github:uiua-lang/uiua";
   };
 
@@ -28,7 +28,7 @@
                 ];
             };
 
-            python = pkgs.python311.withPackages (p:
+            python = pkgs.python313.withPackages (p:
               with p; [
                 z3
                 numpy
