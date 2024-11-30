@@ -3,7 +3,7 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-LATEST_YEAR = 2023
+LATEST_YEAR = 2024
 
 names = {"rs": "Rust", "hs": "Haskell", "py": "Python", "apl": "APL", "ua": "Uiua", "nix": "Nix", "nu": "Nu"}
 exts = {"rs": [".rs"], "hs": [".hs"], "py": [".py"], "apl": [".apl"], "ua": [".ua"], "nix": [".nix"], "nu": [".nu"]}

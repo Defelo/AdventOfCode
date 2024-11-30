@@ -9,6 +9,16 @@
 |[2021](https://adventofcode.com/2021/leaderboard)|**136**|438|13.41% (of 1014)|0.0538% (of &ge;252776)|
 |[2020](https://adventofcode.com/2020/leaderboard)|**621**|46|65.23% (of 952)|0.3190% (of &ge;194644)|
 
+## [2024](https://adventofcode.com/2024)
+|Mo|Tu|We|Th|Fr|Sa|Su|
+|-|-|-|-|-|-|-|
+|||||||[**1**](https://adventofcode.com/2024/day/1)|
+|[**2**](https://adventofcode.com/2024/day/2)|[**3**](https://adventofcode.com/2024/day/3)|[**4**](https://adventofcode.com/2024/day/4)|[**5**](https://adventofcode.com/2024/day/5)|[**6**](https://adventofcode.com/2024/day/6)|[**7**](https://adventofcode.com/2024/day/7)|[**8**](https://adventofcode.com/2024/day/8)|
+|[**9**](https://adventofcode.com/2024/day/9)|[**10**](https://adventofcode.com/2024/day/10)|[**11**](https://adventofcode.com/2024/day/11)|[**12**](https://adventofcode.com/2024/day/12)|[**13**](https://adventofcode.com/2024/day/13)|[**14**](https://adventofcode.com/2024/day/14)|[**15**](https://adventofcode.com/2024/day/15)|
+|[**16**](https://adventofcode.com/2024/day/16)|[**17**](https://adventofcode.com/2024/day/17)|[**18**](https://adventofcode.com/2024/day/18)|[**19**](https://adventofcode.com/2024/day/19)|[**20**](https://adventofcode.com/2024/day/20)|[**21**](https://adventofcode.com/2024/day/21)|[**22**](https://adventofcode.com/2024/day/22)|
+|[**23**](https://adventofcode.com/2024/day/23)|[**24**](https://adventofcode.com/2024/day/24)|[**25**](https://adventofcode.com/2024/day/25)|26|27|28|29|
+|30|31||||||
+
 ## [2023](https://adventofcode.com/2023) ([<img height=18 src=".assets/rs.svg"> Rust](Rust/2023): 25/25 | [<img height=18 src=".assets/ua.png"> Uiua](Uiua/2023): 18/25 | [<img height=18 src=".assets/hs.svg"> Haskell](Haskell/2023): 4/25 | [<img height=18 src=".assets/nix.svg"> Nix](Nix/2023): 1/25)
 |Mo|Tu|We|Th|Fr|Sa|Su|
 |-|-|-|-|-|-|-|

@@ -5,7 +5,7 @@ import re
 import requests
 from bs4 import BeautifulSoup, NavigableString, Tag
 
-YEAR = 2023
+YEAR = 2024
 
 s = requests.session()
 

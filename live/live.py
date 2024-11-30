@@ -1,6 +1,6 @@
 from lib import *
 
-input = read_input(2023, 1)
+input = read_input(2024, 1)
 
 blocks = input.split("\n\n")
 lines = input.splitlines()
