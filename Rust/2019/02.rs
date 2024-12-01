@@ -1,9 +1,7 @@
 #![feature(test)]
 
-use intcode::{Int, Vm};
+use aoc::intcode::{Int, Vm};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-
-mod intcode;
 
 type Input = Vec<Int>;
 
