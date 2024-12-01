@@ -31,6 +31,7 @@ regex = "1.10.6"
 rustc-hash = "2.0.0"
 rustworkx-core = "0.15.1"
 smallvec = "1.13.2"
+thiserror = "2.0.3"
 z3 = "0.12.1"
 
 [dev-dependencies]
@@ -65,6 +66,14 @@ path = "2015/06.rs"
 [[bin]]
 name = "2015_07"
 path = "2015/07.rs"
+
+# 2019
+[[bin]]
+name = "2019"
+path = "2019/main.rs"
+[[bin]]
+name = "2019_02"
+path = "2019/02.rs"
 
 # 2020
 [[bin]]
