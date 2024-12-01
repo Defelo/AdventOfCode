@@ -153,6 +153,10 @@
 
           # Nushell
           nushell
+
+          # Ruby
+          ruby
+          solargraph
         ];
         PYTHONPATH = ".";
         LIBCLANG_PATH = with pkgs; lib.makeLibraryPath [llvmPackages.clang-unwrapped.lib];
