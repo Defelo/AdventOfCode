@@ -1,5 +1,5 @@
 lib: let
-  inherit (builtins) elemAt length head tail isList concatMap;
+  inherit (builtins) elemAt length head tail isList concatMap foldl' add;
 in rec {
   last = lst: elemAt lst (length lst - 1);
 
@@ -35,4 +35,11 @@ in rec {
     if isList lst
     then concatMap flatten lst
     else [lst];
+
+  zipWith = f: xs: ys:
+    if xs == [] || ys == []
+    then []
+    else [(f (head xs) (head ys))] ++ (zipWith f (tail xs) (tail ys));
+
+  sum = foldl' add 0;
 }
