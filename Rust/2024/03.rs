@@ -31,4 +31,4 @@ fn part2(input: &Input) -> i64 {
     out
 }
 
-aoc::main!(2024, 3, ex: 1[a], 2[b]);
+aoc::main!(2024, 3, ex: 1, 2);
