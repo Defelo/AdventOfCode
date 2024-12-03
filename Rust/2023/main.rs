@@ -1,4 +1,4 @@
-#![feature(isqrt, iter_intersperse)]
+#![feature(iter_intersperse)]
 
 aoc::year! {
     "01.rs",

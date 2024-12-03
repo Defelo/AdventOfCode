@@ -1,4 +1,4 @@
-#![feature(test, isqrt)]
+#![feature(test)]
 
 #[derive(Debug)]
 struct Input {

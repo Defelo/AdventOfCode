@@ -31,8 +31,8 @@ impl<'a> Solver<'a> {
         let q = self.knots[i - 1].1 - self.knots[i].1;
         if p.abs() > 1 || q.abs() > 1 {
             self.knots[i] = (
-                self.knots[i].0 + p.max(-1).min(1),
-                self.knots[i].1 + q.max(-1).min(1),
+                self.knots[i].0 + p.clamp(-1, 1),
+                self.knots[i].1 + q.clamp(-1, 1),
             );
         }
     }

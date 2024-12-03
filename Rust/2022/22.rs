@@ -1,4 +1,4 @@
-#![feature(test, isqrt)]
+#![feature(test)]
 
 use aoc::iter_ext::IterExt;
 use itertools::Itertools;
@@ -91,10 +91,7 @@ fn setup(input: &str) -> Input {
                 continue;
             }
             let (p, q) = (p as usize, q as usize);
-            if !map[p][q]
-                .as_ref()
-                .is_some_and(|sub| sub.rotation == u8::MAX)
-            {
+            if map[p][q].as_ref().is_none_or(|sub| sub.rotation != u8::MAX) {
                 continue;
             }
 

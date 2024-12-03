@@ -11,7 +11,7 @@ struct Node<'a> {
     visited: bool,
 }
 
-impl<'a> Node<'a> {
+impl Node<'_> {
     fn new(parent_id: Option<usize>) -> Self {
         Self {
             size: 0,

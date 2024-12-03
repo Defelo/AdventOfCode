@@ -124,11 +124,10 @@ where
         if self.done {
             return None;
         }
-        self.iter.next().map(|item| {
-            if !(self.predicate)(&item) {
+        self.iter.next().inspect(|item| {
+            if !(self.predicate)(item) {
                 self.done = true;
             }
-            item
         })
     }
 }

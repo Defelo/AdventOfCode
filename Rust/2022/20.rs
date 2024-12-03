@@ -1,4 +1,4 @@
-#![feature(test, isqrt)]
+#![feature(test)]
 
 use itertools::Itertools;
 

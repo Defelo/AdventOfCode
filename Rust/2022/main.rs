@@ -1,5 +1,3 @@
-#![feature(isqrt)]
-
 aoc::year! {
     "01.rs",
     "02.rs",
