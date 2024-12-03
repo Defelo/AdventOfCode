@@ -20,6 +20,7 @@ pub fn get_output(
 pub struct Vm<I: Input, O: Output> {
     mem: FxHashMap<Int, Int>,
     ip: Int,
+    base: Int,
     inp: I,
     out: O,
 }
@@ -39,6 +40,7 @@ impl<I: Input, O: Output> Vm<I, O> {
                 .map(|(i, x)| (i as _, x))
                 .collect(),
             ip: 0,
+            base: 0,
             inp: input,
             out: output,
         }
@@ -106,6 +108,10 @@ impl<I: Input, O: Output> Vm<I, O> {
                 self.write_arg(out, (self.read_arg(in1) == self.read_arg(in2)) as _)?;
                 self.ip += 4;
             }
+            Op::Base(offset) => {
+                self.base += self.read_arg(offset);
+                self.ip += 2;
+            }
             Op::Halt => return Ok(false),
         }
 
@@ -132,6 +138,7 @@ impl<I: Input, O: Output> Vm<I, O> {
             },
             7 => Op::Lt { in1, in2, out },
             8 => Op::Eq { in1, in2, out },
+            9 => Op::Base(in1),
             99 => Op::Halt,
             code => return Err(Error::InvalidOpcode { ip: self.ip, code }),
         })
@@ -143,6 +150,7 @@ impl<I: Input, O: Output> Vm<I, O> {
         Ok(match mode {
             0 => Arg::Addr(arg),
             1 => Arg::Immediate(arg),
+            2 => Arg::Relative(arg),
             _ => {
                 return Err(Error::InvalidArgMode {
                     ip: self.ip,
@@ -157,6 +165,7 @@ impl<I: Input, O: Output> Vm<I, O> {
         match arg {
             Arg::Addr(addr) => self.read(addr),
             Arg::Immediate(value) => value,
+            Arg::Relative(offset) => self.read(self.base + offset),
         }
     }
 
@@ -164,6 +173,7 @@ impl<I: Input, O: Output> Vm<I, O> {
         Ok(match arg {
             Arg::Addr(addr) => self.write(addr, value),
             Arg::Immediate(_) => return Err(Error::WriteImmediate { ip: self.ip }),
+            Arg::Relative(offset) => self.write(self.base + offset, value),
         })
     }
 }
@@ -178,6 +188,7 @@ enum Op {
     Jne { arg: Arg, addr: Arg },          // 6
     Lt { in1: Arg, in2: Arg, out: Arg },  // 7
     Eq { in1: Arg, in2: Arg, out: Arg },  // 8
+    Base(Arg),                            // 9
     Halt,                                 // 99
 }
 
@@ -185,6 +196,7 @@ enum Op {
 enum Arg {
     Addr(Int),
     Immediate(Int),
+    Relative(Int),
 }
 
 #[derive(Debug, Error)]
