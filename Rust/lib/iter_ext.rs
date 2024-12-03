@@ -1,4 +1,6 @@
-use std::iter::Iterator;
+use std::{hash::Hash, iter::Iterator};
+
+use rustc_hash::FxHashMap;
 
 pub trait IterExt: Iterator {
     fn take_while_inclusive<P>(self, predicate: P) -> TakeWhileInclusive<Self, P>
@@ -31,6 +33,17 @@ pub trait IterExt: Iterator {
         Self: Sized,
     {
         self.position(|x| elem == x)
+    }
+
+    fn counts_fx(self) -> FxHashMap<Self::Item, usize>
+    where
+        Self: Sized,
+        Self::Item: Hash + Eq,
+    {
+        self.fold(FxHashMap::default(), |mut counts, x| {
+            counts.entry(x).and_modify(|x| *x += 1).or_insert(1);
+            counts
+        })
     }
 }
 

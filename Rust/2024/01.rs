@@ -1,5 +1,6 @@
 #![feature(test)]
 
+use aoc::iter_ext::IterExt;
 use itertools::Itertools;
 
 type Input = Vec<(i32, i32)>;
@@ -28,9 +29,10 @@ fn part1(input: &Input) -> u32 {
 }
 
 fn part2(input: &Input) -> i32 {
+    let right_counts = input.iter().map(|&(_, r)| r).counts_fx();
     input
         .iter()
-        .map(|&(l, _)| l * input.iter().filter(|&&(_, r)| l == r).count() as i32)
+        .map(|&(l, _)| l * *right_counts.get(&l).unwrap_or(&0) as i32)
         .sum()
 }
 
