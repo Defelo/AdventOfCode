@@ -1,6 +1,6 @@
 #![feature(test)]
 
-use aoc::intcode::{Int, Vm};
+use aoc::intcode::{Int, IntcodeVm};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 type Input = Vec<Int>;
@@ -13,7 +13,7 @@ fn setup(input: &str) -> Input {
 }
 
 fn run(input: &Input, noun: Int, verb: Int) -> Int {
-    let mut vm = Vm::new(input.iter().copied());
+    let mut vm = IntcodeVm::new(input.iter().copied());
     vm.write(1, noun);
     vm.write(2, verb);
     vm.run().unwrap();

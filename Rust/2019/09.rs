@@ -1,6 +1,6 @@
 #![feature(test)]
 
-use aoc::intcode::{get_output, Int};
+use aoc::intcode::{Int, IntcodeVm};
 
 type Input = Vec<Int>;
 
@@ -12,13 +12,17 @@ fn setup(input: &str) -> Input {
 }
 
 fn part1(input: &Input) -> Int {
-    let output = get_output(input.iter().copied(), [1]).unwrap();
-    *output.last().unwrap()
+    IntcodeVm::with_input(input.iter().copied(), [1])
+        .next()
+        .unwrap()
+        .unwrap()
 }
 
 fn part2(input: &Input) -> Int {
-    let output = get_output(input.iter().copied(), [2]).unwrap();
-    output[0]
+    IntcodeVm::with_input(input.iter().copied(), [2])
+        .next()
+        .unwrap()
+        .unwrap()
 }
 
 aoc::main!(2019, 9);

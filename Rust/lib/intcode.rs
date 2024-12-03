@@ -1,285 +1,239 @@
-use std::{convert::Infallible, fmt::Display};
+use std::collections::VecDeque;
 
 use rustc_hash::FxHashMap;
 use thiserror::Error;
 
 pub type Int = i64;
 
-pub fn get_output(
-    program: impl IntoIterator<Item = Int>,
-    input: impl IntoIterator<Item = Int>,
-) -> Result<Vec<Int>, Error<EofError, Infallible>> {
-    let input = IterInput::from(input);
-    let mut output = Vec::new();
-    let mut vm = Vm::with_io(program, input, &mut output);
-    vm.run()?;
-    Ok(output)
-}
-
 #[derive(Debug, Clone)]
-pub struct Vm<I: Input, O: Output> {
-    mem: FxHashMap<Int, Int>,
+pub struct IntcodeVm {
+    memory: FxHashMap<Int, Int>,
     ip: Int,
     base: Int,
-    inp: I,
-    out: O,
+    input: VecDeque<Int>,
+    output: VecDeque<Int>,
 }
 
-impl Vm<(), ()> {
+impl IntcodeVm {
+    /// Create a new vm and load the given program.
     pub fn new(program: impl IntoIterator<Item = Int>) -> Self {
-        Self::with_io(program, (), ())
+        Self::with_input(program, [])
     }
-}
 
-impl<I: Input, O: Output> Vm<I, O> {
-    pub fn with_io(program: impl IntoIterator<Item = Int>, input: I, output: O) -> Self {
+    /// Create a new vm and load the given program and input.
+    pub fn with_input(
+        program: impl IntoIterator<Item = Int>,
+        input: impl Into<VecDeque<Int>>,
+    ) -> Self {
         Self {
-            mem: program
+            memory: program
                 .into_iter()
                 .enumerate()
                 .map(|(i, x)| (i as _, x))
                 .collect(),
             ip: 0,
             base: 0,
-            inp: input,
-            out: output,
+            input: input.into(),
+            output: Default::default(),
         }
     }
 
+    /// Push additional input to the end of the queue.
+    pub fn push_input(&mut self, input: impl IntoIterator<Item = Int>) {
+        self.input.extend(input);
+    }
+
+    /// Pop values from the output queue.
+    pub fn pop_output(&mut self) -> Option<Int> {
+        self.output.pop_front()
+    }
+
+    /// Return the next output value.
+    ///
+    /// Advances execution only if the output queue is empty.
+    pub fn next_output(&mut self) -> Result<Option<Int>> {
+        loop {
+            if let Some(out) = self.pop_output() {
+                return Ok(Some(out));
+            }
+            if !self.step()? {
+                return Ok(None);
+            }
+        }
+    }
+
+    /// Return and clear the output queue.
+    pub fn take_output(&mut self) -> VecDeque<Int> {
+        std::mem::take(&mut self.output)
+    }
+
+    /// Read the value at the given address from memory.
     pub fn read(&self, addr: Int) -> Int {
-        self.mem.get(&addr).copied().unwrap_or(0)
+        self.memory.get(&addr).copied().unwrap_or(0)
     }
 
+    /// Write the given value to the given address in memory.
     pub fn write(&mut self, addr: Int, value: Int) -> Int {
-        self.mem.insert(addr, value).unwrap_or(0)
+        self.memory.insert(addr, value).unwrap_or(0)
     }
 
-    pub fn run(&mut self) -> Result<(), Error<I::Error, O::Error>> {
+    /// Run the program until it halts or an error occurs.
+    pub fn run(&mut self) -> Result<()> {
         while self.step()? {}
         Ok(())
     }
 
-    pub fn step(&mut self) -> Result<bool, Error<I::Error, O::Error>> {
-        let op = self.parse_op()?;
-
-        match op {
-            Op::Add { in1, in2, out } => {
+    /// Run a single step of the program (i.e. one operation).
+    ///
+    /// Returns `true` if execution can continue and `false` if the program has
+    /// halted.
+    pub fn step(&mut self) -> Result<bool> {
+        match self.parse_instruction()? {
+            Instruction::Add(in1, in2, out) => {
                 self.write_arg(out, self.read_arg(in1) + self.read_arg(in2))?;
                 self.ip += 4;
             }
-            Op::Mul { in1, in2, out } => {
+            Instruction::Mul(in1, in2, out) => {
                 self.write_arg(out, self.read_arg(in1) * self.read_arg(in2))?;
                 self.ip += 4;
             }
-            Op::In(arg) => {
-                let value = self
-                    .inp
-                    .read()
-                    .map_err(|err| Error::Input { ip: self.ip, err })?;
+            Instruction::In(arg) => {
+                let value = self.input.pop_front().ok_or(Error::NeedsInput)?;
                 self.write_arg(arg, value)?;
                 self.ip += 2;
             }
-            Op::Out(arg) => {
+            Instruction::Out(arg) => {
                 let value = self.read_arg(arg);
-                self.out
-                    .write(value)
-                    .map_err(|err| Error::Output { ip: self.ip, err })?;
+                self.output.push_back(value);
                 self.ip += 2;
             }
-            Op::Jeq { arg, addr } => {
+            Instruction::Jeq(arg, addr) => {
                 if self.read_arg(arg) != 0 {
                     self.ip = self.read_arg(addr);
                 } else {
                     self.ip += 3;
                 }
             }
-            Op::Jne { arg, addr } => {
+            Instruction::Jne(arg, addr) => {
                 if self.read_arg(arg) == 0 {
                     self.ip = self.read_arg(addr);
                 } else {
                     self.ip += 3;
                 }
             }
-            Op::Lt { in1, in2, out } => {
+            Instruction::Lt(in1, in2, out) => {
                 self.write_arg(out, (self.read_arg(in1) < self.read_arg(in2)) as _)?;
                 self.ip += 4;
             }
-            Op::Eq { in1, in2, out } => {
+            Instruction::Eq(in1, in2, out) => {
                 self.write_arg(out, (self.read_arg(in1) == self.read_arg(in2)) as _)?;
                 self.ip += 4;
             }
-            Op::Base(offset) => {
+            Instruction::Base(offset) => {
                 self.base += self.read_arg(offset);
                 self.ip += 2;
             }
-            Op::Halt => return Ok(false),
+            Instruction::Halt => return Ok(false),
         }
 
         Ok(true)
     }
 
-    fn parse_op(&self) -> Result<Op, Error<I::Error, O::Error>> {
+    /// Parse the operation at the current instruction pointer.
+    fn parse_instruction(&self) -> Result<Instruction> {
         let code = self.read(self.ip) % 100;
-        let in1 = self.parse_arg::<0>()?;
-        let in2 = self.parse_arg::<1>()?;
-        let out = self.parse_arg::<2>()?;
+        let mut arg = 0;
+        let mut next_arg = || {
+            arg += 1;
+            self.parse_argument(arg - 1)
+        };
         Ok(match code {
-            1 => Op::Add { in1, in2, out },
-            2 => Op::Mul { in1, in2, out },
-            3 => Op::In(in1),
-            4 => Op::Out(in1),
-            5 => Op::Jeq {
-                arg: in1,
-                addr: in2,
-            },
-            6 => Op::Jne {
-                arg: in1,
-                addr: in2,
-            },
-            7 => Op::Lt { in1, in2, out },
-            8 => Op::Eq { in1, in2, out },
-            9 => Op::Base(in1),
-            99 => Op::Halt,
+            1 => Instruction::Add(next_arg()?, next_arg()?, next_arg()?),
+            2 => Instruction::Mul(next_arg()?, next_arg()?, next_arg()?),
+            3 => Instruction::In(next_arg()?),
+            4 => Instruction::Out(next_arg()?),
+            5 => Instruction::Jeq(next_arg()?, next_arg()?),
+            6 => Instruction::Jne(next_arg()?, next_arg()?),
+            7 => Instruction::Lt(next_arg()?, next_arg()?, next_arg()?),
+            8 => Instruction::Eq(next_arg()?, next_arg()?, next_arg()?),
+            9 => Instruction::Base(next_arg()?),
+            99 => Instruction::Halt,
             code => return Err(Error::InvalidOpcode { ip: self.ip, code }),
         })
     }
 
-    fn parse_arg<const N: u32>(&self) -> Result<Arg, Error<I::Error, O::Error>> {
-        let arg = self.read(self.ip + 1 + N as Int);
-        let mode = self.read(self.ip) / 10i64.pow(2 + N) % 10;
-        Ok(match mode {
-            0 => Arg::Addr(arg),
-            1 => Arg::Immediate(arg),
-            2 => Arg::Relative(arg),
-            _ => {
-                return Err(Error::InvalidArgMode {
-                    ip: self.ip,
-                    n: N,
-                    mode,
-                })
-            }
-        })
-    }
-
-    fn read_arg(&self, arg: Arg) -> Int {
-        match arg {
-            Arg::Addr(addr) => self.read(addr),
-            Arg::Immediate(value) => value,
-            Arg::Relative(offset) => self.read(self.base + offset),
+    /// Parse the nth argument of the current instruction.
+    fn parse_argument(&self, n: u32) -> Result<Argument> {
+        let ip = self.ip;
+        let arg = self.read(ip + 1 + n as Int);
+        let mode = self.read(ip) / 10i64.pow(2 + n) % 10;
+        match mode {
+            0 => Ok(Argument::Addr(arg)),
+            1 => Ok(Argument::Immediate(arg)),
+            2 => Ok(Argument::Relative(arg)),
+            _ => Err(Error::InvalidArgMode { ip, n, mode }),
         }
     }
 
-    fn write_arg(&mut self, arg: Arg, value: Int) -> Result<Int, Error<I::Error, O::Error>> {
+    /// Return the value referenced by the given argument.
+    fn read_arg(&self, arg: Argument) -> Int {
+        match arg {
+            Argument::Addr(addr) => self.read(addr),
+            Argument::Immediate(value) => value,
+            Argument::Relative(offset) => self.read(self.base + offset),
+        }
+    }
+
+    /// Write the given value to the memory position referenced by the given
+    /// argument.
+    fn write_arg(&mut self, arg: Argument, value: Int) -> Result<Int> {
         Ok(match arg {
-            Arg::Addr(addr) => self.write(addr, value),
-            Arg::Immediate(_) => return Err(Error::WriteImmediate { ip: self.ip }),
-            Arg::Relative(offset) => self.write(self.base + offset, value),
+            Argument::Addr(addr) => self.write(addr, value),
+            Argument::Immediate(_) => return Err(Error::WriteImmediate { ip: self.ip }),
+            Argument::Relative(offset) => self.write(self.base + offset, value),
         })
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Op {
-    Add { in1: Arg, in2: Arg, out: Arg }, // 1
-    Mul { in1: Arg, in2: Arg, out: Arg }, // 2
-    In(Arg),                              // 3
-    Out(Arg),                             // 4
-    Jeq { arg: Arg, addr: Arg },          // 5
-    Jne { arg: Arg, addr: Arg },          // 6
-    Lt { in1: Arg, in2: Arg, out: Arg },  // 7
-    Eq { in1: Arg, in2: Arg, out: Arg },  // 8
-    Base(Arg),                            // 9
-    Halt,                                 // 99
+impl Iterator for IntcodeVm {
+    type Item = Result<Int>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next_output().transpose()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Arg {
+enum Instruction {
+    Add(Argument, Argument, Argument), // 1
+    Mul(Argument, Argument, Argument), // 2
+    In(Argument),                      // 3
+    Out(Argument),                     // 4
+    Jeq(Argument, Argument),           // 5
+    Jne(Argument, Argument),           // 6
+    Lt(Argument, Argument, Argument),  // 7
+    Eq(Argument, Argument, Argument),  // 8
+    Base(Argument),                    // 9
+    Halt,                              // 99
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Argument {
     Addr(Int),
     Immediate(Int),
     Relative(Int),
 }
 
 #[derive(Debug, Error)]
-pub enum Error<I: Display, O: Display> {
+pub enum Error {
     #[error("Invalid opcode {code} at {ip}")]
     InvalidOpcode { ip: Int, code: Int },
     #[error("Cannot write to arg in immediate mode at {ip}")]
     WriteImmediate { ip: Int },
     #[error("Invalid arg mode {mode} at {ip} (arg {n})")]
     InvalidArgMode { ip: Int, n: u32, mode: Int },
-    #[error("Input error at {ip}: {err}")]
-    Input { ip: Int, err: I },
-    #[error("Output error at {ip}: {err}")]
-    Output { ip: Int, err: O },
+    #[error("Executing cannot continue until more input is provided")]
+    NeedsInput,
 }
 
-pub trait Input {
-    type Error: Display;
-
-    fn read(&mut self) -> Result<Int, Self::Error>;
-}
-
-pub trait Output {
-    type Error: Display;
-
-    fn write(&mut self, value: Int) -> Result<(), Self::Error>;
-}
-
-#[derive(Debug, Error)]
-#[error("Input is disabled")]
-pub struct NoInputError;
-
-impl Input for () {
-    type Error = NoInputError;
-
-    fn read(&mut self) -> Result<Int, Self::Error> {
-        Err(NoInputError)
-    }
-}
-
-#[derive(Debug, Error)]
-#[error("Output is disabled")]
-pub struct NoOutputError;
-
-impl Output for () {
-    type Error = NoOutputError;
-
-    fn write(&mut self, _value: Int) -> Result<(), Self::Error> {
-        Err(NoOutputError)
-    }
-}
-
-#[derive(Debug, Error)]
-#[error("End of file")]
-pub struct EofError;
-
-pub struct IterInput<I>(I);
-
-impl<I> From<I> for IterInput<I::IntoIter>
-where
-    I: IntoIterator,
-{
-    fn from(value: I) -> Self {
-        Self(value.into_iter())
-    }
-}
-
-impl<I> Input for IterInput<I>
-where
-    I: Iterator<Item = Int>,
-{
-    type Error = EofError;
-
-    fn read(&mut self) -> Result<Int, Self::Error> {
-        self.0.next().ok_or(EofError)
-    }
-}
-
-impl Output for &mut Vec<Int> {
-    type Error = Infallible;
-
-    fn write(&mut self, value: Int) -> Result<(), Self::Error> {
-        self.push(value);
-        Ok(())
-    }
-}
+pub type Result<T, E = Error> = core::result::Result<T, E>;
