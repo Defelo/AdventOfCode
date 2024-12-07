@@ -40,7 +40,7 @@ def link(year, day, lang):
             continue
 
         if lang == "ua":
-            src = "&sc\n".encode() + p.read_bytes().split(b"\n", 1)[1]
+            src = p.read_bytes().replace("&fras ⊣ &args".encode(), b"&sc")
             if year == 2019:
                 intcode = p.parent.joinpath("Intcode.ua").read_bytes()
                 intcode = b"\n".join(
