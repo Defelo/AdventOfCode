@@ -1,15 +1,15 @@
 &fras ⊣ &args
 
-ParseSeeds        ← ≡⋕↘1⊜□≠@ .°□⊢
-ParseRangeMap     ← ⍜°[⊙⊙∘]⊃(-:|⋅∘|⋅+)⊜⋕≠@ .
-ParseMaps         ← ≡(□≡◇ParseRangeMap↘1⊜□≠@\n.°□) ↘1
-Contains          ← ≍1_0≤
-FindRangeMap      ← ⊢⊚⊂⊙1 ≡Contains ⊙⍜⍉(↘1)
-MapNum            ← +⊡⊃FindRangeMap(⊂⊙0⊢⍉:)
-SeedRanges        ← ⍜(°⊟⍉)⟜+ ↯∞_2
-Intersect         ← ⊟⊓/↥/↧⍜⊟⍉
-IsEmpty           ← /≤
-SplitAt           ← ⊃(↧⊂∞)(↥⊂:¯∞)
+ParseSeeds    ← ≡⋕↘1⊜□≠@ .°□⊢
+ParseRangeMap ← ⍜°[⊙⊙∘]⊃(-:|⋅∘|⋅+)⊜⋕≠@ .
+ParseMaps     ← ≡(□≡◇ParseRangeMap↘1⊜□≠@\n.°□) ↘1
+Contains      ← ≍1_0≤
+FindRangeMap  ← ⊢⊚⊂⊙1 ≡Contains ⊙⍜⍉(↘1)
+MapNum        ← +⊡⊃FindRangeMap(⊂⊙0⊢⍉:)
+SeedRanges    ← ⍜(°⊟⍉)⟜+ ↯∞_2
+Intersect     ← ⊟⊓/↥/↧⍜⊟⍉
+IsEmpty       ← /≤
+SplitAt       ← ⊃(↧⊂∞)(↥⊂:¯∞)
 MapSeedRange ← (
   ¤+⊙(⊙⊟ :⊙Intersect ∩SplitAt ⊙,) °[⊙⊙∘]:
   ∩(▽¬≡IsEmpty.)
