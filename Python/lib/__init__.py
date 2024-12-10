@@ -30,45 +30,6 @@ from heapq import heapify, heappop, heappush
 from pathlib import Path
 
 import numpy as np
-import pyperclip
-import z3
 
 YEAR: int | None = None
 DAY: int | None = None
-
-
-def read_input(year: int, day: int, example: int | None = None) -> str:
-    global YEAR, DAY
-    if example is None:
-        YEAR = year
-        DAY = day
-    if example is None:
-        f = Path(__file__).parent / f"../../.cache/{year}/{day}"
-    else:
-        f = Path(__file__).parent / f"../../examples/{year}/{day}/{example}"
-    return f.read_text()
-
-
-def ans(answer):
-    print(answer)
-    pyperclip.copy(str(answer))
-
-    if YEAR is None or DAY is None:
-        print("\n(cannot submit solution of example)")
-        return
-
-    submit_part = input("\nSubmit solution? level=")
-    if submit_part not in ["1", "2"]:
-        return
-
-    import bs4
-    import requests
-
-    session = (Path(__file__).parent / f"../../.cache/session").read_text()
-    resp = requests.post(
-        f"https://adventofcode.com/{YEAR}/day/{DAY}/answer",
-        cookies={"session": session},
-        data={"level": submit_part, "answer": answer},
-    ).text
-    bs = bs4.BeautifulSoup(resp, "html.parser")
-    print(bs.main.article.p.text)

@@ -32,9 +32,6 @@
               with p; [
                 z3
                 numpy
-                pyperclip
-                requests
-                beautifulsoup4
                 networkx
                 sympy
               ]);
@@ -88,23 +85,18 @@
                 beautifulsoup4
               ];
             };
-            live = pkgs.stdenvNoCC.mkDerivation {
+            live = pkgs.python3.pkgs.buildPythonApplication {
               name = "aoc-live";
+              pyproject = false;
               dontUnpack = true;
-              nativeBuildInputs = with pkgs; [makeWrapper];
-              installPhase = ''
-                mkdir -p $out/bin
-                cp ${./scripts/live.sh} $out/bin/aoc-live
-                chmod +x $out/bin/*
-                wrapProgram $out/bin/* --set PATH ${with pkgs;
-                  lib.makeBinPath [
-                    python
-                    bash
-                    coreutils
-                    inotify-tools
-                    wl-clipboard
-                  ]}
-              '';
+              installPhase = "mkdir -p $out/bin; cp ${./scripts/live.py} $out/bin/aoc-live; chmod +x $out/bin/*";
+              makeWrapperArgs = ["--set AOC_PYTHON ${python}/bin/python"];
+              propagatedBuildInputs = with pkgs.python3.pkgs; [
+                requests
+                beautifulsoup4
+                pyperclip
+                watchdog
+              ];
             };
           };
         })

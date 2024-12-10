@@ -1,6 +1,6 @@
 from lib import *
 
-input = read_input(2024, 1)
+input = open(0).read().strip()
 
 blocks = input.split("\n\n")
 lines = input.splitlines()
@@ -11,4 +11,4 @@ for line in lines:
     match = re.match(r"^$", line)
 
 
-ans(out)
+print(out)
