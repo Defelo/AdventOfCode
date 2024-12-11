@@ -11,34 +11,34 @@ fn setup(input: &str) -> Input {
         .collect()
 }
 
-fn count(n: u64, steps: usize, dp: &mut FxHashMap<(u64, usize), usize>) -> usize {
-    let k = (n, steps);
-    if let Some(&result) = dp.get(&k) {
-        return result;
+fn solve(input: &Input, steps: usize) -> usize {
+    let mut nums = FxHashMap::default();
+    let mut new_nums = FxHashMap::default();
+    for &n in input {
+        *nums.entry(n).or_default() += 1;
     }
 
-    let result = if steps == 0 {
-        1
-    } else if n == 0 {
-        count(1, steps - 1, dp)
-    } else {
-        let d = n.ilog10() + 1;
-        if d & 1 == 0 {
-            let m = 10u64.pow(d / 2);
-            count(n / m, steps - 1, dp) + count(n % m, steps - 1, dp)
-        } else {
-            count(n * 2024, steps - 1, dp)
+    for _ in 0..steps {
+        new_nums.clear();
+        for (&n, &cnt) in &nums {
+            let mut insert = |n| *new_nums.entry(n).or_default() += cnt;
+            if n == 0 {
+                insert(1);
+                continue;
+            }
+            let d = n.ilog10() + 1;
+            if d & 1 == 0 {
+                let m = 10u64.pow(d >> 1);
+                insert(n / m);
+                insert(n % m);
+            } else {
+                insert(n * 2024);
+            }
         }
-    };
+        std::mem::swap(&mut nums, &mut new_nums);
+    }
 
-    dp.insert(k, result);
-
-    result
-}
-
-fn solve(input: &Input, steps: usize) -> usize {
-    let mut dp = FxHashMap::default();
-    input.iter().map(|&n| count(n, steps, &mut dp)).sum()
+    nums.values().sum()
 }
 
 fn part1(input: &Input) -> usize {
