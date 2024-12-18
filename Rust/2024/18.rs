@@ -48,7 +48,33 @@ fn setup(input: &str) -> Input {
     }
 }
 
-fn bfs(input: &Input, prefix_len: usize) -> Option<usize> {
+struct UnionFind {
+    parents: Vec<usize>,
+}
+
+impl UnionFind {
+    fn new(len: usize) -> Self {
+        Self {
+            parents: (0..len).collect(),
+        }
+    }
+
+    fn find(&mut self, x: usize) -> usize {
+        if self.parents[x] == x {
+            return x;
+        }
+        self.parents[x] = self.find(self.parents[x]);
+        self.parents[x]
+    }
+
+    fn merge(&mut self, x: usize, y: usize) {
+        let x = self.find(x);
+        let y = self.find(y);
+        self.parents[x] = y;
+    }
+}
+
+fn part1(input: &Input) -> usize {
     let mut queue = VecDeque::from([(0, 0, 0)]);
     let mut visited = vec![false; input.width * input.height];
     while let Some((d, x, y)) = queue.pop_front() {
@@ -58,37 +84,53 @@ fn bfs(input: &Input, prefix_len: usize) -> Option<usize> {
         }
 
         if (x, y) == (input.width - 1, input.height - 1) {
-            return Some(d);
+            return d;
         }
 
         queue.extend(
             Direction::iter()
                 .flat_map(|d| d.step(x, y, input.width, input.height))
-                .filter(|&(nx, ny)| input.grid[ny * input.width + nx] >= prefix_len)
+                .filter(|&(nx, ny)| input.grid[ny * input.width + nx] >= input.prefix_len)
                 .map(|(nx, ny)| (d + 1, nx, ny)),
         );
     }
 
-    None
-}
-
-fn part1(input: &Input) -> usize {
-    bfs(input, input.prefix_len).unwrap()
+    panic!()
 }
 
 fn part2(input: &Input) -> String {
-    let mut left = 0;
-    let mut right = input.bytes.len();
-    while left + 1 < right {
-        let m = left.midpoint(right);
-        match bfs(input, m) {
-            Some(_) => left = m,
-            None => right = m,
+    let mut uf = UnionFind::new(input.width * input.height);
+    for y in 0..input.height {
+        for x in 0..input.width {
+            let idx = y * input.width + x;
+            if x + 1 < input.width
+                && input.grid[idx] == usize::MAX
+                && input.grid[idx + 1] == usize::MAX
+            {
+                uf.merge(idx, idx + 1);
+            }
+            if y + 1 < input.height
+                && input.grid[idx] == usize::MAX
+                && input.grid[idx + input.width] == usize::MAX
+            {
+                uf.merge(idx, idx + input.width);
+            }
         }
     }
-    debug_assert_eq!(left + 1, right);
-    let (x, y) = input.bytes[right - 1];
-    format!("{x},{y}")
+
+    for (i, &(x, y)) in input.bytes.iter().enumerate().rev() {
+        for (nx, ny) in Direction::iter()
+            .flat_map(|d| d.step(x, y, input.width, input.height))
+            .filter(|&(nx, ny)| input.grid[ny * input.width + nx] > i)
+        {
+            uf.merge(y * input.width + x, ny * input.width + nx);
+        }
+        if uf.find(0) == uf.find(input.width * input.height - 1) {
+            return format!("{x},{y}");
+        }
+    }
+
+    panic!()
 }
 
 aoc::main!(2024, 18, ex: 1);
