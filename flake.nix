@@ -36,6 +36,14 @@
                 sympy
               ]);
 
+            pypy = pkgs.pypy310.withPackages (p:
+              with p; [
+                # z3
+                # numpy
+                networkx
+                sympy
+              ]);
+
             downloadInput = pkgs.stdenvNoCC.mkDerivation {
               name = "aoc-download-input";
               dontUnpack = true;
@@ -111,6 +119,7 @@
       fetchRanks,
       live,
       python,
+      pypy,
       ...
     }: {
       default = pkgs.mkShell {
@@ -129,6 +138,7 @@
 
           # Python
           python
+          pypy
 
           # Haskell
           (haskellPackages.ghcWithPackages (p: with p; [split regex-tdfa]))

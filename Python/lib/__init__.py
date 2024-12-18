@@ -29,7 +29,10 @@ from functools import cache, partial, reduce
 from heapq import heapify, heappop, heappush
 from pathlib import Path
 
-import numpy as np
+try:
+    import numpy as np
+except:
+    pass
 
 YEAR: int | None = None
 DAY: int | None = None
