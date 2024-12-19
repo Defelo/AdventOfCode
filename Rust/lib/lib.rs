@@ -10,6 +10,7 @@ pub mod iter_ext;
 pub mod math;
 pub mod parsing;
 pub mod range;
+pub mod trie;
 pub mod tuples;
 
 extern crate test;
