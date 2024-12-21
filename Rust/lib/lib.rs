@@ -15,6 +15,12 @@ pub mod tuples;
 
 extern crate test;
 
+pub fn matrix<const N: usize, const M: usize>(
+    mut f: impl FnMut(usize, usize) -> usize,
+) -> [[usize; M]; N] {
+    std::array::from_fn(|x| std::array::from_fn(|y| f(x, y)))
+}
+
 #[macro_export]
 macro_rules! main {
     ($year:literal, $day:tt $(, ex: $($example:literal $([$expart:ident])?),*)?) => {
