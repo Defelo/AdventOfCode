@@ -4,6 +4,7 @@
 pub use test::Bencher;
 
 pub mod arrays;
+pub mod bitset;
 pub mod grid;
 pub mod intcode;
 pub mod iter_ext;
