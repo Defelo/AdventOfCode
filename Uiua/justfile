@@ -28,4 +28,4 @@ test-year year:
     @set -e; for day in $(ls {{year}}); do just test {{year}} $(basename $day .ua); done
 
 test-all:
-    @set -e; for year in *; do [[ -d $year ]] || continue; just test-year $year; done
+    @set -e; for year in *; do [[ -d $year ]] && [[ "$year" =~ ^[0-9]+$ ]] || continue; just test-year $year; done
